@@ -1,0 +1,7 @@
+#import "User.h"
+#import "Teacher.h"
+#import "Student.h"
+#import "Lesson.h"
+#import "Subject.h"
+#import "Grade.h"
+#import "Absence.h"
