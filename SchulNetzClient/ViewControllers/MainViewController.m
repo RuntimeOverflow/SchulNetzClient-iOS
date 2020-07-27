@@ -3,6 +3,7 @@
 #import "../Util.h"
 #import "../Account.h"
 #import "../Data/Host.h"
+#import "../Variables.h"
 
 @interface MainViewController ()
 
@@ -24,12 +25,12 @@ static MainViewController* main;
     
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"loggedIn"]){
         [Util setViewControllerFromName:@"LoginScene" animated:false];
-    } else if([Account getCurrent] == NULL){
+    } else if([Variables get].account == NULL){
         Account* account __attribute__((unused)) = [[Account alloc] initFromCredentials];
-        User* user = [User initFromCache];
-        if(user != nil) account.user = user;
-        [user afterInit];
-        [Util setTintColor: [Host colorForHost:account.url]];
+        User* user = [User load];
+        if(user != nil) [Variables get].user = user;
+        [user processConnections];
+        [Util setTintColor: [Host colorForHost:account.host]];
     }
 }
 @end

@@ -2,6 +2,7 @@
 #import "../Account.h"
 #import "../Data/Data.h"
 #import "../Util.h"
+#import "../Variables.h"
 #import "StudentViewController.h"
 #import "TeacherViewController.h"
 
@@ -29,7 +30,7 @@ BOOL showTeachers = false;
     
     _peopleTableView.tintColor = [Util getTintColor];
     
-    for(Student* s in [Account getCurrent].user.students){
+    for(Student* s in [Variables get].user.students){
         NSString* letter = [s.lastName substringWithRange:NSMakeRange(0, 1)].capitalizedString;
         
         if([[students allKeys] containsObject:letter]){
@@ -41,7 +42,7 @@ BOOL showTeachers = false;
         }
     }
     
-    for(Teacher* t in [Account getCurrent].user.teachers){
+    for(Teacher* t in [Variables get].user.teachers){
         NSString* letter = [t.lastName substringWithRange:NSMakeRange(0, 1)].capitalizedString;
         
         if([[teachers allKeys] containsObject:letter]){

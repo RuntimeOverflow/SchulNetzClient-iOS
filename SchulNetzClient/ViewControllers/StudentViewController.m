@@ -28,7 +28,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 2){
-        NSString* url = [[NSString stringWithFormat:@"https://maps.apple.com/?address=%@, %@ %@", student.address, student.zip, student.city] stringByAddingPercentEncodingWithAllowedCharacters: [NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSString* url = [[NSString stringWithFormat:@"https://maps.apple.com/?address=%@, %@ %@", student.address, [NSString stringWithFormat:@"%d", student.zipCode], student.city] stringByAddingPercentEncodingWithAllowedCharacters: [NSCharacterSet URLQueryAllowedCharacterSet]];
         
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
     } else if(indexPath.section == 3 && indexPath.row == 0 && ![student.phone isEqualToString:@""]){
@@ -39,7 +39,7 @@
         
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", number]] options:@{} completionHandler:nil];
     } else if(indexPath.section == 4 && indexPath.row == 0){
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"calshow:%f", [student.birth timeIntervalSinceReferenceDate]]] options:@{} completionHandler:nil];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"calshow:%f", [student.dateOfBirth timeIntervalSinceReferenceDate]]] options:@{} completionHandler:nil];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:true];
@@ -58,7 +58,7 @@
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"d. MMMM yyyy";
     
-    NSDateComponents* c = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate dateWithTimeInterval:0 sinceDate:student.birth]];
+    NSDateComponents* c = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate dateWithTimeInterval:0 sinceDate:student.dateOfBirth]];
     long age = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]].year - c.year;
     c.year = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]].year;
     BOOL birthdayThisYear = [[NSDate date] timeIntervalSinceDate:[[NSCalendar currentCalendar] dateFromComponents:c]] > 0;
@@ -72,13 +72,13 @@
             break;
         case 2:
             if(indexPath.row == 0) return student.address;
-            else return [NSString stringWithFormat:@"%@ %@", student.zip, student.city];
+            else return [NSString stringWithFormat:@"%@ %@", [NSString stringWithFormat:@"%d", student.zipCode], student.city];
             break;
         case 3:
             return student.phone;
             break;
         case 4:
-            return [NSString stringWithFormat:@"%@ (%ld years)", [formatter stringFromDate: student.birth], birthdayThisYear ? age : age - 1];
+            return [NSString stringWithFormat:@"%@ (%ld years)", [formatter stringFromDate: student.dateOfBirth], birthdayThisYear ? age : age - 1];
             break;
         default:
             return @"";

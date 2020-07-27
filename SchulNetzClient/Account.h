@@ -2,29 +2,42 @@
 #import "Libraries/HTMLReader/include/HTMLReader.h"
 #import "ViewControllers/RefreshViewController.h"
 #import "Data/User.h"
+#import "SessionManager.h"
 
-@interface Account : NSObject
-@property NSString* url;
+@interface Account : NSObject{
+    NSString* currentId;
+    NSString* currentTransId;
+    NSMutableArray* cookiesList;
+    NSString* currentCookies;
+    
+    BOOL signingIn;
+    BOOL signingOut;
+    NSMutableArray* queue;
+    
+    SessionManager* manager;
+}
+
+@property NSString* host;
 @property NSString* username;
 @property NSString* password;
 
-@property User* user;
+@property BOOL signedIn;
 
-@property NSString* currentId;
-@property NSString* currentTransId;
-@property NSMutableArray* cookiesList;
-@property NSString* currentCookies;
+-(instancetype)initWithUsername:(NSString*)username password:(NSString*)password host:(NSString*)host;
+-(instancetype)initWithUsername:(NSString*)username password:(NSString*)password host:(NSString*)host session:(BOOL)session;
 
--(id) initWithUsername: (NSString*) username password: (NSString*) password url: (NSString*) url;
--(id) initFromCredentials;
-+(Account*) getCurrent;
--(int) login;
--(void) logout;
--(BOOL) refresh: (RefreshViewController*) vc;
--(HTMLDocument*) loadPage: (int) pageId;
--(int) verify;
--(void) saveCredentials;
-+(void) deleteCredentials;
--(NSString*) getTransId: (HTMLDocument*) src;
--(NSString*) getCookies: (NSDictionary*) headers;
+-(instancetype)initFromCredentials;
+-(void)saveCredentials;
++(void)deleteCredentials;
+
+-(NSObject*)signIn;
+-(NSObject*)signOut;
+-(NSObject*)resetTimeout;
+
+-(NSObject*)loadPage:(NSString*)pageId;
+-(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to;
+-(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to view:(NSString*)view;
+
+-(NSString*)getTransId:(HTMLDocument*)src;
+-(NSString*)getCookies:(NSDictionary*)headers;
 @end

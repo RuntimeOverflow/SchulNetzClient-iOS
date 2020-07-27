@@ -17,7 +17,8 @@
 }
 
 -(void) setAccount: (Account*) account{
-    int result = [account verify];
+    //int result = [account verify];
+    int result = 1;
     
     if(result == 0){
         [account saveCredentials];

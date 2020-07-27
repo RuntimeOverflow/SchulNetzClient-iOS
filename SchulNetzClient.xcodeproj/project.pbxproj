@@ -30,7 +30,6 @@
 		BD10AF4023D4740C00EFDD84 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF2F23D4740C00EFDD84 /* HTMLNode.m */; };
 		BD10AF4723D4BDA200EFDD84 /* RefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF4623D4BDA200EFDD84 /* RefreshViewController.m */; };
 		BD10AF4A23D4CE6100EFDD84 /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF4923D4CE6100EFDD84 /* Parser.m */; };
-		BD10AF4D23D4FB5B00EFDD84 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF4C23D4FB5B00EFDD84 /* StartViewController.m */; };
 		BD2E4DA924560D6900CF7ECA /* Absence.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2E4DA824560D6900CF7ECA /* Absence.m */; };
 		BD3A8FA723D376930043C868 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD6D98AA23D27DDE00A37649 /* LoginViewController.m */; };
 		BD3A8FAB23D381B20043C868 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3A8FAA23D381B20043C868 /* MainViewController.m */; };
@@ -55,6 +54,10 @@
 		BDBF016E23DF4B48009E0E0B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BDBF016D23DF4B48009E0E0B /* User.m */; };
 		BDBF017323DF53A5009E0E0B /* Student.m in Sources */ = {isa = PBXBuildFile; fileRef = BDBF017223DF53A5009E0E0B /* Student.m */; };
 		BDC991E32420D47100F4713C /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC991E22420D47100F4713C /* PeopleViewController.m */; };
+		BDFC35FB24CF05410049AE83 /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFC35FA24CF05410049AE83 /* Transaction.m */; };
+		BDFC35FE24CF062C0049AE83 /* Change.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFC35FD24CF062C0049AE83 /* Change.m */; };
+		BDFC360124CF339B0049AE83 /* Variables.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFC360024CF339A0049AE83 /* Variables.m */; };
+		BDFC360424CF38340049AE83 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFC360324CF38340049AE83 /* SessionManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,8 +114,6 @@
 		BD10AF4623D4BDA200EFDD84 /* RefreshViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RefreshViewController.m; sourceTree = "<group>"; };
 		BD10AF4823D4CE6100EFDD84 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		BD10AF4923D4CE6100EFDD84 /* Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
-		BD10AF4B23D4FB5B00EFDD84 /* StartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
-		BD10AF4C23D4FB5B00EFDD84 /* StartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
 		BD2E4DA724560D6900CF7ECA /* Absence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Absence.h; sourceTree = "<group>"; };
 		BD2E4DA824560D6900CF7ECA /* Absence.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Absence.m; sourceTree = "<group>"; };
 		BD3A8FA823D37E740043C868 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
@@ -161,6 +162,14 @@
 		BDC991E12420D47100F4713C /* PeopleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		BDC991E22420D47100F4713C /* PeopleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		BDEC782523F1FFC60010F8D3 /* SchulNetzClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SchulNetzClient.entitlements; sourceTree = "<group>"; };
+		BDFC35F924CF05410049AE83 /* Transaction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
+		BDFC35FA24CF05410049AE83 /* Transaction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Transaction.m; sourceTree = "<group>"; };
+		BDFC35FC24CF062C0049AE83 /* Change.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Change.h; sourceTree = "<group>"; };
+		BDFC35FD24CF062C0049AE83 /* Change.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Change.m; sourceTree = "<group>"; };
+		BDFC35FF24CF339A0049AE83 /* Variables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Variables.h; sourceTree = "<group>"; };
+		BDFC360024CF339A0049AE83 /* Variables.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Variables.m; sourceTree = "<group>"; };
+		BDFC360224CF38340049AE83 /* SessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
+		BDFC360324CF38340049AE83 /* SessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +295,10 @@
 				BD10AF4923D4CE6100EFDD84 /* Parser.m */,
 				BD8035DA23D37354007FDB54 /* Account.h */,
 				BD8035D223D32212007FDB54 /* Account.m */,
+				BDFC35FF24CF339A0049AE83 /* Variables.h */,
+				BDFC360024CF339A0049AE83 /* Variables.m */,
+				BDFC360224CF38340049AE83 /* SessionManager.h */,
+				BDFC360324CF38340049AE83 /* SessionManager.m */,
 			);
 			path = SchulNetzClient;
 			sourceTree = "<group>";
@@ -310,6 +323,10 @@
 				BD2E4DA824560D6900CF7ECA /* Absence.m */,
 				BD5F5390245770D700569B23 /* Host.h */,
 				BD5F5391245770D700569B23 /* Host.m */,
+				BDFC35F924CF05410049AE83 /* Transaction.h */,
+				BDFC35FA24CF05410049AE83 /* Transaction.m */,
+				BDFC35FC24CF062C0049AE83 /* Change.h */,
+				BDFC35FD24CF062C0049AE83 /* Change.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -327,8 +344,6 @@
 				BD3A8FAD23D3872A0043C868 /* CompletionViewController.m */,
 				BD10AF4523D4BDA200EFDD84 /* RefreshViewController.h */,
 				BD10AF4623D4BDA200EFDD84 /* RefreshViewController.m */,
-				BD10AF4B23D4FB5B00EFDD84 /* StartViewController.h */,
-				BD10AF4C23D4FB5B00EFDD84 /* StartViewController.m */,
 				BD04FE59241FF5F90025BED0 /* SubjectsViewController.h */,
 				BD04FE5A241FF5F90025BED0 /* SubjectsViewController.m */,
 				BD04FE5F2420323D0025BED0 /* NavigationViewController.h */,
@@ -427,10 +442,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDBD598923F0838F00A13B68 /* TBXML.m in Sources */,
-				BD10AF4D23D4FB5B00EFDD84 /* StartViewController.m in Sources */,
 				BD6D98A523D27DDE00A37649 /* AppDelegate.m in Sources */,
 				BD6D98B623D27DDF00A37649 /* main.m in Sources */,
 				BD10AF4723D4BDA200EFDD84 /* RefreshViewController.m in Sources */,
+				BDFC35FE24CF062C0049AE83 /* Change.m in Sources */,
 				BDBD598C23F0936F00A13B68 /* Lesson.m in Sources */,
 				BD10AF3423D4740C00EFDD84 /* HTMLComment.m in Sources */,
 				BD10AF3923D4740C00EFDD84 /* NSString+HTMLEntities.m in Sources */,
@@ -444,6 +459,7 @@
 				BD6E82592423EED6008DFFB9 /* SubjectViewController.m in Sources */,
 				BDBF016E23DF4B48009E0E0B /* User.m in Sources */,
 				BD10AF3123D4740C00EFDD84 /* HTMLTextNode.m in Sources */,
+				BDFC35FB24CF05410049AE83 /* Transaction.m in Sources */,
 				BD10AF3323D4740C00EFDD84 /* HTMLTokenizer.m in Sources */,
 				BD10AF4023D4740C00EFDD84 /* HTMLNode.m in Sources */,
 				BD025A5A241E4CC3009E3F60 /* Subject.m in Sources */,
@@ -453,6 +469,7 @@
 				BD3A8FAB23D381B20043C868 /* MainViewController.m in Sources */,
 				BD8035D323D32212007FDB54 /* Account.m in Sources */,
 				BDBF016B23DF497C009E0E0B /* Teacher.m in Sources */,
+				BDFC360424CF38340049AE83 /* SessionManager.m in Sources */,
 				BD10AF3D23D4740C00EFDD84 /* HTMLSelector.m in Sources */,
 				BD04FE612420323D0025BED0 /* NavigationViewController.m in Sources */,
 				BD7954EE2421353C004C6F20 /* SettingsViewController.m in Sources */,
@@ -462,6 +479,7 @@
 				BD2E4DA924560D6900CF7ECA /* Absence.m in Sources */,
 				BD10AF3E23D4740C00EFDD84 /* HTMLPreprocessedInputStream.m in Sources */,
 				BD5F5392245770D700569B23 /* Host.m in Sources */,
+				BDFC360124CF339B0049AE83 /* Variables.m in Sources */,
 				BD10AF3823D4740C00EFDD84 /* HTMLSerialization.m in Sources */,
 				BD8035D523D337BD007FDB54 /* Util.m in Sources */,
 				BD7954F124214DAE004C6F20 /* TeacherViewController.m in Sources */,

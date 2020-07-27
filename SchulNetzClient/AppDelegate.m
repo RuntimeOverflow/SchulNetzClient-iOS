@@ -2,6 +2,7 @@
 #import <BackgroundTasks/BackgroundTasks.h>
 #import "Util.h"
 #import "Account.h"
+#import "Variables.h"
 
 @implementation AppDelegate
 @synthesize window;
@@ -32,10 +33,22 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+    if([Variables get].account != NULL && ![Variables get].account.signedIn){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[Variables get].account signIn];
+        });
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application{
     [self scheduleBackgroundRefresh];
+    
+    if([Variables get].account != NULL && [Variables get].account.signedIn){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[Variables get].account signOut];
+        });
+    }
 }
 
 -(void) scheduleBackgroundRefresh{
@@ -63,7 +76,7 @@
     task.expirationHandler = ^(void){
         [queue cancelAllOperations];
     };
-}*/
+}
 
 //e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"com.runtimeoverflow.SchulNetzClient.refresh"]
 -(void) backgroundRefresh{
@@ -73,10 +86,10 @@
     [self sendNotificationWithTitle:@"Synchronizing" withContent:@"Fetching new data"];
     
     [account refresh:NULL];
-    [account.user cacheData];
+    [account.user save];
     
     [self sendNotificationWithTitle:@"Synchronized" withContent:@"Successfully fetched new data"];
-}
+}*/
 
 -(void) sendNotificationWithTitle: (NSString*) title withContent: (NSString*) content{
     if([Util notifcationsAllowed]){

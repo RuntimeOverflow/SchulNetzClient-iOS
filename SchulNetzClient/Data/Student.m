@@ -58,4 +58,18 @@
 +(BOOL)supportsSecureCoding{
     return true;
 }
+
+-(BOOL)isEqual:(id)other{
+    if(other == self){
+        return YES;
+    } else if([self class] != [other class]){
+        return NO;
+    } else {
+        return [firstName isEqualToString:((Student*)other).firstName] && [lastName isEqualToString:((Student*)other).lastName] && [((Student*)other).dateOfBirth timeIntervalSinceReferenceDate] == [dateOfBirth timeIntervalSinceReferenceDate];
+    }
+}
+
+-(NSUInteger)hash{
+    return [firstName hash] + [lastName hash] + [dateOfBirth hash];
+}
 @end

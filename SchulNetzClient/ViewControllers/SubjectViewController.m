@@ -27,8 +27,8 @@ NSMutableArray* expanded;
     _tableView.dataSource = self;
     
     _subjectLabel.text = subject.name;
-    _averageLabel.text = [NSString stringWithFormat:@"%@%@", subject.average > 1 ? [NSNumber numberWithDouble:subject.average].stringValue : @"-", subject.gradesHidden ? @"*" : @""];
-    _averageLabel.textColor = [Grade colorForGrade:subject.average];
+    _averageLabel.text = [NSString stringWithFormat:@"%@%@", [subject getAverage] > 1 ? [NSNumber numberWithDouble:[subject getAverage]].stringValue : @"-", subject.hiddenGrades ? @"*" : @""];
+    _averageLabel.textColor = [Grade colorForGrade:[subject getAverage]];
     
     [super viewDidLoad];
 }
@@ -50,8 +50,8 @@ NSMutableArray* expanded;
     
     if(indexPath.row == 0) {
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        cell.label.textColor = [UIColor labelColor];
-        cell.label.text = [NSString stringWithFormat:@"%@%@", ((Grade*)subject.grades[indexPath.section]).weight != 1 ? [NSString stringWithFormat:@"[%d%%]", (int) ((Grade*)subject.grades[indexPath.section]).weight * 100] : @"", ((Grade*)subject.grades[indexPath.section]).topic];
+        cell.label.textColor = [UIColor blackColor];
+        cell.label.text = [NSString stringWithFormat:@"%@%@", ((Grade*)subject.grades[indexPath.section]).weight != 1 ? [NSString stringWithFormat:@"(%dx)", (int) ((Grade*)subject.grades[indexPath.section]).weight] : @"", ((Grade*)subject.grades[indexPath.section]).content];
         
         if(((Grade*)subject.grades[indexPath.section]).grade > 1) cell.additionalLabel.text = [NSNumber numberWithDouble:((Grade*)subject.grades[indexPath.section]).grade].stringValue;
         else cell.additionalLabel.text = @"-";

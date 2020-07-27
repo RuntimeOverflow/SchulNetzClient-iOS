@@ -4,138 +4,216 @@
 #import "Data/User.h"
 
 @implementation Account
-@synthesize url;
+@synthesize host;
 @synthesize username;
 @synthesize password;
 
-@synthesize user;
+@synthesize signedIn;
 
-@synthesize currentId;
-@synthesize currentTransId;
-@synthesize cookiesList;
-@synthesize currentCookies;
+-(instancetype)initWithUsername:(NSString*)username password:(NSString*)password host: (NSString*)host{
+	return [self initWithUsername:username password:password host:host session:true];
+}
 
-static Account* current;
-
--(id) initWithUsername: (NSString*) username password: (NSString*) password url: (NSString*) url{
-	self.url = url;
+-(instancetype)initWithUsername:(NSString*)username password:(NSString*)password host: (NSString*)host session:(BOOL)session{
+	self.host = host;
     self.username = username;
     self.password = password;
 	
 	cookiesList = [[NSMutableArray alloc] init];
 	
-	user = [[User alloc] init];
+	if(session) manager = [[SessionManager alloc] initWithAccount:self];
+	
 	self = [super init];
-	current = self;
     return self;
 }
 
--(id) initFromCredentials{
+-(instancetype)initFromCredentials{
 	NSDictionary* credentials = [[NSURLCredentialStorage sharedCredentialStorage] credentialsForProtectionSpace:[Util getProtectionSpace]];
 	NSURLCredential* credential = [credentials.objectEnumerator nextObject];
 	
-	return [self initWithUsername: credential.user password: credential.password url: [[NSUserDefaults standardUserDefaults] objectForKey:@"url"]];
+	return [self initWithUsername:credential.user password:credential.password host: [[NSUserDefaults standardUserDefaults] objectForKey:@"host"]];
 }
 
-+(Account*) getCurrent{
-	return current;
+-(void)saveCredentials{
+	[[NSUserDefaults standardUserDefaults] setObject:host forKey:@"host"];
+	
+	NSURLCredential* credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
+	[[NSURLCredentialStorage sharedCredentialStorage] setCredential:credential forProtectionSpace:[Util getProtectionSpace]];
+	
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"loggedIn"];
 }
 
--(int) login{
-    NSURLSession* defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
++(void)deleteCredentials{
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"loggedIn"];
+}
 
-    NSURL* loginUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url]];
-    NSMutableURLRequest* urlRequest = [NSMutableURLRequest requestWithURL:loginUrl];
+-(NSObject*)signIn{
+	if(signingIn) return [NSNumber numberWithBool:false];
+	
+	@try{
+		signingIn = true;
+		
+		NSURLSession* defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 
-    [urlRequest setHTTPMethod:@"GET"];
-	
-	__block HTMLDocument* loginSrc;
-	
-    __block BOOL done = NO;
-	__block int failed = false;
-    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData* data, NSURLResponse* response, NSError* error) {
-		if(error != NULL || data == NULL){
-			failed = (int)error.code;
+		NSURL* loginUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", host]];
+		NSMutableURLRequest* urlRequest = [NSMutableURLRequest requestWithURL:loginUrl];
+
+		[urlRequest setHTTPMethod:@"GET"];
+		[urlRequest setValue:@"SchulNetz Client" forHTTPHeaderField:@"User-Agent"];
+		
+		__block HTMLDocument* loginSrc;
+		
+		__block BOOL done = NO;
+		__block NSError* exception = NULL;
+		NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData* data, NSURLResponse* response, NSError* error) {
+			if(error != NULL || data == NULL){
+				exception = error;
+				done = YES;
+				return;
+			}
+			
+			NSDictionary* headers = [(NSHTTPURLResponse*) response allHeaderFields];
+			loginSrc = [[HTMLDocument alloc] initWithData:data contentTypeHeader:headers[@"Content-Type"]];
+			
+			self->currentCookies = [self getCookies: headers];
+			
 			done = YES;
-			return;
+		}];
+		[dataTask resume];
+
+		while (!done) {
+			NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+			[[NSRunLoop currentRunLoop] runUntilDate:date];
 		}
 		
-		NSDictionary* headers = [(NSHTTPURLResponse*) response allHeaderFields];
-		loginSrc = [[HTMLDocument alloc] initWithData:data contentTypeHeader:headers[@"Content-Type"]];
-		
-		self->currentCookies = [self getCookies: headers];
-		
-		done = YES;
-    }];
-    [dataTask resume];
-
-    while (!done) {
-        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
-        [[NSRunLoop currentRunLoop] runUntilDate:date];
-    }
-	
-	if(failed != 0) return failed;
-	
-	NSString* loginHash = [[[loginSrc nodesMatchingSelector:@"*[name=\"loginhash\"]"][0] attributes] valueForKey:@"value"];
-
-	loginUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/index.php?pageid=1", url]];
-	urlRequest = [NSMutableURLRequest requestWithURL:loginUrl];
-	
-	NSMutableString *postParams = [[NSMutableString alloc]initWithString:@"login="];
-	[postParams appendString: self->username];
-	[postParams appendString:@"&passwort="];
-	[postParams appendString: self->password];
-	[postParams appendString:@"&loginhash="];
-	[postParams appendString: loginHash];
-	
-	NSData *postData = [postParams dataUsingEncoding:NSUTF8StringEncoding];
-	
-	[urlRequest setHTTPMethod:@"POST"];
-	[urlRequest setHTTPBody:postData];
-	[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-	[urlRequest setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
-	[urlRequest setValue:self->currentCookies forHTTPHeaderField:@"Cookie"];
-	
-	__block HTMLDocument* pageSrc;
-	
-	done = false;
-	dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData* data, NSURLResponse* response, NSError* error) {
-		if(error != NULL || data == NULL){
-			failed = (int)error.code;
-			done = YES;
-			return;
+		if(exception){
+			signingIn = false;
+			return exception;
 		}
 		
-		pageSrc = [[HTMLDocument alloc] initWithData:data contentTypeHeader:[(NSHTTPURLResponse*) response allHeaderFields][@"Content-Type"]];
+		NSString* loginHash = [[[loginSrc nodesMatchingSelector:@"*[name=\"loginhash\"]"][0] attributes] valueForKey:@"value"];
+
+		loginUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/index.php?pageid=1", host]];
+		urlRequest = [NSMutableURLRequest requestWithURL:loginUrl];
 		
-		self->currentCookies = [self getCookies: [(NSHTTPURLResponse*) response allHeaderFields]];
-		self->currentTransId = [self getTransId:pageSrc];
+		NSMutableString *postParams = [[NSMutableString alloc]initWithString:@"login="];
+		[postParams appendString:self->username];
+		[postParams appendString:@"&passwort="];
+		[postParams appendString:self->password];
+		[postParams appendString:@"&loginhash="];
+		[postParams appendString:loginHash];
 		
-		HTMLElement* navBar = [pageSrc firstNodeMatchingSelector:@"*[id=\"nav-main-menu\"]"];
-		NSString* href = [[[navBar childElementNodes][0] attributes] valueForKey:@"href"];
+		NSData *postData = [postParams dataUsingEncoding:NSUTF8StringEncoding];
 		
-		NSRange idRange = NSMakeRange([href rangeOfString:@"&id="].location + [@"&id=" length], [href rangeOfString:@"&transid="].location - [href rangeOfString:@"&id="].location - [@"&id=" length]);
-		self->currentId = [href substringWithRange: idRange];
+		[urlRequest setHTTPMethod:@"POST"];
+		[urlRequest setHTTPBody:postData];
+		[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+		[urlRequest setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
+		[urlRequest setValue:self->currentCookies forHTTPHeaderField:@"Cookie"];
+		[urlRequest setValue:@"SchulNetz Client" forHTTPHeaderField:@"User-Agent"];
 		
-		done = YES;
-	}];
-	[dataTask resume];
-	
-	while (!done) {
-		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
-		[[NSRunLoop currentRunLoop] runUntilDate:date];
-	}
-	
-	if(failed != 0) return false;
-	return currentTransId != NULL ? 0 : 1337;
+		__block HTMLDocument* pageSrc;
+		
+		done = false;
+		dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData* data, NSURLResponse* response, NSError* error) {
+			if(error != NULL || data == NULL){
+				exception = error;
+				done = YES;
+				return;
+			}
+			
+			pageSrc = [[HTMLDocument alloc] initWithData:data contentTypeHeader:[(NSHTTPURLResponse*) response allHeaderFields][@"Content-Type"]];
+			
+			self->currentCookies = [self getCookies: [(NSHTTPURLResponse*) response allHeaderFields]];
+			self->currentTransId = [self getTransId:pageSrc];
+			
+			HTMLElement* navBar = [pageSrc firstNodeMatchingSelector:@"*[id=\"nav-main-menu\"]"];
+			NSString* href = [[[navBar childElementNodes][0] attributes] valueForKey:@"href"];
+			
+			NSRange idRange = NSMakeRange([href rangeOfString:@"&id="].location + [@"&id=" length], [href rangeOfString:@"&transid="].location - [href rangeOfString:@"&id="].location - [@"&id=" length]);
+			self->currentId = [href substringWithRange: idRange];
+			
+			done = YES;
+		}];
+		[dataTask resume];
+		
+		while (!done) {
+			NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+			[[NSRunLoop currentRunLoop] runUntilDate:date];
+		}
+		
+		if(exception){
+			signingIn = false;
+			return exception;
+		}
+		
+		if(manager) [manager start];
+		signedIn = true;
+		
+		signingIn = false;
+		return [NSNumber numberWithBool:true];
+	} @catch(NSException* exception){
+		signingIn = false;
+		return exception;
+	} @finally{}
 }
 
--(void) logout{
-	[self loadPage:9999];
-	currentId = currentTransId = currentCookies = @"";
+-(NSObject*)signOut{
+	if(signingOut || !signedIn) return [NSNumber numberWithBool:true];
+	
+	@try {
+		signingOut = true;
+		
+		NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+		
+		NSMutableString *urlString = [[NSMutableString alloc]initWithFormat:@"https://%@/index.php?pageid=9999&id=", host];
+		[urlString appendString:currentId];
+		[urlString appendString:@"&transid="];
+		[urlString appendString:currentTransId];
+		
+		NSURL *url = [NSURL URLWithString:urlString];
+		NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+
+		[urlRequest setHTTPMethod:@"GET"];
+		[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+		[urlRequest setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
+		[urlRequest setValue:self->currentCookies forHTTPHeaderField:@"Cookie"];
+		[urlRequest setValue:@"SchulNetz Client" forHTTPHeaderField:@"User-Agent"];
+		
+		__block BOOL done = NO;
+		__block NSError* exception;
+		NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+			if(error != NULL || data == NULL) exception = error;
+			
+			done = YES;
+		}];
+		[dataTask resume];
+		
+		while (!done) {
+			NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
+			[[NSRunLoop currentRunLoop] runUntilDate:date];
+		}
+		
+		if(exception){
+			signingOut = false;
+			return exception;
+		}
+		
+		currentId = currentTransId = currentCookies = @"";
+		cookiesList = [[NSMutableArray alloc] init];
+		
+		if(manager) [manager stop];
+		signedIn = false;
+		
+		signingOut = false;
+		return [NSNumber numberWithBool:true];
+	} @catch(NSException* exception){
+		signingOut = false;
+		return exception;
+	} @finally{}
 }
 
--(BOOL) refresh: (RefreshViewController*) vc{
+/*-(BOOL)refresh:(RefreshViewController*) vc{
 	if(vc != NULL) [vc setProgress:-1 withDescription:@"Logging in..."];
 	user = [[User alloc] init];
 	int success = [self login];
@@ -165,86 +243,84 @@ static Account* current;
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastRefresh"];
 	
 	return true;
-}
+}*/
 
--(HTMLDocument*) loadPage: (int) pageId{
-	__block HTMLDocument* src;
+-(NSObject*)loadPage:(NSString*)pageId{
+	if((!signedIn && !signingIn) || signingOut) return NULL;
 	
-	NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+	if([queue containsObject:pageId]) return [NSNumber numberWithBool:false];
 	
-	NSMutableString *urlString = [[NSMutableString alloc]initWithFormat:@"https://%@/index.php?pageid=", url];
-	[urlString appendString: [[[NSNumber alloc] initWithInt:pageId] stringValue]];
-	[urlString appendString:@"&id="];
-	[urlString appendString: currentId];
-	[urlString appendString:@"&transid="];
-	[urlString appendString: currentTransId];
-	
-	NSURL *url = [NSURL URLWithString:urlString];
-	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
-
-	[urlRequest setHTTPMethod:@"GET"];
-	[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-	[urlRequest setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
-	[urlRequest setValue:self->currentCookies forHTTPHeaderField:@"Cookie"];
-	
-	__block BOOL done = NO;
-	__block BOOL failed = false;
-	NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		if(error != NULL || data == NULL) {
-			failed = true;
-			done = YES;
-			return;
-		}
-		
-		src = [[HTMLDocument alloc] initWithData:data contentTypeHeader:[(NSHTTPURLResponse*) response allHeaderFields][@"Content-Type"]];
-		
-		if(pageId == 9999){
-			self->currentCookies = [self getCookies: [(NSHTTPURLResponse*) response allHeaderFields]];
-			self->currentTransId = [self getTransId:src];
-		}
-		
-		done = YES;
-	}];
-	[dataTask resume];
-	
-	while (!done) {
+	[queue addObject:pageId];
+	while(![((NSString*)queue[0]) isEqualToString:pageId]){
 		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
 		[[NSRunLoop currentRunLoop] runUntilDate:date];
 	}
 	
-	if(failed) return NULL;
+	while(signingIn) {
+		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
+		[[NSRunLoop currentRunLoop] runUntilDate:date];
+	}
 	
-	return src;
+	if(!signedIn || signingOut){
+		[queue removeObjectAtIndex:0];
+		return NULL;
+	}
+	
+	@try {
+		__block HTMLDocument* src;
+		
+		NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+		
+		NSMutableString *urlString = [[NSMutableString alloc]initWithFormat:@"https://%@/index.php?pageid=", host];
+		[urlString appendString:pageId];
+		[urlString appendString:@"&id="];
+		[urlString appendString:currentId];
+		[urlString appendString:@"&transid="];
+		[urlString appendString:currentTransId];
+		
+		NSURL *url = [NSURL URLWithString:urlString];
+		NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+
+		[urlRequest setHTTPMethod:@"GET"];
+		[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+		[urlRequest setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
+		[urlRequest setValue:self->currentCookies forHTTPHeaderField:@"Cookie"];
+		[urlRequest setValue:@"SchulNetz Client" forHTTPHeaderField:@"User-Agent"];
+		
+		__block BOOL done = NO;
+		__block NSError* exception;
+		NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+			if(error != NULL || data == NULL) {
+				exception = error;
+				done = YES;
+				return;
+			}
+			
+			src = [[HTMLDocument alloc] initWithData:data contentTypeHeader:[(NSHTTPURLResponse*) response allHeaderFields][@"Content-Type"]];
+			
+			self->currentCookies = [self getCookies: [(NSHTTPURLResponse*) response allHeaderFields]];
+			self->currentTransId = [self getTransId:src];
+			
+			done = YES;
+		}];
+		[dataTask resume];
+		
+		while (!done) {
+			NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
+			[[NSRunLoop currentRunLoop] runUntilDate:date];
+		}
+		
+		[queue removeObjectAtIndex:0];
+		
+		if(exception) return exception;
+		else return src;
+	} @catch(NSException *exception){
+		[queue removeObjectAtIndex:0];
+		return exception;
+	} @finally{}
 }
 
--(int) verify{
-    BOOL canConnect = [Util checkConnection];
-    int loginCode = 0;
-    
-    if(canConnect){
-        loginCode = [self login];
-        if(loginCode == 0){
-            [self logout];
-        }
-    }
-	
-	return loginCode;
-}
-
--(void) saveCredentials{
-	[[NSUserDefaults standardUserDefaults] setObject:url forKey:@"url"];
-	
-	NSURLCredential* credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
-	[[NSURLCredentialStorage sharedCredentialStorage] setCredential:credential forProtectionSpace:[Util getProtectionSpace]];
-	
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"loggedIn"];
-}
-
-+(void) deleteCredentials{
-    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"loggedIn"];
-}
-
--(NSString *) getTransId: (HTMLDocument*) src{
+-(NSString*)getTransId:(HTMLDocument*)src{
 	NSString* transId = @"";
 	
 	HTMLElement* navBar = [src firstNodeMatchingSelector:@"*[id=\"nav-main-menu\"]"];
@@ -254,7 +330,7 @@ static Account* current;
 	return transId;
 }
 
--(NSString *) getCookies: (NSDictionary *)headers{
+-(NSString*)getCookies:(NSDictionary*)headers{
 	NSMutableString* cookies = [[NSMutableString alloc]initWithString:@""];
 	
 	NSMutableString* setCookie = [[NSMutableString alloc] initWithString:[(NSString*) headers valueForKey:@"Set-Cookie"]];

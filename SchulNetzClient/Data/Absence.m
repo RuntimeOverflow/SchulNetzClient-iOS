@@ -1,12 +1,15 @@
 #import "Absence.h"
 
 @implementation Absence
+@synthesize subjects;
+
 @synthesize startDate;
 @synthesize endDate;
 @synthesize reason;
 @synthesize additionalInformation;
 @synthesize lessonCount;
 @synthesize excused;
+@synthesize subjectIdentifiers;
 
 -(void)encodeWithCoder:(NSCoder*)coder{
     [coder encodeObject:startDate forKey:@"startDate"];
@@ -15,6 +18,7 @@
     [coder encodeObject:additionalInformation forKey:@"additionalInformation"];
     [coder encodeInt:lessonCount forKey:@"lessonCount"];
     [coder encodeBool:excused forKey:@"excused"];
+    [coder encodeObject:subjectIdentifiers forKey:@"subjectIdentifiers"];
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder{
@@ -24,6 +28,7 @@
     additionalInformation = [coder decodeObjectForKey:@"additionalInformation"];
     lessonCount = [coder decodeIntForKey:@"lessonCount"];
     excused = [coder decodeBoolForKey:@"excused"];
+    subjectIdentifiers = [coder decodeObjectForKey:@"subjectIdentifiers"];
     
     return self;
 }

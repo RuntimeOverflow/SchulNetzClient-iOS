@@ -5,3 +5,4 @@
 #import "Subject.h"
 #import "Grade.h"
 #import "Absence.h"
+#import "Transaction.h"

@@ -3,16 +3,15 @@
 @class Teacher;
 
 @interface Subject : NSObject <NSSecureCoding>
+@property Teacher* teacher;
+@property NSMutableArray* lessons;
+
+@property NSMutableArray* grades;
 @property NSString* identifier;
 @property NSString* name;
 @property NSString* shortName;
-@property Teacher* teacher;
-@property double average;
-@property BOOL gradesConfirmed;
-@property BOOL gradesHidden;
-@property NSMutableArray* grades;
+@property BOOL confirmed;
+@property BOOL hiddenGrades;
 
-@property NSString* teacherKey;
-
--(void)afterInit;
+-(double)getAverage;
 @end

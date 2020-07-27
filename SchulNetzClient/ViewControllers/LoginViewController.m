@@ -52,7 +52,7 @@ BOOL otherHost = false;
 - (IBAction)loginButtonPressed:(id)sender {
     VerificationViewController* vc = (VerificationViewController*)[Util setViewControllerFromName:@"VerificationScene"];
     
-    Account* account = [[Account alloc]initWithUsername: _usernameField.text password: _passwordField.text url: otherHost ? _urlField.text : _urlPickerField.text];
+    Account* account = [[Account alloc]initWithUsername:_usernameField.text password: _passwordField.text host:otherHost ? _urlField.text : _urlPickerField.text];
     
     [vc setAccount:account];
 }

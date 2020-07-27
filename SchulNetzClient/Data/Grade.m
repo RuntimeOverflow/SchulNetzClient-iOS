@@ -1,6 +1,9 @@
 #import "Grade.h"
+#import "Subject.h"
 
 @implementation Grade
+@synthesize subject;
+
 @synthesize date;
 @synthesize content;
 @synthesize grade;

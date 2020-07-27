@@ -2,6 +2,7 @@
 #import "../Account.h"
 #import "../Data/Data.h"
 #import "../Util.h"
+#import "../Variables.h"
 #import "SubjectViewController.h"
 
 @interface SubjectCell : UICollectionViewCell
@@ -49,10 +50,10 @@
         double negative = 0;
         double positive = 0;
         
-        for(Subject* s in [Account getCurrent].user.subjects){
-            if(s.average < 1|| isnan(s.average)) continue;
+        for(Subject* s in [Variables get].user.subjects){
+            if([s getAverage] < 1|| isnan([s getAverage])) continue;
             
-            double rounded = round(2.0 * s.average) / 2.0 - 4;
+            double rounded = round(2.0 * [s getAverage]) / 2.0 - 4;
             if(rounded > 0) positive += rounded;
             else negative += 2 * -rounded;
         }
@@ -65,12 +66,12 @@
     } else {
         SubjectCell* subjectCell = ((SubjectCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"subjectCell" forIndexPath:indexPath]);
         
-        Subject* s = [[Account getCurrent].user.subjects objectAtIndex:indexPath.row - 1];
+        Subject* s = [[Variables get].user.subjects objectAtIndex:indexPath.row - 1];
         subjectCell.subjectLabel.text = s.name;
-        subjectCell.averageLabel.text = [NSString stringWithFormat:@"%@%@", [NSNumber numberWithDouble:s.average].stringValue, s.gradesHidden ? @"*" : @""];
-        s.gradesConfirmed ? [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize]] : [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize weight:UIFontWeightHeavy]];
-        if(s.average < 1 || isnan(s.average)) subjectCell.averageLabel.text = @"-";
-        subjectCell.averageLabel.textColor = [Grade colorForGrade:s.average];
+        subjectCell.averageLabel.text = [NSString stringWithFormat:@"%@%@", [NSNumber numberWithDouble:(round(1000.0 * [s getAverage]) / 1000.0)].stringValue, s.hiddenGrades ? @"*" : @""];
+        s.confirmed ? [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize]] : [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize weight:UIFontWeightHeavy]];
+        if([s getAverage] < 1 || isnan([s getAverage])) subjectCell.averageLabel.text = @"-";
+        subjectCell.averageLabel.textColor = [Grade colorForGrade:[s getAverage]];
         
         cell = subjectCell;
     }
@@ -84,7 +85,7 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
-    return [Account getCurrent].user.subjects.count + 1;
+    return [Variables get].user.subjects.count + 1;
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -98,7 +99,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"subjectSegue"]){
         SubjectViewController* vc = segue.destinationViewController;
-        vc.subject = [Account getCurrent].user.subjects[[_collectionView indexPathForCell:sender].item - 1];
+        vc.subject = [Variables get].user.subjects[[_collectionView indexPathForCell:sender].item - 1];
     }
 }
 

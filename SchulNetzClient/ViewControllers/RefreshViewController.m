@@ -2,6 +2,7 @@
 #import "../Parser.h"
 #import "../Account.h"
 #import "../Util.h"
+#import "../Variables.h"
 
 @interface RefreshViewController ()
 @property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
@@ -44,12 +45,13 @@
             self->_progressBar.hidden = false;
             self->_wifiError.hidden = true;
             
-            BOOL success = [[Account getCurrent] refresh:self];
+            //BOOL success = [[Account getCurrent] refresh:self];
+            BOOL success = false;
             
             if(!success){
-                if(![Util checkConnection]) [self refresh];
+                //if(![Util checkConnection]) [self refresh];
             } else {
-                [[Account getCurrent].user cacheData];
+                [[Variables get].user save];
                 
                 UIViewController* vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MainScene"];
                 vc.modalPresentationStyle = UIModalPresentationFullScreen;

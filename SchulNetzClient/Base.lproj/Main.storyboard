@@ -101,9 +101,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="Ypl-su-Y3P"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Grades" image="Grades Icon" id="5ds-NW-Vhk">
-                        <inset key="imageInsets" minX="0.0" minY="72" maxX="0.0" maxY="72"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Grades" image="Grades Icon" id="5ds-NW-Vhk"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Qrv-4P-y30"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -163,7 +161,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="w77-ku-Ycs"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Absences" image="thermometer" catalog="system" id="8t8-4r-JU9"/>
+                    <tabBarItem key="tabBarItem" title="Absences" image="Absences Icon" id="8t8-4r-JU9"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nn7-wD-yrA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -179,7 +177,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="hhf-dr-Mdj"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Timetable" image="calendar" catalog="system" id="Q05-4x-OdL"/>
+                    <tabBarItem key="tabBarItem" title="Timetable" image="Calendar Icon" id="Q05-4x-OdL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C5M-Su-3cU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -257,7 +255,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="LIM-T4-EoG"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="People" image="person.2" catalog="system" id="Bka-Ma-NIZ"/>
+                    <tabBarItem key="tabBarItem" title="People" image="People Icon" id="Bka-Ma-NIZ"/>
                     <connections>
                         <outlet property="peopleTableView" destination="9Rw-Jh-AFA" id="pvv-Pg-clj"/>
                         <outlet property="sectionSelector" destination="xz8-cE-P8e" id="ns4-QQ-1Yb"/>
@@ -356,7 +354,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="giE-z6-l6M"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="gear" catalog="system" id="5BP-L1-VQt"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="Settings Icon" id="5BP-L1-VQt"/>
                     <connections>
                         <outlet property="logoutButton" destination="joR-Mh-e3g" id="KVc-Do-HUN"/>
                         <outlet property="refreshButton" destination="xkG-BL-8P3" id="D2X-98-Mlc"/>
@@ -386,7 +384,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZoM-6i-Cml">
-                                                    <rect key="frame" x="16" y="-4" width="374" height="44"/>
+                                                    <rect key="frame" x="16" y="-5" width="373" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -407,7 +405,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vF9-EO-Wry">
-                                                    <rect key="frame" x="16" y="-2" width="374" height="46"/>
+                                                    <rect key="frame" x="16" y="-2" width="373" height="46"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -428,7 +426,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fYK-58-LQs">
-                                                    <rect key="frame" x="16" y="-4" width="374" height="44"/>
+                                                    <rect key="frame" x="16" y="-5" width="373" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -445,7 +443,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bm3-RH-Acj">
-                                                    <rect key="frame" x="16" y="0.0" width="374" height="43"/>
+                                                    <rect key="frame" x="16" y="0.0" width="373" height="42"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -466,7 +464,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9wh-0r-3Ns">
-                                                    <rect key="frame" x="16" y="-4" width="374" height="44"/>
+                                                    <rect key="frame" x="16" y="-5" width="373" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -487,7 +485,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3rN-64-tWn">
-                                                    <rect key="frame" x="16" y="0.0" width="374" height="43"/>
+                                                    <rect key="frame" x="16" y="0.0" width="373" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                                     <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -516,7 +514,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nRT-1c-SLv">
-                                                    <rect key="frame" x="16" y="0.0" width="374" height="43"/>
+                                                    <rect key="frame" x="16" y="0.0" width="373" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -870,12 +868,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Grades Icon" width="170.66667175292969" height="170.66667175292969"/>
-        <image name="calendar" catalog="system" width="128" height="106"/>
+        <image name="Absences Icon" width="25" height="25"/>
+        <image name="Calendar Icon" width="25" height="25"/>
+        <image name="Grades Icon" width="25" height="25"/>
+        <image name="People Icon" width="25" height="25"/>
+        <image name="Settings Icon" width="25" height="25"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="gear" catalog="system" width="128" height="119"/>
-        <image name="person.2" catalog="system" width="128" height="81"/>
-        <image name="thermometer" catalog="system" width="87" height="128"/>
         <image name="wifi.slash" catalog="system" width="128" height="113"/>
     </resources>
 </document>

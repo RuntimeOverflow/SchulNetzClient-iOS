@@ -1,14 +1,17 @@
 #import "Teacher.h"
 
 @implementation Teacher
+@synthesize subjects;
+@synthesize lessons;
+
 @synthesize firstName;
 @synthesize lastName;
-@synthesize initials;
+@synthesize shortName;
 @synthesize mail;
-@synthesize subjects;
 
 -(instancetype)init{
     subjects = [[NSMutableArray alloc] init];
+    lessons = [[NSMutableArray alloc] init];
     
     return self;
 }
@@ -16,16 +19,17 @@
 -(void)encodeWithCoder:(NSCoder*)coder{
     [coder encodeObject:firstName forKey:@"firstName"];
     [coder encodeObject:lastName forKey:@"lastName"];
-    [coder encodeObject:initials forKey:@"initials"];
+    [coder encodeObject:shortName forKey:@"shortName"];
     [coder encodeObject:mail forKey:@"mail"];
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder{
     subjects = [[NSMutableArray alloc] init];
+    lessons = [[NSMutableArray alloc] init];
     
     firstName = [coder decodeObjectForKey:@"firstName"];
     lastName = [coder decodeObjectForKey:@"lastName"];
-    initials = [coder decodeObjectForKey:@"initials"];
+    shortName = [coder decodeObjectForKey:@"shortName"];
     mail = [coder decodeObjectForKey:@"mail"];
     
     return self;
@@ -33,5 +37,19 @@
 
 +(BOOL)supportsSecureCoding{
     return true;
+}
+
+-(BOOL)isEqual:(id)other{
+    if(other == self){
+        return YES;
+    } else if([self class] != [other class]){
+        return NO;
+    } else {
+        return [shortName isEqualToString:((Teacher*)other).shortName];
+    }
+}
+
+-(NSUInteger)hash{
+    return [shortName hash];
 }
 @end

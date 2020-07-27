@@ -2,6 +2,7 @@
 #import "Account.h"
 #import "Data/Data.h"
 #import "Libraries/TBXML/TBXML.h"
+#import "Variables.h"
 
 @implementation Parser
 static User* user;
@@ -9,13 +10,13 @@ static User* user;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 +(void) parsePage: (HTMLDocument*) src pageId: (int) pageId{
-    user = [Account getCurrent].user;
+    user = [Variables get].user;
     
     SEL parseMethod = NSSelectorFromString([@"" stringByAppendingFormat: @"parse%@:", [[Parser getName:pageId] capitalizedString]]);
     
     if([self respondsToSelector:parseMethod]) [self performSelector:parseMethod withObject:src];
     
-    [Account getCurrent].user = user;
+    [Variables get].user = user;
 }
 #pragma clang diagnostic pop
 
@@ -36,17 +37,8 @@ static User* user;
         subject.identifier = [[[[main.childElementNodes objectAtIndex:0].childElementNodes objectAtIndex:0].textComponents objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         subject.name = [[[main.childElementNodes objectAtIndex:0].textComponents objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         subject.shortName = [subject.identifier substringToIndex:[subject.identifier rangeOfString:@"-"].location + 1];
-        subject.gradesConfirmed = [main.childElementNodes objectAtIndex:3].childElementNodes.count < 1;
-        subject.gradesHidden = [[[main.childElementNodes objectAtIndex:1].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] containsString:@"*"];
-        
-        subject.teacher = nil;
-        for(Teacher* t in user.teachers){
-            if([t.initials isEqualToString:[subject.identifier substringFromIndex:[subject.identifier rangeOfString:@"-" options:NSBackwardsSearch].location + 1]]) {
-                subject.teacherKey = t.initials;
-                [subject afterInit];
-                break;
-            }
-        }
+        subject.confirmed = [main.childElementNodes objectAtIndex:3].childElementNodes.count < 1;
+        subject.hiddenGrades = [[[main.childElementNodes objectAtIndex:1].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] containsString:@"*"];
         
         for(HTMLNode* gradeNode in gradeNodes){
             Grade* g = [[Grade alloc] init];
@@ -55,7 +47,7 @@ static User* user;
             [dateFormatter setDateFormat:@"dd.MM.yyyy"];
             g.date = [dateFormatter dateFromString:[gradeNode.childElementNodes objectAtIndex:0].innerHTML];
             
-            g.topic = [[gradeNode.childElementNodes objectAtIndex:1].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            g.content = [[gradeNode.childElementNodes objectAtIndex:1].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
             if([gradeNode.childElementNodes objectAtIndex:2].textComponents.count > 0){
                 NSString* gradeString = [[gradeNode.childElementNodes objectAtIndex:2].textComponents objectAtIndex:0];
@@ -79,15 +71,6 @@ static User* user;
             [subject.grades addObject:g];
         }
         
-        double total = 0;
-        double count = 0;
-        for(Grade* g in subject.grades) {
-            total += g.grade * g.weight;
-            if(g.grade != 0) count += g.weight;
-        }
-        if(subject.grades.count > 0) subject.average = total / count;
-        else subject.average = 0;
-        
         [user.subjects addObject:subject];
     }
 }
@@ -106,10 +89,10 @@ static User* user;
         formatter.locale = [NSLocale currentLocale];
         formatter.dateFormat = @"dd.MM.yyyy";
         
-        a.start = [formatter dateFromString:row.childElementNodes[0].innerHTML];
-        a.end = [formatter dateFromString:row.childElementNodes[1].innerHTML];
+        a.startDate = [formatter dateFromString:row.childElementNodes[0].innerHTML];
+        a.endDate = [formatter dateFromString:row.childElementNodes[1].innerHTML];
         a.reason = row.childElementNodes[2].innerHTML;
-        a.additionalInfo = row.childElementNodes[3].innerHTML;
+        a.additionalInformation = row.childElementNodes[3].innerHTML;
         a.lessonCount = [row.childElementNodes[4].childElementNodes[0].textContent intValue];
         a.excused = [row.childElementNodes[6].innerHTML isEqualToString:@"Ja"];
         
@@ -122,7 +105,7 @@ static User* user;
 }
 
 +(void) parseSchedule: (HTMLDocument*) src{
-    NSString* roomsString = [src innerHTML];
+    /*NSString* roomsString = [src innerHTML];
     long start = [roomsString rangeOfString:@"var zimmerliste = ["].location + @"var zimmerliste = [".length;
     long end = (int)[roomsString rangeOfString:@"]" options:0 range:NSMakeRange(start, [roomsString length] - start)].location;
     
@@ -146,7 +129,7 @@ static User* user;
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd";
     
-    NSMutableString *urlString = [[NSMutableString alloc]initWithFormat:@"https://%@/scheduler_processor.php?view=", [Account getCurrent].url];
+    NSMutableString *urlString = [[NSMutableString alloc]initWithFormat:@"https://%@/scheduler_processor.php?view=", [Variables get].account.host];
     [urlString appendString: @"day"];
     [urlString appendString: @"&curr_date="];
     [urlString appendString: [formatter stringFromDate:today]];
@@ -186,39 +169,26 @@ static User* user;
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             
             [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-            l.beginning = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"start_date" parentElement:event]]];
-            if(l.beginning == nil){
+            l.startDate = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"start_date" parentElement:event]]];
+            if(l.startDate == nil){
                 [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                l.beginning = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"start_date" parentElement:event]]];
+                l.startDate = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"start_date" parentElement:event]]];
             }
             
             [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-            l.end = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"end_date" parentElement:event]]];
-            if(l.end == nil){
+            l.endDate = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"end_date" parentElement:event]]];
+            if(l.endDate == nil){
                 [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                l.end = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"end_date" parentElement:event]]];
+                l.endDate = [formatter dateFromString:[TBXML textForElement: [TBXML childElementNamed:@"end_date" parentElement:event]]];
             }
             
-            l.teacher = nil;
-            for(Teacher* t in user.teachers){
-                if([t.initials isEqualToString:[TBXML textForElement: [TBXML childElementNamed:@"lehrerkuerzel" parentElement:event]]]) {
-                    l.teacher = t;
-                    break;
-                }
-            }
-            
-            l.classes = [TBXML textForElement: [TBXML childElementNamed:@"klasse" parentElement:event]];
-            
-            if([[TBXML textForElement: [TBXML childElementNamed:@"event_type" parentElement:event]] isEqualToString:@"0_stp"]) l.type = NORMAL;
-            else if([[TBXML textForElement: [TBXML childElementNamed:@"event_type" parentElement:event]] isEqualToString:@"1_pru"]) l.type = EXAM;
-            else if([[TBXML textForElement: [TBXML childElementNamed:@"event_type" parentElement:event]] isEqualToString:@"5_trm"]) l.type = EVENT;
+            l.type = [TBXML textForElement: [TBXML childElementNamed:@"event_type" parentElement:event]];
             
             l.marking = [TBXML textForElement: [TBXML childElementNamed:@"markierung" parentElement:event]];
             
             l.room = [rooms objectForKey:[TBXML textForElement: [TBXML childElementNamed:@"zimmer" parentElement:event]]];
             
-            l.text = [TBXML textForElement: [TBXML childElementNamed:@"text" parentElement:event]];
-            l.comment = [TBXML textForElement: [TBXML childElementNamed:@"kommentar" parentElement:event]];
+            l.lessonIdentifier = [TBXML textForElement: [TBXML childElementNamed:@"text" parentElement:event]];
             
             l.subject = nil;
             for(Subject* s in user.subjects){
@@ -240,7 +210,7 @@ static User* user;
     while (!done) {
         NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
         [[NSRunLoop currentRunLoop] runUntilDate:date];
-    }
+    }*/
 }
 
 +(void) parseEvents: (HTMLDocument*) src{
@@ -263,7 +233,7 @@ static User* user;
         
         if(row.childElementNodes[1].numberOfChildren) t.lastName = [row.childElementNodes[1].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(row.childElementNodes[2].numberOfChildren) t.firstName = [row.childElementNodes[2].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if(row.childElementNodes[3].numberOfChildren) t.initials = [row.childElementNodes[3].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if(row.childElementNodes[3].numberOfChildren) t.shortName = [row.childElementNodes[3].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(row.childElementNodes[4].numberOfChildren) t.mail = [row.childElementNodes[4].childElementNodes[0].textComponents[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         [user.teachers addObject:t];
@@ -288,17 +258,17 @@ static User* user;
         if(row.childElementNodes[5].numberOfChildren) s.bilingual = [[row.childElementNodes[5].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"b"];
         if(row.childElementNodes[6].numberOfChildren) s.className = [row.childElementNodes[6].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(row.childElementNodes[7].numberOfChildren) s.address = [row.childElementNodes[7].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if(row.childElementNodes[8].numberOfChildren) s.zip = [row.childElementNodes[8].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if(row.childElementNodes[8].numberOfChildren) s.zipCode = [row.childElementNodes[8].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].intValue;
         if(row.childElementNodes[9].numberOfChildren) s.city = [row.childElementNodes[9].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(row.childElementNodes[10].numberOfChildren) s.phone = [row.childElementNodes[10].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(row.childElementNodes[11].numberOfChildren) dateOfBirth = [row.childElementNodes[11].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if(row.childElementNodes[12].numberOfChildren) s.additionalClassName = [row.childElementNodes[12].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if(row.childElementNodes[12].numberOfChildren) s.additionalClasses = [row.childElementNodes[12].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(row.childElementNodes[13].numberOfChildren) s.status = [row.childElementNodes[13].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if(row.childElementNodes[14].numberOfChildren) s.company = [row.childElementNodes[14].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if(row.childElementNodes[14].numberOfChildren) s.placeOfWork = [row.childElementNodes[14].textContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"dd.MM.yyyy";
-        s.birth = [formatter dateFromString:dateOfBirth];
+        s.dateOfBirth = [formatter dateFromString:dateOfBirth];
         
         [user.students addObject:s];
     }

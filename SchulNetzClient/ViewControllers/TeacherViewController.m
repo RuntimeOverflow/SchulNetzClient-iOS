@@ -42,7 +42,7 @@
     
     if (indexPath.section == 1){
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        cell.textLabel.textColor = [UIColor linkColor];
+        cell.textLabel.textColor = [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:255/255.0];
     }
     
     return cell;
@@ -69,7 +69,7 @@
 
 -(NSString*)contentForIndexPath:(NSIndexPath*)indexPath{
     if(indexPath.section == 0){
-        return [NSString stringWithFormat:@"%@ %@ (%@)", teacher.firstName, teacher.lastName, teacher.initials];
+        return [NSString stringWithFormat:@"%@ %@ (%@)", teacher.firstName, teacher.lastName, teacher.shortName];
     } else if (indexPath.section == 1){
         return teacher.mail;
     } else {
