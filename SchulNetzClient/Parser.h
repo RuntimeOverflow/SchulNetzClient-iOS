@@ -1,8 +1,16 @@
 #import <Foundation/Foundation.h>
 #import "Libraries/HTMLReader/include/HTMLReader.h"
+#import "Data/User.h"
 
 @interface Parser : NSObject
-+(void) parsePage: (HTMLDocument*) src pageId: (int) pageId;
-+(NSArray*) allPages;
-+(NSString*) getName: (int) pageId;
++(BOOL)parseGrades:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseSubjects:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseStudents:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseTeachers:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseSelf:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseTransactions:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseAbsences:(HTMLDocument*)doc forUser:(User*)user;
++(BOOL)parseSchedulePage:(HTMLDocument*)doc forUser:(User*)user;
+
++(NSMutableArray*)parseSchedule:(HTMLDocument*)doc;
 @end

@@ -66,7 +66,17 @@
     } else {
         SubjectCell* subjectCell = ((SubjectCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"subjectCell" forIndexPath:indexPath]);
         
-        Subject* s = [[Variables get].user.subjects objectAtIndex:indexPath.row - 1];
+        Subject* s = NULL;
+        int index = -1;
+        for(Subject* subject in [Variables get].user.subjects) {
+            if(subject.name) index++;
+            
+            if(indexPath.row - 1 == index){
+                s = subject;
+                break;
+            }
+        }
+        
         subjectCell.subjectLabel.text = s.name;
         subjectCell.averageLabel.text = [NSString stringWithFormat:@"%@%@", [NSNumber numberWithDouble:(round(1000.0 * [s getAverage]) / 1000.0)].stringValue, s.hiddenGrades ? @"*" : @""];
         s.confirmed ? [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize]] : [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize weight:UIFontWeightHeavy]];
@@ -84,8 +94,11 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    int count = 0;
     
-    return [Variables get].user.subjects.count + 1;
+    for(Subject* s in [Variables get].user.subjects) if(s.name) count++;
+    
+    return count + 1;
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -98,8 +111,19 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"subjectSegue"]){
+        Subject* s = NULL;
+        int index = -1;
+        for(Subject* subject in [Variables get].user.subjects) {
+            if(subject.name) index++;
+            
+            if([_collectionView indexPathForCell:sender].item - 1 == index){
+                s = subject;
+                break;
+            }
+        }
+        
         SubjectViewController* vc = segue.destinationViewController;
-        vc.subject = [Variables get].user.subjects[[_collectionView indexPathForCell:sender].item - 1];
+        vc.subject = s;
     }
 }
 

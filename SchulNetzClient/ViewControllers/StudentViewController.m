@@ -75,7 +75,7 @@
             else return [NSString stringWithFormat:@"%@ %@", [NSString stringWithFormat:@"%d", student.zipCode], student.city];
             break;
         case 3:
-            return student.phone;
+            return student.phone ? student.phone : @"[No phone number provided]";
             break;
         case 4:
             return [NSString stringWithFormat:@"%@ (%ld years)", [formatter stringFromDate: student.dateOfBirth], birthdayThisYear ? age : age - 1];

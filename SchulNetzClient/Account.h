@@ -27,6 +27,9 @@
 -(instancetype)initWithUsername:(NSString*)username password:(NSString*)password host:(NSString*)host session:(BOOL)session;
 
 -(instancetype)initFromCredentials;
+-(instancetype)initFromCredentials:(BOOL)session;
+
+
 -(void)saveCredentials;
 +(void)deleteCredentials;
 
@@ -40,4 +43,6 @@
 
 -(NSString*)getTransId:(HTMLDocument*)src;
 -(NSString*)getCookies:(NSDictionary*)headers;
+
+-(void)close;
 @end

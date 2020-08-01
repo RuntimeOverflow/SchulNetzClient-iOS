@@ -26,7 +26,7 @@
 }
 
 +(UIColor*)colorForHost:(NSString*)host{
-    UIColor* color = UIColor.labelColor;
+    UIColor* color = UIColor.grayColor;
     
     if([host isEqualToString:@"bwzr.nesa-sg.ch"]) color = [UIColor colorWithRed:69/255.0 green:170/255.0 blue:103/255.0 alpha:1];
     else if([host isEqualToString:@"bwzt.nesa-sg.ch"]) color = [UIColor colorWithRed:0/255.0 green:131/255.0 blue:52/255.0 alpha:1];
@@ -46,6 +46,7 @@
     else if([host isEqualToString:@"ksw.nesa-sg.ch"]) color = [UIColor colorWithRed:40/255.0 green:149/255.0 blue:72/255.0 alpha:1];
     else if([host isEqualToString:@"kswil.nesa-sg.ch"]) color = [UIColor colorWithRed:157/255.0 green:193/255.0 blue:11/255.0 alpha:1];
     
+    color = [UIColor colorWithRed:0/255.0 green:131/255.0 blue:52/255.0 alpha:1];
     return color;
 }
 @end

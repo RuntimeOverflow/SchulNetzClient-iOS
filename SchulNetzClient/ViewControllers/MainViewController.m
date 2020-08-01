@@ -26,11 +26,16 @@ static MainViewController* main;
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"loggedIn"]){
         [Util setViewControllerFromName:@"LoginScene" animated:false];
     } else if([Variables get].account == NULL){
-        Account* account __attribute__((unused)) = [[Account alloc] initFromCredentials];
+        [Variables get].account = [[Account alloc] initFromCredentials];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[Variables get].account signIn];
+        });
+        
         User* user = [User load];
         if(user != nil) [Variables get].user = user;
         [user processConnections];
-        [Util setTintColor: [Host colorForHost:account.host]];
+        
+        [Util setTintColor:[Host colorForHost:[Variables get].account.host]];
     }
 }
 @end

@@ -25,13 +25,13 @@ static UIColor* tint;
 }
 
 +(UIColor*) getTintColor{
-    if(!tint) tint = UIColor.labelColor;
+    if(!tint) tint = UIColor.blackColor;
     
     return tint;
 }
 
 +(UIColor*) getDisabledTintColor{
-    if(!tint) tint = UIColor.labelColor;
+    if(!tint) tint = UIColor.blackColor;
     
     CGFloat red = 0;
     CGFloat green = 0;

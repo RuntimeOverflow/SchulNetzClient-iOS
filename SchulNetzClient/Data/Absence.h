@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
+#import "Subject.h"
 
 @interface Absence : NSObject <NSSecureCoding>
-@property NSMutableArray* subjects;
+@property NSMutableArray<Subject*>* subjects;
 
 @property NSDate* startDate;
 @property NSDate* endDate;

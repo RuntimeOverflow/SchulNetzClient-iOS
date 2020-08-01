@@ -11,6 +11,14 @@
 @synthesize excused;
 @synthesize subjectIdentifiers;
 
+-(instancetype)init{
+    self = [super init];
+    
+    subjectIdentifiers = [[NSMutableArray alloc] init];
+    
+    return self;
+}
+
 -(void)encodeWithCoder:(NSCoder*)coder{
     [coder encodeObject:startDate forKey:@"startDate"];
     [coder encodeObject:endDate forKey:@"endDate"];

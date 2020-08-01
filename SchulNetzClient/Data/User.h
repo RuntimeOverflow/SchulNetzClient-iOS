@@ -2,6 +2,9 @@
 #import "Student.h"
 #import "Teacher.h"
 #import "Subject.h"
+#import "Absence.h"
+#import "Transaction.h"
+#import "Lesson.h"
 
 @interface User : NSObject <NSSecureCoding>
 @property Student* me;
@@ -10,12 +13,12 @@
 @property NSMutableDictionary* roomDict;
 
 @property BOOL balanceConfirmed;
-@property NSMutableArray* teachers;
-@property NSMutableArray* students;
-@property NSMutableArray* subjects;
-@property NSMutableArray* transactions;
-@property NSMutableArray* absences;
-@property NSMutableArray* lessons;
+@property NSMutableArray<Teacher*>* teachers;
+@property NSMutableArray<Student*>* students;
+@property NSMutableArray<Subject*>* subjects;
+@property NSMutableArray<Transaction*>* transactions;
+@property NSMutableArray<Absence*>* absences;
+@property NSMutableArray<Lesson*>* lessons;
 
 +(User*)load;
 -(void)save;

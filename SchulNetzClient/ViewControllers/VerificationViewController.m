@@ -16,11 +16,10 @@
     _pageIndicator.currentPageIndicatorTintColor = [Util getTintColor];
 }
 
--(void) setAccount: (Account*) account{
-    //int result = [account verify];
-    int result = 1;
+-(void)setAccount:(Account*)account{
+    NSObject* result = [account signIn];
     
-    if(result == 0){
+    if([[result class] isSubclassOfClass:[NSNumber class]] && ((NSNumber*)result).boolValue){
         [account saveCredentials];
         [Util setViewControllerFromName:@"CompletionScene"];
     } else {
@@ -35,12 +34,12 @@
         }
         
         if(controller != NULL){
-            if(result == 1337) [controller setErrorMessage:@"Invalid username/password"];
-            else if(result == NSURLErrorBadURL || result == NSURLErrorCannotFindHost || result == NSURLErrorFileDoesNotExist || result == NSURLErrorUnsupportedURL) [controller setErrorMessage:@"Invalid host" withError: result];
-            else if(result == NSURLErrorCannotConnectToHost) [controller setErrorMessage:@"Can't connect to host" withError: result];
-            else if(result == NSURLErrorNetworkConnectionLost || result == NSURLErrorNotConnectedToInternet) [controller setErrorMessage:@"No internet connection" withError: result];
-            else if(result == NSURLErrorTimedOut) [controller setErrorMessage:@"Connection timed out" withError: result];
-            else [controller setErrorMessage:@"An unexpected error occurred" withError: result];
+            if([result class] != [NSError class]) [controller setErrorMessage:@"Invalid username/password"];
+            else if(((NSError*)result).code == NSURLErrorBadURL || ((NSError*)result).code == NSURLErrorCannotFindHost || ((NSError*)result).code == NSURLErrorFileDoesNotExist || ((NSError*)result).code == NSURLErrorUnsupportedURL) [controller setErrorMessage:((NSError*)result).localizedDescription withError: ((NSError*)result)];
+            else if(((NSError*)result).code == NSURLErrorCannotConnectToHost) [controller setErrorMessage:@"Can't connect to host" withError: ((NSError*)result)];
+            else if(((NSError*)result).code == NSURLErrorNetworkConnectionLost || ((NSError*)result).code == NSURLErrorNotConnectedToInternet) [controller setErrorMessage:((NSError*)result).localizedDescription withError: ((NSError*)result)];
+            else if(((NSError*)result).code == NSURLErrorTimedOut) [controller setErrorMessage:((NSError*)result).localizedDescription withError: ((NSError*)result)];
+            else [controller setErrorMessage:((NSError*)result).localizedDescription withError: ((NSError*)result)];
         }
     }
 }

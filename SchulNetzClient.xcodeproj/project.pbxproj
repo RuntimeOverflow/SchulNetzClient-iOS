@@ -48,6 +48,7 @@
 		BD8035D323D32212007FDB54 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = BD8035D223D32212007FDB54 /* Account.m */; };
 		BD8035D523D337BD007FDB54 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = BD8035D423D337BD007FDB54 /* Util.m */; };
 		BD8035D923D36973007FDB54 /* VerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD8035D823D36973007FDB54 /* VerificationViewController.m */; };
+		BD8C917D24D3021B005CCA59 /* AbsencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD8C917C24D3021B005CCA59 /* AbsencesViewController.m */; };
 		BDBD598923F0838F00A13B68 /* TBXML.m in Sources */ = {isa = PBXBuildFile; fileRef = BDBD598723F0838F00A13B68 /* TBXML.m */; };
 		BDBD598C23F0936F00A13B68 /* Lesson.m in Sources */ = {isa = PBXBuildFile; fileRef = BDBD598B23F0936F00A13B68 /* Lesson.m */; };
 		BDBF016B23DF497C009E0E0B /* Teacher.m in Sources */ = {isa = PBXBuildFile; fileRef = BDBF016A23DF497C009E0E0B /* Teacher.m */; };
@@ -126,7 +127,7 @@
 		BD56FAF323FDD3540093495D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		BD5F5390245770D700569B23 /* Host.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Host.h; sourceTree = "<group>"; };
 		BD5F5391245770D700569B23 /* Host.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Host.m; sourceTree = "<group>"; };
-		BD6D98A023D27DDE00A37649 /* SchulNetzClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchulNetzClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD6D98A023D27DDE00A37649 /* SchulNetz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchulNetz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD6D98A423D27DDE00A37649 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BD6D98AA23D27DDE00A37649 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		BD6D98AD23D27DDE00A37649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -148,6 +149,8 @@
 		BD8035D823D36973007FDB54 /* VerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerificationViewController.m; sourceTree = "<group>"; };
 		BD8035DA23D37354007FDB54 /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		BD8035DB23D373CD007FDB54 /* VerificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerificationViewController.h; sourceTree = "<group>"; };
+		BD8C917B24D3021B005CCA59 /* AbsencesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbsencesViewController.h; sourceTree = "<group>"; };
+		BD8C917C24D3021B005CCA59 /* AbsencesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbsencesViewController.m; sourceTree = "<group>"; };
 		BDBD598723F0838F00A13B68 /* TBXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBXML.m; sourceTree = "<group>"; };
 		BDBD598823F0838F00A13B68 /* TBXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBXML.h; sourceTree = "<group>"; };
 		BDBD598A23F0936F00A13B68 /* Lesson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lesson.h; sourceTree = "<group>"; };
@@ -270,7 +273,7 @@
 		BD6D98A123D27DDE00A37649 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BD6D98A023D27DDE00A37649 /* SchulNetzClient.app */,
+				BD6D98A023D27DDE00A37649 /* SchulNetz.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -358,6 +361,8 @@
 				BD7954ED2421353C004C6F20 /* SettingsViewController.m */,
 				BD6E82572423EED6008DFFB9 /* SubjectViewController.h */,
 				BD6E82582423EED6008DFFB9 /* SubjectViewController.m */,
+				BD8C917B24D3021B005CCA59 /* AbsencesViewController.h */,
+				BD8C917C24D3021B005CCA59 /* AbsencesViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -388,7 +393,7 @@
 			);
 			name = SchulNetzClient;
 			productName = SchulNetzClient;
-			productReference = BD6D98A023D27DDE00A37649 /* SchulNetzClient.app */;
+			productReference = BD6D98A023D27DDE00A37649 /* SchulNetz.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -479,6 +484,7 @@
 				BD2E4DA924560D6900CF7ECA /* Absence.m in Sources */,
 				BD10AF3E23D4740C00EFDD84 /* HTMLPreprocessedInputStream.m in Sources */,
 				BD5F5392245770D700569B23 /* Host.m in Sources */,
+				BD8C917D24D3021B005CCA59 /* AbsencesViewController.m in Sources */,
 				BDFC360124CF339B0049AE83 /* Variables.m in Sources */,
 				BD10AF3823D4740C00EFDD84 /* HTMLSerialization.m in Sources */,
 				BD8035D523D337BD007FDB54 /* Util.m in Sources */,
@@ -638,7 +644,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuntimeOverflow.SchulNetzClient;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SchulNetz;
 				PROVISIONING_PROFILE_SPECIFIER = "SchulNetz Client Development";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -659,7 +665,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuntimeOverflow.SchulNetzClient;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SchulNetz;
 				PROVISIONING_PROFILE_SPECIFIER = "SchulNetz Client Development";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

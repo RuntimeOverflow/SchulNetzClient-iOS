@@ -62,13 +62,13 @@
 }
 
 -(void) setProgress:(int)progress withDescription:(NSString *)description{
-    double totalProgress = [Parser allPages].count - 1;
+    /*double totalProgress = [Parser allPages].count - 1;
     
     _descriptionLabel.text = description;
     
     if(progress >= 0){
         _progressBar.hidden = false;
         _progressBar.progress = progress / totalProgress;
-    } else _progressBar.hidden = true;
+    } else _progressBar.hidden = true;*/
 }
 @end
