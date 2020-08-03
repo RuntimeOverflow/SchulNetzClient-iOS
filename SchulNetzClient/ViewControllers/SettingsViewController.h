@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UIViewController <UIGestureRecognizerDelegate>
+@interface SettingsViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @end

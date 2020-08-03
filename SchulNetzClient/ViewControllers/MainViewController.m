@@ -1,5 +1,4 @@
 #import "MainViewController.h"
-#import "RefreshViewController.h"
 #import "../Util.h"
 #import "../Account.h"
 #import "../Data/Host.h"

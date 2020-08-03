@@ -12,5 +12,7 @@
     [super viewDidLoad];
     
     tabBar.tintColor = [Util getTintColor];
+    
+    self.selectedIndex = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"startPage"];
 }
 @end

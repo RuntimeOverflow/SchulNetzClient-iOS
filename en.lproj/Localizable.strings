@@ -1,0 +1,161 @@
+/* No comment provided by engineer. */
+"absences" = "Absences";
+
+"accountBalance" = "Account balance";
+
+/* No comment provided by engineer. */
+"age" = "Years old";
+
+"app_name" = "SchulNetz";
+
+"avatarDesc" = "<![CDATA[]]>";
+
+/* No comment provided by engineer. */
+"balance" = "Balance";
+
+/* No comment provided by engineer. */
+"bilingual" = "Bilingual";
+
+"birthdate" = "Date of Birth";
+
+"birthday" = "Birthday";
+
+"classs" = "Class";
+
+/* No comment provided by engineer. */
+"copied" = "Copied!";
+
+"credits" = "Created by\nRuntimeOverflow";
+
+"defaultPage" = "Start Page";
+
+"excusedAbsence" = "Absence excused";
+
+/* No comment provided by engineer. */
+"fullName" = "Full Name";
+
+/* No comment provided by engineer. */
+"grades" = "Grades";
+
+/* No comment provided by engineer. */
+"hideReports" = "Hide reported lessons";
+
+"home" = "Home";
+
+"host" = "Host";
+
+/* No comment provided by engineer. */
+"invalidCreds" = "Invalid username/password";
+
+"leftArrowDesc" = "<![CDATA[<]]>";
+
+/* No comment provided by engineer. */
+"lesson" = "Lesson";
+
+/* No comment provided by engineer. */
+"lessons" = "Lessons";
+
+/* No comment provided by engineer. */
+"mail" = "Mail";
+
+/* No comment provided by engineer. */
+"missedLessons" = "Lessons missed";
+
+"modifiedGrade" = "Grade modified";
+
+"newAbsence" = "Absence added";
+
+"newExcusedAbsence" = "Excused absence added";
+
+"newGrade" = "New grade published";
+
+"newTransaction" = "Account balance changed";
+
+/* No comment provided by engineer. */
+"no" = "No";
+
+"noAbsences" = "No Absences";
+
+"noCalendar" = "No supported calendar app installed";
+
+"noConnection" = "No internet connection";
+
+/* No comment provided by engineer. */
+"noDesc" = "No description provided";
+
+"noGrades" = "No Grades yet";
+
+"noLessons" = "No Lessons";
+
+"noMail" = "No supported mail app installed";
+
+"noMaps" = "No supported Maps app installed";
+
+"noPhone" = "No supported phone app installed";
+
+/* No comment provided by engineer. */
+"noPhoneNumber" = "No phone number provided";
+
+"notifications" = "Notifications";
+
+/* No comment provided by engineer. */
+"other" = "Other...";
+
+"password" = "Password";
+
+/* No comment provided by engineer. */
+"people" = "People";
+
+"phone" = "Phone";
+
+"rightArrowDesc" = "<![CDATA[>]]>";
+
+"selectHost" = "Select host";
+
+/* No comment provided by engineer. */
+"settings" = "Settings";
+
+/* No comment provided by engineer. */
+"showReports" = "Show reported lessons";
+
+"signin" = "Sign in";
+
+/* No comment provided by engineer. */
+"signout" = "Sign out";
+
+/* No comment provided by engineer. */
+"signoutConfirmation" = "Are you sure?";
+
+"source" = "Source Code [Github]";
+
+"students" = "Students";
+
+/* No comment provided by engineer. */
+"subjects" = "Subjects";
+
+"teachers" = "Teachers";
+
+/* No comment provided by engineer. */
+"timetable" = "Timetable";
+
+"transactions" = "Transactions";
+
+"username" = "Username";
+
+/* No comment provided by engineer. */
+"yes" = "Yes";
+
+/* No comment provided by engineer. */
+"failed to convert data to string" = "";
+
+/* No comment provided by engineer. */
+"failed to convert string to data" = "";
+
+/* No comment provided by engineer. */
+"the key must not to be nil" = "";
+
+/* No comment provided by engineer. */
+"the server property must not to be nil, should use 'keyChainStoreWithServer:protocolType:' initializer to instantiate keychain store" = "";
+
+/* No comment provided by engineer. */
+"Unexpected error has occurred." = "";

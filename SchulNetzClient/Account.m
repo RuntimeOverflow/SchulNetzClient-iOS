@@ -33,22 +33,25 @@
 }
 
 -(instancetype)initFromCredentials:(BOOL)session{
-	NSDictionary* credentials = [[NSURLCredentialStorage sharedCredentialStorage] credentialsForProtectionSpace:[Util getProtectionSpace]];
-	NSURLCredential* credential = [credentials.objectEnumerator nextObject];
-	
-	return [self initWithUsername:credential.user password:credential.password host: [[NSUserDefaults standardUserDefaults] objectForKey:@"host"] session:session];
+	UICKeyChainStore* keyChain = [Util getKeyChain];
+	return [self initWithUsername:keyChain[@"username"] password:keyChain[@"password"] host: [[NSUserDefaults standardUserDefaults] objectForKey:@"host"] session:session];
 }
 
 -(void)saveCredentials{
 	[[NSUserDefaults standardUserDefaults] setObject:host forKey:@"host"];
 	
-	NSURLCredential* credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
-	[[NSURLCredentialStorage sharedCredentialStorage] setCredential:credential forProtectionSpace:[Util getProtectionSpace]];
+	UICKeyChainStore* keyChain = [Util getKeyChain];
+	keyChain[@"username"] = username;
+	keyChain[@"password"] = password;
 	
     [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"loggedIn"];
 }
 
 +(void)deleteCredentials{
+	UICKeyChainStore* keyChain = [Util getKeyChain];
+	keyChain[@"username"] = nil;
+	keyChain[@"password"] = nil;
+	
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"loggedIn"];
 }
 
@@ -279,7 +282,7 @@
 	if([queue containsObject:pageId]) return [NSNumber numberWithBool:false];
 	
 	[queue addObject:pageId];
-	while(![((NSString*)queue[0]) isEqualToString:pageId]){
+	while(queue[0] != pageId){
 		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
 		[[NSRunLoop currentRunLoop] runUntilDate:date];
 	}

@@ -3,6 +3,7 @@
 #import "../Data/Data.h"
 #import "../Util.h"
 #import "../Variables.h"
+#import "../Parser.h"
 #import "SubjectViewController.h"
 
 @interface SubjectCell : UICollectionViewCell
@@ -39,6 +40,31 @@
     cellPerRow = 2;
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
+    
+    [self reload];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if([Util checkConnection]){
+            NSObject* doc = [[Variables get].account loadPage:@"22326"];
+            if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:[Variables get].user];
+            
+            doc = [[Variables get].account loadPage:@"21311"];
+            if([doc class] == [HTMLDocument class]) [Parser parseGrades:(HTMLDocument*)doc forUser:[Variables get].user];
+            [[Variables get].user processConnections];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self reload];
+            });
+        }
+    });
+}
+
+-(void)reload{
+    [_collectionView reloadData];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -79,7 +105,7 @@
         
         subjectCell.subjectLabel.text = s.name;
         subjectCell.averageLabel.text = [NSString stringWithFormat:@"%@%@", [NSNumber numberWithDouble:(round(1000.0 * [s getAverage]) / 1000.0)].stringValue, s.hiddenGrades ? @"*" : @""];
-        s.confirmed ? [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize]] : [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize weight:UIFontWeightHeavy]];
+        s.confirmed ? [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize]] : [subjectCell.subjectLabel setFont:[UIFont systemFontOfSize:subjectCell.subjectLabel.font.pointSize weight:UIFontWeightBold]];
         if([s getAverage] < 1 || isnan([s getAverage])) subjectCell.averageLabel.text = @"-";
         subjectCell.averageLabel.textColor = [Grade colorForGrade:[s getAverage]];
         
@@ -129,5 +155,15 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     return cellPerRow * cellPerRow * 5;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 @end

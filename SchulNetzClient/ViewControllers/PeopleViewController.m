@@ -3,6 +3,7 @@
 #import "../Data/Data.h"
 #import "../Util.h"
 #import "../Variables.h"
+#import "../Parser.h"
 #import "StudentViewController.h"
 #import "TeacherViewController.h"
 
@@ -25,10 +26,40 @@ NSMutableDictionary* teachers;
 BOOL showTeachers = false;
 
 -(void)viewDidLoad {
-    students = [[NSMutableDictionary alloc] init];
-    teachers = [[NSMutableDictionary alloc] init];
+    [super viewDidLoad];
     
     _peopleTableView.tintColor = [Util getTintColor];
+    
+    _peopleTableView.delegate = self;
+    _peopleTableView.dataSource = self;
+    
+    _sectionSelector.tintColor = [Util getTintColor];
+    [_sectionSelector setSelectedSegmentIndex:0];
+    
+    [self reload];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if([Util checkConnection]){
+            NSObject* doc = [[Variables get].account loadPage:@"22352"];
+            if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:[Variables get].user];
+            doc = [[Variables get].account loadPage:@"22326"];
+            if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:[Variables get].user];
+            [[Variables get].user processConnections];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self reload];
+            });
+        }
+    });
+}
+
+-(void)reload{
+    students = [[NSMutableDictionary alloc] init];
+    teachers = [[NSMutableDictionary alloc] init];
     
     for(Student* s in [Variables get].user.students){
         NSString* letter = [s.lastName substringWithRange:NSMakeRange(0, 1)].capitalizedString;
@@ -54,13 +85,7 @@ BOOL showTeachers = false;
         }
     }
     
-    [super viewDidLoad];
-    
-    _peopleTableView.delegate = self;
-    _peopleTableView.dataSource = self;
-    
-    [_sectionSelector setSelectedSegmentIndex:0];
-    _peopleTableView.hidden = false;
+    [_peopleTableView reloadData];
 }
 
 -(IBAction)sectionChanged:(id)sender {
@@ -164,5 +189,15 @@ BOOL showTeachers = false;
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 @end

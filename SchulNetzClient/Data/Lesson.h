@@ -15,6 +15,8 @@
 @property NSString* marking;
 @property NSString* replacementTeacher;
 
+-(BOOL)longerThanOrEqualToOneDay;
+
 +(NSMutableArray*)orderByStartTime:(NSMutableArray*)lessons;
 +(NSMutableArray*)orderByEndTime:(NSMutableArray*)lessons;
 @end

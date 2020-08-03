@@ -11,8 +11,8 @@
 
 @interface SubjectViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UILabel *subjectLabel;
-@property (weak, nonatomic) IBOutlet UILabel *averageLabel;
+@property (weak, nonatomic) IBOutlet UINavigationItem *titleBar;
+@property (weak, nonatomic) IBOutlet UILabel *noGradesLabel;
 @end
 
 @implementation SubjectViewController
@@ -26,9 +26,15 @@ NSMutableArray* expanded;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    _subjectLabel.text = subject.name;
-    _averageLabel.text = [NSString stringWithFormat:@"%@%@", [subject getAverage] > 1 ? [NSNumber numberWithDouble:(round([subject getAverage] * 1000) / 1000)].stringValue : @"-", subject.hiddenGrades ? @"*" : @""];
-    _averageLabel.textColor = [Grade colorForGrade:[subject getAverage]];
+    _titleBar.title = [NSString stringWithFormat:@"%@%@", subject.name, ([subject getAverage] > 1 ? [NSString stringWithFormat:@" (%@%@)", [NSNumber numberWithDouble:(round([subject getAverage] * 1000) / 1000)].stringValue, (subject.hiddenGrades ? @"*" : @"")] : @"")];
+    
+    if(subject.grades.count <= 0){
+        _tableView.hidden = true;
+        _noGradesLabel.hidden = false;
+    } else{
+        _tableView.hidden = false;
+        _noGradesLabel.hidden = true;
+    }
     
     [super viewDidLoad];
 }
@@ -50,11 +56,14 @@ NSMutableArray* expanded;
     
     if(indexPath.row == 0) {
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        cell.label.textColor = [UIColor blackColor];
+        
+        if(@available(iOS 13.0, *)) cell.label.textColor = UIColor.labelColor;
+        else cell.label.textColor = [UIColor blackColor];
+        
         cell.label.text = [NSString stringWithFormat:@"%@", ((Grade*)subject.grades[indexPath.section]).content];
         
-        if(((Grade*)subject.grades[indexPath.section]).grade > 1) cell.additionalLabel.text = [NSString stringWithFormat:@"%@%@", (((Grade*)subject.grades[indexPath.section]).weight != 1 ? [NSString stringWithFormat:@"(%dx) ", (int) ((Grade*)subject.grades[indexPath.section]).weight] : @""), [NSNumber numberWithDouble:((Grade*)subject.grades[indexPath.section]).grade].stringValue];
-        else cell.additionalLabel.text = @"-";
+        if(((Grade*)subject.grades[indexPath.section]).grade > 1) cell.additionalLabel.text = [NSString stringWithFormat:@"%@%@", (((Grade*)subject.grades[indexPath.section]).weight != 1 ? [NSString stringWithFormat:@"(%@x) ", [NSNumber numberWithDouble:((Grade*)subject.grades[indexPath.section]).weight].stringValue] : @""), [NSNumber numberWithDouble:((Grade*)subject.grades[indexPath.section]).grade].stringValue];
+        else cell.additionalLabel.text = [NSString stringWithFormat:@"%@-", (((Grade*)subject.grades[indexPath.section]).weight != 1 ? [NSString stringWithFormat:@"(%@x) ", [NSNumber numberWithDouble:((Grade*)subject.grades[indexPath.section]).weight].stringValue] : @"")];
         
         cell.additionalLabel.textColor = [Grade colorForGrade:((Grade*)subject.grades[indexPath.section]).grade];
     } else if(indexPath.row == 1 && ((Grade*)subject.grades[indexPath.section]).date) {
@@ -90,13 +99,5 @@ NSMutableArray* expanded;
         }
     }
     return rows;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row != 2) return 40;
-    else {
-        return [[((Grade*)subject.grades[indexPath.section]).details componentsSeparatedByCharactersInSet:
-        [NSCharacterSet newlineCharacterSet]] count] * 20 + 20;
-    }
 }
 @end

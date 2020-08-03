@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "Libraries/HTMLReader/include/HTMLReader.h"
-#import "ViewControllers/RefreshViewController.h"
 #import "Data/User.h"
 #import "SessionManager.h"
 

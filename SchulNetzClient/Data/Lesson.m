@@ -43,6 +43,12 @@
     return true;
 }
 
+-(BOOL)longerThanOrEqualToOneDay{
+    NSDate* c = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:1 toDate:startDate options:0];
+    
+    return [endDate compare:c] != NSOrderedAscending;
+}
+
 +(NSMutableArray*)orderByStartTime:(NSMutableArray*)lessons{
     if(lessons == NULL) return [[NSMutableArray alloc] init];
     NSMutableArray* sorted = [[NSMutableArray alloc] init];
@@ -52,7 +58,7 @@
         
         int index = (int)sorted.count;
         for(int i = 0; i < sorted.count; i++){
-            if([((Lesson*)sorted[i]).startDate timeIntervalSinceReferenceDate] == [lesson.startDate timeIntervalSinceReferenceDate]){
+            if([((Lesson*)sorted[i]).startDate compare:lesson.startDate] == NSOrderedDescending){
                 index = i;
                 break;
             }
@@ -73,7 +79,7 @@
         
         int index = (int)sorted.count;
         for(int i = 0; i < sorted.count; i++){
-            if([((Lesson*)sorted[i]).endDate timeIntervalSinceReferenceDate] == [lesson.endDate timeIntervalSinceReferenceDate]){
+            if([((Lesson*)sorted[i]).endDate compare:lesson.endDate] == NSOrderedDescending){
                 index = i;
                 break;
             }
@@ -102,7 +108,7 @@
         
         int index = (int)sorted.count;
         for(int i = 0; i < sorted.count; i++){
-            if([((ScheduleLesson*)sorted[i]).lesson.startDate timeIntervalSinceReferenceDate] == [lesson.lesson.startDate timeIntervalSinceReferenceDate]){
+            if([((ScheduleLesson*)sorted[i]).lesson.startDate compare:lesson.lesson.startDate] == NSOrderedDescending){
                 index = i;
                 break;
             }
@@ -123,7 +129,7 @@
         
         int index = (int)sorted.count;
         for(int i = 0; i < sorted.count; i++){
-            if([((ScheduleLesson*)sorted[i]).lesson.endDate timeIntervalSinceReferenceDate] == [lesson.lesson.endDate timeIntervalSinceReferenceDate]){
+            if([((ScheduleLesson*)sorted[i]).lesson.endDate compare:lesson.lesson.endDate] == NSOrderedDescending){
                 index = i;
                 break;
             }

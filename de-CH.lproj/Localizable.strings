@@ -1,0 +1,161 @@
+/* No comment provided by engineer. */
+"absences" = "Absenzen";
+
+"accountBalance" = "Kontoauszug";
+
+/* No comment provided by engineer. */
+"age" = "Jahre alt";
+
+"app_name" = "SchulNetz";
+
+"avatarDesc" = "<![CDATA[]]>";
+
+/* No comment provided by engineer. */
+"balance" = "Saldo";
+
+/* No comment provided by engineer. */
+"bilingual" = "Bilingual";
+
+"birthdate" = "Geburtsdatum";
+
+"birthday" = "Geburtstag";
+
+"classs" = "Klasse";
+
+/* No comment provided by engineer. */
+"copied" = "Kopiert!";
+
+"credits" = "Created by\nRuntimeOverflow";
+
+"defaultPage" = "Startseite";
+
+"excusedAbsence" = "Absenz entschuldigt";
+
+/* No comment provided by engineer. */
+"fullName" = "Vollständiger Name";
+
+/* No comment provided by engineer. */
+"grades" = "Noten";
+
+/* No comment provided by engineer. */
+"hideReports" = "Gefehlte Fächer verstecken";
+
+"home" = "Wohnadresse";
+
+"host" = "Mandant";
+
+/* No comment provided by engineer. */
+"invalidCreds" = "Ungültiger Benutzername/Falsches Passwort";
+
+"leftArrowDesc" = "<![CDATA[<]]>";
+
+/* No comment provided by engineer. */
+"lesson" = "Lektion";
+
+/* No comment provided by engineer. */
+"lessons" = "Lektionen";
+
+/* No comment provided by engineer. */
+"mail" = "Mail";
+
+/* No comment provided by engineer. */
+"missedLessons" = "Verpasste Lektionen";
+
+"modifiedGrade" = "Note bearbeitet";
+
+"newAbsence" = "Neue Absenz";
+
+"newExcusedAbsence" = "Neue entschuldigte Absenz";
+
+"newGrade" = "Neue Note veröffentlicht";
+
+"newTransaction" = "Saldo geändert";
+
+/* No comment provided by engineer. */
+"no" = "Nein";
+
+"noAbsences" = "Keine Absenzen";
+
+"noCalendar" = "Keine unterstützte Kalender App installiert";
+
+"noConnection" = "Keine Internetverbindung";
+
+/* No comment provided by engineer. */
+"noDesc" = "Keine Beschreibung verfügbar";
+
+"noGrades" = "Keine Noten";
+
+"noLessons" = "Keine Lektionen";
+
+"noMail" = "Keine unterstützte Mail App installiert";
+
+"noMaps" = "Keine unterstützte Maps App installiert";
+
+"noPhone" = "Keine unterstützte Telefon App installiert";
+
+/* No comment provided by engineer. */
+"noPhoneNumber" = "Keine Telefonnummer verfügbar";
+
+"notifications" = "Mitteilungen";
+
+/* No comment provided by engineer. */
+"other" = "Anderer Mandant...";
+
+"password" = "Passwort";
+
+/* No comment provided by engineer. */
+"people" = "Personen";
+
+"phone" = "Telefonnummer";
+
+"rightArrowDesc" = "<![CDATA[>]]>";
+
+"selectHost" = "Mandant auswählen";
+
+/* No comment provided by engineer. */
+"settings" = "Einstellungen";
+
+/* No comment provided by engineer. */
+"showReports" = "Gefehlte Fächer anzeigen";
+
+"signin" = "Anmelden";
+
+/* No comment provided by engineer. */
+"signout" = "Abmelden";
+
+/* No comment provided by engineer. */
+"signoutConfirmation" = "Wirklich abmelden?";
+
+"source" = "Source Code [Github]";
+
+"students" = "Schüler";
+
+/* No comment provided by engineer. */
+"subjects" = "Fächer";
+
+"teachers" = "Lehrer";
+
+/* No comment provided by engineer. */
+"timetable" = "Stundenplan";
+
+"transactions" = "Transaktionen";
+
+"username" = "Benutzername";
+
+/* No comment provided by engineer. */
+"yes" = "Ja";
+
+/* No comment provided by engineer. */
+"failed to convert data to string" = "";
+
+/* No comment provided by engineer. */
+"failed to convert string to data" = "";
+
+/* No comment provided by engineer. */
+"the key must not to be nil" = "";
+
+/* No comment provided by engineer. */
+"the server property must not to be nil, should use 'keyChainStoreWithServer:protocolType:' initializer to instantiate keychain store" = "";
+
+/* No comment provided by engineer. */
+"Unexpected error has occurred." = "";

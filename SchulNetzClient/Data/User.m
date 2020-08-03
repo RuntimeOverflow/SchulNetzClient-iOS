@@ -8,6 +8,7 @@
 @synthesize roomDict;
 
 @synthesize balanceConfirmed;
+
 @synthesize teachers;
 @synthesize students;
 @synthesize subjects;
@@ -16,6 +17,9 @@
 @synthesize lessons;
 
 -(instancetype)init{
+    lessonTypeDict = [[NSMutableDictionary alloc] init];
+    roomDict = [[NSMutableDictionary alloc] init];
+    
     teachers = [[NSMutableArray alloc] init];
     students = [[NSMutableArray alloc] init];
     subjects = [[NSMutableArray alloc] init];
@@ -32,7 +36,9 @@
     NSMutableSet* classes = [[NSMutableSet alloc] init];
     [classes addObject: [NSString class]];
     [classes addObject: [NSMutableArray class]];
+    [classes addObject: [NSMutableDictionary class]];
     [classes addObject: [NSDate class]];
+    [classes addObject: [UIColor class]];
     [classes addObject: [User class]];
     [classes addObject: [Teacher class]];
     [classes addObject: [Student class]];
@@ -142,11 +148,15 @@
             }
         }
         
+        
         if(roomDict[[NSString stringWithFormat:@"%d", l.roomNumber]] != NULL) l.room = roomDict[[NSString stringWithFormat:@"%d", l.roomNumber]];
     }
 }
 
 -(void)encodeWithCoder:(NSCoder*)coder{
+    [coder encodeObject:lessonTypeDict forKey:@"lessonTypeDict"];
+    [coder encodeObject:roomDict forKey:@"roomDict"];
+    
     [coder encodeBool:balanceConfirmed forKey:@"balanceConfirmed"];
     
     [coder encodeObject:teachers forKey:@"teachers"];
@@ -158,6 +168,9 @@
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder{
+    lessonTypeDict = [coder decodeObjectForKey:@"lessonTypeDict"];
+    roomDict = [coder decodeObjectForKey:@"roomDict"];
+    
     balanceConfirmed = [coder decodeBoolForKey:@"balanceConfirmed"];
     
     teachers = [coder decodeObjectForKey:@"teachers"];

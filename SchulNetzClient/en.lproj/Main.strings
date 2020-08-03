@@ -1,0 +1,101 @@
+/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "5BP-L1-VQt"; */
+"5BP-L1-VQt.title" = "Settings";
+
+/* Class = "UITabBarItem"; title = "Grades"; ObjectID = "5ds-NW-Vhk"; */
+"5ds-NW-Vhk.title" = "Grades";
+
+/* Class = "UITabBarItem"; title = "Absences"; ObjectID = "8t8-4r-JU9"; */
+"8t8-4r-JU9.title" = "Absences";
+
+/* Class = "UIButton"; normalTitle = "Source Code [Github]"; ObjectID = "BdF-4X-9aS"; */
+"BdF-4X-9aS.normalTitle" = "Source Code [Github]";
+
+/* Class = "UITabBarItem"; title = "People"; ObjectID = "Bka-Ma-NIZ"; */
+"Bka-Ma-NIZ.title" = "People";
+
+/* Class = "UILabel"; text = "1 Lesson"; ObjectID = "cmt-AV-FoN"; */
+"cmt-AV-FoN.text" = "1 Lesson";
+
+/* Class = "UITextField"; placeholder = "Host"; ObjectID = "e2Z-Ix-AKj"; */
+"e2Z-Ix-AKj.placeholder" = "Host";
+
+/* Class = "UILabel"; text = "Created by RuntimeOverflow"; ObjectID = "FkD-fT-mMO"; */
+"FkD-fT-mMO.text" = "Created by RuntimeOverflow";
+
+/* Class = "UINavigationItem"; title = "Transactions"; ObjectID = "ikN-8M-cfc"; */
+"ikN-8M-cfc.title" = "Transactions";
+
+/* Class = "UILabel"; text = "No Grades yet"; ObjectID = "iv4-iL-bXw"; */
+"iv4-iL-bXw.text" = "No Grades yet";
+
+/* Class = "UIButton"; normalTitle = "Sign out"; ObjectID = "joR-Mh-e3g"; */
+"joR-Mh-e3g.normalTitle" = "Sign out";
+
+/* Class = "UITableViewSection"; headerTitle = "Date of Birth"; ObjectID = "L1z-Dy-Mas"; */
+"L1z-Dy-Mas.headerTitle" = "Date of Birth";
+
+/* Class = "UITableViewSection"; headerTitle = "Class"; ObjectID = "lMW-Ok-uWR"; */
+"lMW-Ok-uWR.headerTitle" = "Class";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "mVd-v8-NzK"; */
+"mVd-v8-NzK.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Select Host"; ObjectID = "nam-rk-7xQ"; */
+"nam-rk-7xQ.placeholder" = "Select Host";
+
+/* Class = "UILabel"; text = "Add to Contacts"; ObjectID = "nRT-1c-SLv"; */
+"nRT-1c-SLv.text" = "Add to Contacts";
+
+/* Class = "UIButton"; normalTitle = "Sign in"; ObjectID = "OLD-S6-zb2"; */
+"OLD-S6-zb2.normalTitle" = "Sign in";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ONu-ov-5w1"; */
+"ONu-ov-5w1.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "piy-zX-Hd8"; */
+"piy-zX-Hd8.placeholder" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Account balance"; ObjectID = "pjh-0z-yBG"; */
+"pjh-0z-yBG.normalTitle" = "Account balance";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "PSf-S1-jTk"; */
+"PSf-S1-jTk.text" = "Label";
+
+/* Class = "UITabBarItem"; title = "Timetable"; ObjectID = "Q05-4x-OdL"; */
+"Q05-4x-OdL.title" = "Timetable";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "qfY-2w-jWi"; */
+"qfY-2w-jWi.text" = "Label";
+
+/* Class = "UITableViewSection"; headerTitle = "Phone"; ObjectID = "su3-n7-6F7"; */
+"su3-n7-6F7.headerTitle" = "Phone";
+
+/* Class = "UITableViewSection"; headerTitle = "Home"; ObjectID = "uuo-ZC-1nZ"; */
+"uuo-ZC-1nZ.headerTitle" = "Home";
+
+/* Class = "UILabel"; text = "Notifications"; ObjectID = "WA1-Y7-OUX"; */
+"WA1-Y7-OUX.text" = "Notifications";
+
+/* Class = "UILabel"; text = "No Absences"; ObjectID = "wSC-Kd-3j3"; */
+"wSC-Kd-3j3.text" = "No Absences";
+
+/* Class = "UISegmentedControl"; xz8-cE-P8e.segmentTitles[0] = "Students"; ObjectID = "xz8-cE-P8e"; */
+"xz8-cE-P8e.segmentTitles[0]" = "Students";
+
+/* Class = "UISegmentedControl"; xz8-cE-P8e.segmentTitles[1] = "Teachers"; ObjectID = "xz8-cE-P8e"; */
+"xz8-cE-P8e.segmentTitles[1]" = "Teachers";
+
+/* Class = "UILabel"; text = "Start Page"; ObjectID = "ZJS-WH-Ksl"; */
+"ZJS-WH-Ksl.text" = "Start Page";
+
+/* Class = "UITextField"; placeholder = "Username"; ObjectID = "ZqS-ow-gPk"; */
+"ZqS-ow-gPk.placeholder" = "Username";
+
+/* Class = "UILabel"; text = "No Lessons"; ObjectID = "d4g-Kq-ANv"; */
+"d4g-Kq-ANv.text" = "No Lessons";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fT0-lS-62p"; */
+"fT0-lS-62p.text" = "";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "wG2-kk-Gkc"; */
+"wG2-kk-Gkc.text" = "";

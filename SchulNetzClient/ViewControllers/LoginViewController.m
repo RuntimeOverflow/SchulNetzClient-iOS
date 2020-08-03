@@ -1,4 +1,3 @@
-#import "VerificationViewController.h"
 #import "LoginViewController.h"
 #import "../Account.h"
 #import "../Util.h"
@@ -6,21 +5,6 @@
 #import "../Data/User.h"
 #import "../Parser.h"
 #import "../Variables.h"
-
-@interface PickerTextField : UITextField
-
-@end
-
-@implementation PickerTextField
--(CGRect)caretRectForPosition:(UITextPosition*) position{
-    return CGRectZero;
-}
-
--(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
-    if(action == @selector(paste:) || action == @selector(cut:)) return false;
-    else return [super canPerformAction:action withSender:sender];
-}
-@end
 
 @interface LoginViewController() <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
@@ -72,8 +56,6 @@ NSLayoutConstraint* heightUrlField;
 }
 
 - (IBAction)loginButtonPressed:(id)sender {
-    //VerificationViewController* vc = (VerificationViewController*)[Util setViewControllerFromName:@"VerificationScene"];
-    
     _urlPickerField.enabled = false;
     _urlField.enabled = false;
     _usernameField.enabled = false;
@@ -129,7 +111,7 @@ NSLayoutConstraint* heightUrlField;
             });
         } else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                if([result class] != [NSError class]) self->_errorLabel.text = @"Invalid username/password";
+                if([result class] != [NSError class]) self->_errorLabel.text = NSLocalizedString(@"invalidCreds", @"");
                 else self->_errorLabel.text = ((NSError*)result).localizedDescription;
                 
                 self->_errorLabel.hidden = false;
@@ -147,8 +129,6 @@ NSLayoutConstraint* heightUrlField;
         
         [account close];
     });
-    
-    //[vc setAccount:account];
 }
 
 -(void)setErrorMessage:(NSString*)message withError:(NSError*)error{
@@ -187,7 +167,7 @@ NSLayoutConstraint* heightUrlField;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    if(row == [Host getHosts].count) return @"Other...";
+    if(row == [Host getHosts].count) return NSLocalizedString(@"other", @"");
     else return [[Host getHosts] objectAtIndex:row];
 }
 

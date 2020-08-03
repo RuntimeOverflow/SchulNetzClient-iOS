@@ -39,7 +39,7 @@
 }
 
 +(UIColor*)colorForGrade:(double)grade{
-    UIColor* color = UIColor.blackColor;
+    UIColor* color = [UIColor colorWithRed:0.375 green:0.375 blue:0.375 alpha:1];
     
     if(grade >= 6) color = [UIColor colorWithRed:0 green:1 blue:0 alpha:1];
     else if(grade < 6 && grade > 4){

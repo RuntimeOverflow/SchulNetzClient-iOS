@@ -368,7 +368,6 @@
             user.roomDict[key] = value;
         }
     } @catch(NSException *exception){
-        NSLog(@"%@", exception.reason);
         return false;
     } @finally{}
     
@@ -383,18 +382,18 @@
             Lesson* lesson = [[Lesson alloc] init];
             
             NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-            formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+            if([event nodesMatchingSelector:@"start_date"].count > 0 && [[event firstNodeMatchingSelector:@"start_date"].innerHTML rangeOfString:@":[0-9]{2}:" options:NSRegularExpressionSearch].location != NSNotFound) formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+            else formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+            if([event nodesMatchingSelector:@"start_date"].count > 0) lesson.startDate = [formatter dateFromString:[[[event firstNodeMatchingSelector:@"start_date"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""]];
             
-            if([event nodesMatchingSelector:@"start_date"].count > 0) lesson.startDate = [formatter dateFromString:[event firstNodeMatchingSelector:@"start_date"].textComponents[0]];
+            if([event nodesMatchingSelector:@"end_date"].count > 0) lesson.endDate = [formatter dateFromString:[[[event firstNodeMatchingSelector:@"end_date"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""]];
             
-            if([event nodesMatchingSelector:@"end_date"].count > 0) lesson.endDate = [formatter dateFromString:[event firstNodeMatchingSelector:@"end_date"].textComponents[0]];
-            
-            if([event nodesMatchingSelector:@"text"].count > 0) lesson.lessonIdentifier = [event firstNodeMatchingSelector:@"text"].textComponents[0];
-            if([event nodesMatchingSelector:@"zimmer"].count > 0) lesson.roomNumber = [event firstNodeMatchingSelector:@"zimmer"].textComponents[0].intValue;
-            if([event nodesMatchingSelector:@"event_type"].count > 0) lesson.type = [event firstNodeMatchingSelector:@"event_type"].textComponents[0];
+            if([event nodesMatchingSelector:@"text"].count > 0) lesson.lessonIdentifier = [[[event firstNodeMatchingSelector:@"text"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""];
+            if([event nodesMatchingSelector:@"zimmer"].count > 0) lesson.roomNumber = [[[event firstNodeMatchingSelector:@"zimmer"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""].intValue;
+            if([event nodesMatchingSelector:@"event_type"].count > 0) lesson.type = [[[event firstNodeMatchingSelector:@"event_type"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""];
             
             if([event nodesMatchingSelector:@"color"].count > 0){
-                NSScanner* scanner = [NSScanner scannerWithString:[event firstNodeMatchingSelector:@"color"].textComponents[0]];
+                NSScanner* scanner = [NSScanner scannerWithString:[[[[event firstNodeMatchingSelector:@"color"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""] stringByReplacingOccurrencesOfString:@"#" withString:@""]];
                 [scanner setCharactersToBeSkipped:[NSCharacterSet symbolCharacterSet]];
                 unsigned int colorInt = 0;
                 [scanner scanHexInt:&colorInt];
@@ -404,10 +403,10 @@
                 lesson.color = [UIColor colorWithRed:red green:green blue:blue alpha:1];
             }
             
-            if([event nodesMatchingSelector:@"markierung"].count > 0) lesson.marking = [event firstNodeMatchingSelector:@"markierung"].textComponents[0];
+            if([event nodesMatchingSelector:@"markierung"].count > 0) lesson.marking = [[[event firstNodeMatchingSelector:@"markierung"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""];
             if([lesson.marking isEqualToString:@"none"]) lesson.marking = @"";
             
-            if([event nodesMatchingSelector:@"neuerlehrer"].count > 0) lesson.replacementTeacher = [event firstNodeMatchingSelector:@"neuerlehrer"].textComponents[0];
+            if([event nodesMatchingSelector:@"neuerlehrer"].count > 0) lesson.replacementTeacher = [[[event firstNodeMatchingSelector:@"neuerlehrer"].innerHTML stringByReplacingOccurrencesOfString:@"<!--[CDATA[" withString:@""] stringByReplacingOccurrencesOfString:@"]]-->" withString:@""];
             
             [list addObject:lesson];
         }

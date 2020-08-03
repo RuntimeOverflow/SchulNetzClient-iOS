@@ -2,6 +2,7 @@
 #import "../Variables.h"
 #import "../Data/Absence.h"
 #import "../Util.h"
+#import "../Parser.h"
 
 @interface AbsenceCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *label;
@@ -15,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *headerBackground;
-
+@property (weak, nonatomic) IBOutlet UILabel *noAbsencesLabel;
 @end
 
 @implementation AbsencesViewController
@@ -25,6 +26,31 @@ NSMutableArray<NSNumber*>* secondaryExpanded;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
+    _noAbsencesLabel.hidden = true;
+    
+    [self reload];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if([Util checkConnection]){
+            NSObject* doc = [[Variables get].account loadPage:@"21111"];
+            if([doc class] == [HTMLDocument class]) [Parser parseAbsences:(HTMLDocument*)doc forUser:[Variables get].user];
+            [[Variables get].user processConnections];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self reload];
+            });
+        }
+    });
+}
+
+-(void)reload{
     primaryExpanded = [[NSMutableArray alloc] init];
     secondaryExpanded = [[NSMutableArray alloc] init];
     
@@ -36,22 +62,38 @@ NSMutableArray<NSNumber*>* secondaryExpanded;
         totalLessons += [Variables get].user.absences[i].lessonCount;
     }
     
-    _titleLabel.text = [NSString stringWithFormat:@"Lessons missed: %d", totalLessons];
+    _titleLabel.text = [NSString stringWithFormat:@"%@: %d", NSLocalizedString(@"missedLessons", @""), totalLessons];
     _headerBackground.backgroundColor = [Util getTintColor];
     
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
+    [_tableView reloadData];
+    
+    if([Variables get].user.absences.count <= 0){
+        _tableView.hidden = true;
+        _noAbsencesLabel.hidden = false;
+    } else{
+        _tableView.hidden = false;
+        _noAbsencesLabel.hidden = true;
+    }
 }
 
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     AbsenceCell* cell = [tableView dequeueReusableCellWithIdentifier:@"absenceCell"];
     
     if(indexPath.row == 0){
-        cell.label.text = [Variables get].user.absences[indexPath.section].reason.length > 0 ? [Variables get].user.absences[indexPath.section].reason : @"[No description provided]";
-        cell.label.textColor = [UIColor blackColor];
+        cell.label.text = [Variables get].user.absences[indexPath.section].reason.length > 0 ? [Variables get].user.absences[indexPath.section].reason : [NSString stringWithFormat:@"[%@]", NSLocalizedString(@"noDesc", @"")];
         
-        cell.additionalLabel.text = [NSString stringWithFormat:@"%d %@", [Variables get].user.absences[indexPath.section].lessonCount, ([Variables get].user.absences[indexPath.section].lessonCount != 1 ? @"Lessons" : @"Lesson")];
-        cell.additionalLabel.textColor = [Variables get].user.absences[indexPath.section].excused ? [UIColor blackColor] : [UIColor redColor];
+        if(@available(iOS 13.0, *)) cell.label.textColor = UIColor.labelColor;
+        else cell.label.textColor = [UIColor blackColor];
+        
+        cell.additionalLabel.text = [NSString stringWithFormat:@"%d %@", [Variables get].user.absences[indexPath.section].lessonCount, ([Variables get].user.absences[indexPath.section].lessonCount != 1 ? NSLocalizedString(@"lessons", @"") : NSLocalizedString(@"lesson", @""))];
+        
+        if(@available(iOS 13.0, *)) cell.label.textColor = UIColor.labelColor;
+        else cell.label.textColor = [UIColor blackColor];
+        
+        UIColor* labelColor = [UIColor blackColor];
+        if(@available(iOS 13.0, *)) labelColor = UIColor.labelColor;
+        
+        cell.additionalLabel.textColor = [Variables get].user.absences[indexPath.section].excused ? labelColor : [UIColor redColor];
     } else if(indexPath.row == 1 && [Variables get].user.absences[indexPath.section].startDate){
         NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"dd. MMMM yyyy";
@@ -61,7 +103,7 @@ NSMutableArray<NSNumber*>* secondaryExpanded;
         
         cell.additionalLabel.text = @"";
     } else if(indexPath.row == ([Variables get].user.absences[indexPath.section].startDate ? 2 : 1)){
-        cell.label.text = !secondaryExpanded[indexPath.section].boolValue ? @"Show reported lessons" : @"Hide reported lessons";
+        cell.label.text = !secondaryExpanded[indexPath.section].boolValue ? NSLocalizedString(@"showReports", @"") : NSLocalizedString(@"hideReports", @"");
         cell.label.textColor = [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:255/255.0];
         
         cell.additionalLabel.text = @"";
@@ -107,5 +149,15 @@ NSMutableArray<NSNumber*>* secondaryExpanded;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return [Variables get].user.absences.count;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 @end

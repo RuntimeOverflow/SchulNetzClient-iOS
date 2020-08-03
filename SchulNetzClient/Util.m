@@ -1,6 +1,9 @@
 #import "Util.h"
 #import "Account.h"
 #import <UserNotifications/UserNotifications.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import "sys/types.h"
+#import <netinet/in.h>
 
 @interface Util()
 @end
@@ -25,13 +28,13 @@ static UIColor* tint;
 }
 
 +(UIColor*) getTintColor{
-    if(!tint) tint = UIColor.blackColor;
+    if(!tint) tint = UIColor.lightGrayColor;
     
     return tint;
 }
 
 +(UIColor*) getDisabledTintColor{
-    if(!tint) tint = UIColor.blackColor;
+    if(!tint) tint = UIColor.lightGrayColor;
     
     CGFloat red = 0;
     CGFloat green = 0;
@@ -45,8 +48,8 @@ static UIColor* tint;
     tint = tintColor;
 }
 
-+(BOOL) checkConnection{
-    __block BOOL errored = false;
++(BOOL)checkConnection{
+    /*__block BOOL errored = false;
     
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
@@ -66,17 +69,20 @@ static UIColor* tint;
         [[NSRunLoop currentRunLoop] runUntilDate:date];
     }
     
-    return !errored;
-}
-
-+(NSURLProtectionSpace*) getProtectionSpace{
-    NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"url"]]];
+    return !errored;*/
     
-    return [[NSURLProtectionSpace alloc] initWithHost:url.host
-    port:[url.port integerValue]
-    protocol:url.scheme
-    realm:nil
-    authenticationMethod:NSURLAuthenticationMethodHTTPDigest];
+    struct sockaddr_in zeroAddress;
+    bzero(&zeroAddress, sizeof(zeroAddress));
+    zeroAddress.sin_len = sizeof(zeroAddress);
+    zeroAddress.sin_family = AF_INET;
+    
+    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr*)&zeroAddress);
+    SCNetworkReachabilityFlags flags;
+    
+    BOOL ok = SCNetworkReachabilityGetFlags(reachability, &flags);
+    
+    if(!ok) return false;
+    else return ((BOOL)(flags & kSCNetworkReachabilityFlagsReachable) && !(BOOL)(flags & kSCNetworkFlagsConnectionRequired));
 }
 
 +(BOOL) notifcationsAllowed{
@@ -119,5 +125,19 @@ static UIColor* tint;
     
     while(!loaded);
     return allowed;
+}
+
++(UICKeyChainStore*)getKeyChain{
+    UICKeyChainStore* keyChain = [UICKeyChainStore keyChainStore];
+    keyChain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
+    keyChain.synchronizable = true;
+    
+    return keyChain;
+}
+
++(UIColor*)darkenColor:(UIColor*)color{
+    CGFloat h, s, b, a;
+    if ([color getHue:&h saturation:&s brightness:&b alpha:&a]) return [UIColor colorWithHue:h saturation:s brightness:b * 0.8 alpha:a];
+    else return NULL;
 }
 @end
