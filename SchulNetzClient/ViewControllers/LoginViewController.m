@@ -61,74 +61,83 @@ NSLayoutConstraint* heightUrlField;
     _usernameField.enabled = false;
     _passwordField.enabled = false;
     _loginButton.hidden = true;
+    _errorLabel.hidden = true;
     
     _verifyingIcon.hidden = false;
     [_verifyingIcon startAnimating];
     
     Account* account = [[Account alloc]initWithUsername:self->_usernameField.text password: self->_passwordField.text host:(otherHost ? self->_urlField.text : self->_urlPickerField.text) session:false];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSObject* result = [account signIn];
+   
+    NSObject* result = [account signIn];
+    
+    if([[result class] isSubclassOfClass:[NSNumber class]] && ((NSNumber*)result).boolValue){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self->_signinContainer.hidden = true;
+            self->_loadingIcon.hidden = false;
+            [self->_loadingIcon startAnimating];
+        });
         
-        if([[result class] isSubclassOfClass:[NSNumber class]] && ((NSNumber*)result).boolValue){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self->_signinContainer.hidden = true;
-                self->_loadingIcon.hidden = false;
-                [self->_loadingIcon startAnimating];
-            });
-            
-            [account saveCredentials];
-            
-            User* user = [[User alloc] init];
-            
-            NSObject* doc = [account loadPage:@"22352"];
+        [account saveCredentials];
+        
+        User* user = [[User alloc] init];
+        
+        [account loadPage:@"22352" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:user];
-            doc = [account loadPage:@"22326"];
+        }];
+        [account loadPage:@"22326" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:user];
             if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:user];
-            doc = [account loadPage:@"21311"];
+        }];
+        [account loadPage:@"21311" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseGrades:(HTMLDocument*)doc forUser:user];
-            doc = [account loadPage:@"21411"];
+        }];
+        [account loadPage:@"21411" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:user];
             if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:user];
-            doc = [account loadPage:@"21111"];
+        }];
+        [account loadPage:@"21111" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseAbsences:(HTMLDocument*)doc forUser:user];
-            doc = [account loadPage:@"22202"];
+        }];
+        [account loadPage:@"22202" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:user];
-            
-            doc = [account loadScheduleFrom:[NSDate date] to:[NSDate date]];
+        }];
+        
+        [account loadScheduleFrom:[NSDate date] to:[NSDate date] completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) user.lessons = [Parser parseSchedule:(HTMLDocument*)doc];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [account signOut];
+                [account close];
+            });
             
             [user processConnections];
-            [account signOut];
-            
             [Variables get].user = user;
             [user save];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIViewController* vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MainScene"];
-                vc.modalPresentationStyle = UIModalPresentationFullScreen;
-                [[Util getMainController] presentViewController:vc animated:true completion:nil];
-            });
-        } else{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if([result class] != [NSError class]) self->_errorLabel.text = NSLocalizedString(@"invalidCreds", @"");
-                else self->_errorLabel.text = ((NSError*)result).localizedDescription;
-                
-                self->_errorLabel.hidden = false;
-                
-                self->_urlPickerField.enabled = true;
-                self->_urlField.enabled = true;
-                self->_usernameField.enabled = true;
-                self->_passwordField.enabled = true;
-                self->_loginButton.hidden = false;
-                
-                self->_verifyingIcon.hidden = true;
-                [self->_verifyingIcon stopAnimating];
-            });
-        }
+            UIViewController* vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MainScene"];
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            [[Util getMainController] presentViewController:vc animated:true completion:nil];
+        }];
         
-        [account close];
-    });
+    } else{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [account close];
+        });
+        
+        if([result class] != [NSError class] && [result class] != [NSException class]) self->_errorLabel.text = NSLocalizedString(@"invalidCreds", @"");
+        else if([result class] == [NSError class]) self->_errorLabel.text = ((NSError*)result).localizedDescription;
+        else if([result class] == [NSException class]) self->_errorLabel.text = ((NSException*)result).reason;
+        
+        self->_errorLabel.hidden = false;
+        
+        self->_urlPickerField.enabled = true;
+        self->_urlField.enabled = true;
+        self->_usernameField.enabled = true;
+        self->_passwordField.enabled = true;
+        self->_loginButton.hidden = false;
+        
+        self->_verifyingIcon.hidden = true;
+        [self->_verifyingIcon stopAnimating];
+    }
 }
 
 -(void)setErrorMessage:(NSString*)message withError:(NSError*)error{

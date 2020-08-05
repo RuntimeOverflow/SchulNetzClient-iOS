@@ -49,28 +49,6 @@ static UIColor* tint;
 }
 
 +(BOOL)checkConnection{
-    /*__block BOOL errored = false;
-    
-    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
-    NSURL *url = [NSURL URLWithString:@"https://google.com"];
-    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
-
-    __block BOOL done = NO;
-    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        done = YES;
-        
-        if(error != NULL) errored = true;
-    }];
-    [dataTask resume];
-
-    while (!done) {
-        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
-        [[NSRunLoop currentRunLoop] runUntilDate:date];
-    }
-    
-    return !errored;*/
-    
     struct sockaddr_in zeroAddress;
     bzero(&zeroAddress, sizeof(zeroAddress));
     zeroAddress.sin_len = sizeof(zeroAddress);
@@ -139,5 +117,10 @@ static UIColor* tint;
     CGFloat h, s, b, a;
     if ([color getHue:&h saturation:&s brightness:&b alpha:&a]) return [UIColor colorWithHue:h saturation:s brightness:b * 0.8 alpha:a];
     else return NULL;
+}
+
++(NSDate*)trimDate:(NSDate*)date{
+    NSDateComponents* comps = [[NSCalendar currentCalendar] components:NSCalendarUnitYear | NSCalendarUnitDay fromDate:date];
+    return [[NSCalendar currentCalendar] dateFromComponents:comps];
 }
 @end

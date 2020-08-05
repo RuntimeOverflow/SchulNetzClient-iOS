@@ -13,7 +13,7 @@ typedef enum {
 
 @property ChangeType type;
 
--(void)initWithPrevious:(NSObject*)previousObject current:(NSObject*)currentObject varName:(NSString*)variableName chnageType:(ChangeType)changeType;
+-(instancetype)initWithPrevious:(NSObject*)previousObject current:(NSObject*)currentObject varName:(NSString*)variableName changeType:(ChangeType)changeType;
 
 +(NSMutableArray*)getChanges:(User*)previous current:(User*)current;
 @end

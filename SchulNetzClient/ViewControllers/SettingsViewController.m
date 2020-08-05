@@ -90,24 +90,23 @@ NSArray<NSString*>* startPages = NULL;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if([Util checkConnection]){
-            NSObject* doc = [[Variables get].account loadPage:@"21411"];
-            if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:[Variables get].user];
-            if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:[Variables get].user];
-            [[Variables get].user processConnections];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
+            [[Variables get].account loadPage:@"21411" completion:^(NSObject *doc) {
+                if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:[Variables get].user];
+                if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:[Variables get].user];
+                [[Variables get].user processConnections];
                 [self reload];
-            });
+            }];
         }
-    });
+    //});
 }
 
 -(void)reload{
     if([Variables get].user && [Variables get].user.me){
         _nameLabel.text = [NSString stringWithFormat:@"%@ %@", [Variables get].user.me.firstName, [Variables get].user.me.lastName];
         _classLabel.text = [Variables get].user.me.className;
+        _classLabel.hidden = false;
     } else{
         _nameLabel.text = [[Variables get].account.username stringByReplacingOccurrencesOfString:@"." withString:@" "].uppercaseString;
         _classLabel.hidden = true;

@@ -26,7 +26,7 @@ static MainViewController* main;
         [Util setViewControllerFromName:@"LoginScene" animated:false];
     } else if([Variables get].account == NULL){
         [Variables get].account = [[Account alloc] initFromCredentials];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [[Variables get].account signIn];
         });
         

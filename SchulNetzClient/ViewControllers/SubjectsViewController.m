@@ -47,20 +47,17 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if([Util checkConnection]){
-            NSObject* doc = [[Variables get].account loadPage:@"22326"];
+    if([Util checkConnection]){
+        [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:[Variables get].user];
-            
-            doc = [[Variables get].account loadPage:@"21311"];
+        }];
+        
+        [[Variables get].account loadPage:@"21311" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseGrades:(HTMLDocument*)doc forUser:[Variables get].user];
             [[Variables get].user processConnections];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self reload];
-            });
-        }
-    });
+            [self reload];
+        }];
+    }
 }
 
 -(void)reload{

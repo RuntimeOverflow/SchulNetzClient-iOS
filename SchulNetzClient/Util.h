@@ -17,4 +17,5 @@
 +(BOOL) badgesAllowed;
 +(UICKeyChainStore*)getKeyChain;
 +(UIColor*)darkenColor:(UIColor*)color;
++(NSDate*)trimDate:(NSDate*)date;
 @end

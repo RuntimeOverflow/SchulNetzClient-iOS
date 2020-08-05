@@ -8,6 +8,7 @@
 @interface TimetableViewController (){
     NSDate* timetableDate;
     NSMutableArray<Lesson*>* lessons;
+    BOOL running;
 }
 
 @property (weak, nonatomic) IBOutlet TimetableView *timetableView;
@@ -24,6 +25,7 @@
     
     timetableDate = [NSDate date];
     lessons = [[NSMutableArray alloc] init];
+    running = false;
     
     _loadingIndicator.hidden = true;
     _loadingIndicator.color = [Util getTintColor];
@@ -33,10 +35,6 @@
     [_dateLabel addGestureRecognizer:recognizer];
     
     _noLessonsLabel.hidden = true;
-    
-    [[Variables get].account loadPage:@"22202" completion:^(NSObject *doc) {
-        if(doc && [doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:[Variables get].user];
-    }];
     
     [self reload];
 }
@@ -89,40 +87,64 @@
     _loadingIndicator.hidden = false;
     [self->_loadingIndicator startAnimating];
     
-    if([Util checkConnection]){
-        [[Variables get].account loadScheduleFrom:original to:original view:@"day" completion:^(NSObject *doc) {
-            if(doc && [doc class] == [HTMLDocument class] && [original compare:self->timetableDate] == NSOrderedSame){
-                self->lessons = [Parser parseSchedule:(HTMLDocument*)doc];
-                if(!self->lessons){
-                    self->_loadingIndicator.hidden = true;
-                    [self->_loadingIndicator stopAnimating];
-                    self->_timetableView.hidden = false;
-                    [self resetToTodayAndReload];
-                    
-                    return;
-                } else{
-                    [[Variables get].user processLessons:self->lessons];
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        if([Util checkConnection]){
+            /*if(self->running){
+                while(self->running && [original compare:self->timetableDate] == NSOrderedSame){
+                    NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+                    [[NSRunLoop currentRunLoop] runUntilDate:date];
+                }
+                
+                if(self->running || [original compare:self->timetableDate] != NSOrderedSame) return;
+            }*/
+            
+            self->running = true;
+            
+            /*NSObject* doc = [[Variables get].account loadPage:@"22202"];
+            
+            if(doc && [doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:[Variables get].user];*/
+            
+            NSObject* doc = [[Variables get].account loadScheduleFrom:original to:original/* view:@"day" completion:^(NSObject *doc) {
+                NSLog(@"%@", ((HTMLDocument*)doc).innerHTML);
+                if(doc && [doc class] == [HTMLDocument class] && [original compare:self->timetableDate] == NSOrderedSame){
+                    self->lessons = [Parser parseSchedule:(HTMLDocument*)doc];
+                    if(!self->lessons){
+                        //dispatch_async(dispatch_get_main_queue(), ^{
+                            self->_loadingIndicator.hidden = true;
+                            [self->_loadingIndicator stopAnimating];
+                            self->_timetableView.hidden = false;
+                            [self resetToTodayAndReload];
+                        //});
+                        self->running = false;
+                        return;
+                    } else{
+                        [[Variables get].user processLessons:self->lessons];
+                    }
+                }
+                
+                self->running = false;
+                
+                //dispatch_async(dispatch_get_main_queue(), ^{
                     self->_loadingIndicator.hidden = true;
                     [self->_loadingIndicator stopAnimating];
                     [self reload];
-                }
-            }
-        }];
-    }
+                //});
+            }*/];
+            NSLog(@"%@", ((HTMLDocument*)doc).innerHTML);
+        }
+    //});
 }
 
 -(void)reload{
-    NSMutableArray* layoutedLessons = [self calculateLayout:lessons];
+    _timetableView.lessons = [self calculateLayout:lessons];
     
-    if(layoutedLessons.count <= 0){
+    if(_timetableView.lessons.count <= 0){
         _timetableView.hidden = true;
         _noLessonsLabel.hidden = false;
     } else{
         _timetableView.hidden = false;
         _noLessonsLabel.hidden = true;
     }
-    
-    _timetableView.lessons = layoutedLessons;
 }
 
 -(NSMutableArray<ScheduleLesson*>*)calculateLayout:(NSMutableArray<Lesson*>*)lessons{

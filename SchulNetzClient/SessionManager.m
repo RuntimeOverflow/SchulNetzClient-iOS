@@ -9,25 +9,17 @@
 }
 
 -(void)start{
-    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self run];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self->timer = [NSTimer scheduledTimerWithTimeInterval:1 * 60 repeats:true block:^(NSTimer * _Nonnull timer){
+            [self->account loadPage:@"1" completion:^(NSObject *res) {}];
+        }];
     });
 }
 
 -(void)stop{
-    running = false;
-}
-
--(void)run{
-    if(running) return;
-    
-    running = true;
-    
-    while(running){
-        [account resetTimeout];
-        
-        sleep(20 * 60 * 1000);
+    if(timer){
+        [timer invalidate];
+        timer = NULL;
     }
 }
 @end

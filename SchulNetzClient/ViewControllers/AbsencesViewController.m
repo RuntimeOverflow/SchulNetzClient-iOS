@@ -37,17 +37,15 @@ NSMutableArray<NSNumber*>* secondaryExpanded;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if([Util checkConnection]){
-            NSObject* doc = [[Variables get].account loadPage:@"21111"];
-            if([doc class] == [HTMLDocument class]) [Parser parseAbsences:(HTMLDocument*)doc forUser:[Variables get].user];
-            [[Variables get].user processConnections];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
+            [[Variables get].account loadPage:@"21111" completion:^(NSObject *doc) {
+                if([doc class] == [HTMLDocument class]) [Parser parseAbsences:(HTMLDocument*)doc forUser:[Variables get].user];
+                [[Variables get].user processConnections];
                 [self reload];
-            });
+            }];
         }
-    });
+    //});
 }
 
 -(void)reload{

@@ -42,19 +42,19 @@ BOOL showTeachers = false;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if([Util checkConnection]){
-            NSObject* doc = [[Variables get].account loadPage:@"22352"];
-            if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:[Variables get].user];
-            doc = [[Variables get].account loadPage:@"22326"];
-            if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:[Variables get].user];
-            [[Variables get].user processConnections];
+            [[Variables get].account loadPage:@"22352" completion:^(NSObject *doc) {
+                if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:[Variables get].user];
+            }];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
+                if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:[Variables get].user];
+                [[Variables get].user processConnections];
                 [self reload];
-            });
+            }];
         }
-    });
+    //});
 }
 
 -(void)reload{

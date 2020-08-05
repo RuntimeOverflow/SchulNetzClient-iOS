@@ -48,12 +48,13 @@
     [classes addObject: [Absence class]];
     [classes addObject: [Transaction class]];
     
-    User* user = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:[[NSUserDefaults standardUserDefaults] objectForKey:@"cacheData"] error:nil];
+    User* user = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:[[NSUserDefaults standardUserDefaults] objectForKey:@"user"] error:nil];
+    [user processConnections];
     return user;
 }
 
 -(void)save{
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:true error:nil] forKey:@"cacheData"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:true error:nil] forKey:@"user"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

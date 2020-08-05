@@ -11,7 +11,6 @@
     
     BOOL signingIn;
     BOOL signingOut;
-    NSMutableArray* queue;
     
     SessionManager* manager;
 }
@@ -34,11 +33,12 @@
 
 -(NSObject*)signIn;
 -(NSObject*)signOut;
+-(NSObject*)signOut:(BOOL)instant;
 -(NSObject*)resetTimeout;
 
--(NSObject*)loadPage:(NSString*)pageId;
--(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to;
--(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to view:(NSString*)view;
+-(void)loadPage:(NSString*)pageId completion:(void (^)(NSObject*))completion;
+-(void)loadScheduleFrom:(NSDate*)from to:(NSDate*)to completion:(void (^)(NSObject*))completion;
+-(void)loadScheduleFrom:(NSDate*)from to:(NSDate*)to view:(NSString*)view completion:(void (^)(NSObject*))completion;
 
 -(NSString*)getTransId:(HTMLDocument*)src;
 -(NSString*)getCookies:(NSDictionary*)headers;

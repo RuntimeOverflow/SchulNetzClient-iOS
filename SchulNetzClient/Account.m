@@ -3,6 +3,15 @@
 #import "Util.h"
 #import "Data/User.h"
 
+@interface Account (){
+	NSMutableArray* pageQueue;
+	dispatch_queue_t pageDQ;
+	
+	NSMutableArray* scheduleQueue;
+	dispatch_queue_t scheduleDQ;
+}
+@end
+
 @implementation Account
 @synthesize host;
 @synthesize username;
@@ -20,7 +29,12 @@
     self.password = password;
 	
 	cookiesList = [[NSMutableArray alloc] init];
-	queue = [[NSMutableArray alloc] init];
+	
+	pageQueue = [[NSMutableArray alloc] init];
+	pageDQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+	
+	scheduleQueue = [[NSMutableArray alloc] init];
+	scheduleDQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
 	
 	if(session) manager = [[SessionManager alloc] initWithAccount:self];
 	
@@ -62,10 +76,10 @@
 		signingIn = true;
 		
 		NSURLSession* defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-
+		
 		NSURL* loginUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/", host]];
 		NSMutableURLRequest* urlRequest = [NSMutableURLRequest requestWithURL:loginUrl];
-
+		
 		[urlRequest setHTTPMethod:@"GET"];
 		[urlRequest setValue:@"SchulNetz Client" forHTTPHeaderField:@"User-Agent"];
 		
@@ -73,6 +87,7 @@
 		
 		__block BOOL done = NO;
 		__block NSError* exception = NULL;
+		
 		NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData* data, NSURLResponse* response, NSError* error) {
 			if(error != NULL || data == NULL){
 				exception = error;
@@ -88,7 +103,7 @@
 			done = YES;
 		}];
 		[dataTask resume];
-
+		
 		while (!done) {
 			NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
 			[[NSRunLoop currentRunLoop] runUntilDate:date];
@@ -172,10 +187,19 @@
 }
 
 -(NSObject*)signOut{
+	return [self signOut:false];
+}
+
+-(NSObject*)signOut:(BOOL)instant{
 	if(signingOut || !signedIn) return [NSNumber numberWithBool:true];
 	
 	@try {
 		signingOut = true;
+		
+		if(!instant) while(pageQueue.count > 0 || scheduleQueue.count > 0) {
+			NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+			[[NSRunLoop currentRunLoop] runUntilDate:date];
+		}
 		
 		NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 		
@@ -276,26 +300,39 @@
 	} @finally{}
 }
 
+-(void)loadPage:(NSString*)pageId completion:(void (^)(NSObject*))completion{
+	if((!signedIn && !signingIn) || signingOut) return;
+	
+	NSMutableDictionary* d = [[NSMutableDictionary alloc] init];
+	d[@"pageId"] = pageId;
+	d[@"completion"] = completion;
+	[pageQueue addObject:d];
+	
+	if(pageQueue.count > 1) return;
+	
+	dispatch_async(pageDQ, ^{
+		while(self->pageQueue.count > 0){
+			NSMutableDictionary* dict = self->pageQueue[0];
+			
+			NSObject* result = [self loadPage:dict[@"pageId"]];
+			[self->pageQueue removeObjectAtIndex:0];
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				((void (^)(NSObject*))dict[@"completion"])(result);
+			});
+		}
+	});
+}
+
 -(NSObject*)loadPage:(NSString*)pageId{
-	if((!signedIn && !signingIn) || signingOut) return NULL;
-	
-	if([queue containsObject:pageId]) return [NSNumber numberWithBool:false];
-	
-	[queue addObject:pageId];
-	while(queue[0] != pageId){
-		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
-		[[NSRunLoop currentRunLoop] runUntilDate:date];
-	}
+	if(!signedIn && !signingIn) return NULL;
 	
 	while(signingIn) {
 		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
 		[[NSRunLoop currentRunLoop] runUntilDate:date];
 	}
 	
-	if(!signedIn || signingOut){
-		[queue removeObjectAtIndex:0];
-		return NULL;
-	}
+	if(!signedIn) return NULL;
 	
 	@try {
 		__block HTMLDocument* src;
@@ -341,24 +378,47 @@
 			[[NSRunLoop currentRunLoop] runUntilDate:date];
 		}
 		
-		[queue removeObjectAtIndex:0];
-		
 		if(exception) return exception;
 		else return src;
 	} @catch(NSException *exception){
-		[queue removeObjectAtIndex:0];
 		return exception;
 	} @finally{}
 }
 
--(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to{
-	return [self loadScheduleFrom:from to:to view:@"day"];
+-(void)loadScheduleFrom:(NSDate*)from to:(NSDate*)to completion:(void (^)(NSObject*))completion{
+	[self loadScheduleFrom:from to:to view:@"day" completion:completion];
+}
+
+-(void)loadScheduleFrom:(NSDate*)from to:(NSDate*)to view:(NSString*)view completion:(void (^)(NSObject*))completion{
+	NSMutableDictionary* d = [[NSMutableDictionary alloc] init];
+	d[@"from"] = from;
+	d[@"to"] = to;
+	d[@"view"] = view;
+	d[@"completion"] = completion;
+	
+	if(scheduleQueue.count > 1) [scheduleQueue removeObjectAtIndex:1];
+	[scheduleQueue addObject:d];
+	
+	if(scheduleQueue.count > 1) return;
+	
+	dispatch_async(scheduleDQ, ^{
+		while(self->scheduleQueue.count > 0){
+			NSMutableDictionary* dict = self->scheduleQueue[0];
+			
+			NSObject* result = [self loadScheduleFrom:dict[@"from"] to:dict[@"to"] view:d[@"view"]];
+			[self->scheduleQueue removeObjectAtIndex:0];
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				((void (^)(NSObject*))dict[@"completion"])(result);
+			});
+		}
+	});
 }
 
 -(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to view:(NSString*)view{
 	if((!signedIn && !signingIn) || signingOut) return NULL;
 	
-	while(signingIn) {
+	while(signingIn || pageQueue.count > 0) {
 		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];
 		[[NSRunLoop currentRunLoop] runUntilDate:date];
 	}
@@ -378,7 +438,7 @@
 		
 		NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 		
-		NSMutableString *urlString = [[NSMutableString alloc]initWithFormat:@"https://%@/scheduler_processor.php?view=", host];
+		NSMutableString *urlString = [[NSMutableString alloc] initWithFormat:@"https://%@/scheduler_processor.php?view=", host];
 		[urlString appendString:view];
 		[urlString appendString:@"&curr_date=2005-05-10&min_date="];
 		[urlString appendString:[formatter stringFromDate:from]];
@@ -469,6 +529,6 @@
 		manager = NULL;
 	}
 	
-	if(signedIn) [self signOut];
+	if(signedIn && !signingOut) [self signOut];
 }
 @end
