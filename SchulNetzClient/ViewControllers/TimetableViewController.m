@@ -34,15 +34,15 @@
     
     _noLessonsLabel.hidden = true;
     
-    [[Variables get].account loadPage:@"22202" completion:^(NSObject *doc) {
-        if(doc && [doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:[Variables get].user];
-    }];
-    
     [self reload];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
+    [[Variables get].account loadPage:@"22202" completion:^(NSObject *doc) {
+        if(doc && [doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:[Variables get].user];
+    }];
     
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"d.M.yyyy";
@@ -84,15 +84,16 @@
 -(void)fetchAndReloadSchedule{
     NSDate* original = timetableDate;
     
-    _timetableView.hidden = true;
-    _noLessonsLabel.hidden = true;
-    _loadingIndicator.hidden = false;
-    [self->_loadingIndicator startAnimating];
-    
     if([Util checkConnection]){
+        _timetableView.hidden = true;
+        _noLessonsLabel.hidden = true;
+        _loadingIndicator.hidden = false;
+        [self->_loadingIndicator startAnimating];
+        
         [[Variables get].account loadScheduleFrom:original to:original view:@"day" completion:^(NSObject *doc) {
             if(doc && [doc class] == [HTMLDocument class] && [original compare:self->timetableDate] == NSOrderedSame){
                 self->lessons = [Parser parseSchedule:(HTMLDocument*)doc];
+                
                 if(!self->lessons){
                     self->_loadingIndicator.hidden = true;
                     [self->_loadingIndicator stopAnimating];
@@ -106,8 +107,17 @@
                     [self->_loadingIndicator stopAnimating];
                     [self reload];
                 }
+            } else if([original compare:self->timetableDate] == NSOrderedSame){
+                self->_loadingIndicator.hidden = true;
+                [self->_loadingIndicator stopAnimating];
+                self->_timetableView.hidden = false;
+                [self resetToTodayAndReload];
+                
+                return;
             }
         }];
+    } else{
+        [self resetToTodayAndReload];
     }
 }
 

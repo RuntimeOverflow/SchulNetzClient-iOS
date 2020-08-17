@@ -117,7 +117,7 @@ NSArray<NSString*>* startPages = NULL;
     UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"signout", @"") message:NSLocalizedString(@"signoutConfirmation", @"") preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* positive = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"loggedIn"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"cacheData"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user"];
         [[Variables get].account close];
         [Variables get].account = NULL;
         [Util setTintColor:[Host colorForHost:@""]];

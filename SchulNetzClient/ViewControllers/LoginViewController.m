@@ -69,7 +69,6 @@ NSLayoutConstraint* heightUrlField;
     Account* account = [[Account alloc]initWithUsername:self->_usernameField.text password: self->_passwordField.text host:(otherHost ? self->_urlField.text : self->_urlPickerField.text) session:false];
    
     NSObject* result = [account signIn];
-    
     if([[result class] isSubclassOfClass:[NSNumber class]] && ((NSNumber*)result).boolValue){
         dispatch_async(dispatch_get_main_queue(), ^{
             self->_signinContainer.hidden = true;

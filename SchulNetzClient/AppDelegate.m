@@ -31,8 +31,6 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    
     if([Variables get].account && ![Variables get].account.signedIn){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [[Variables get].account signIn];
