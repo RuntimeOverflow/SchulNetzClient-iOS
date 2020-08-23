@@ -34,11 +34,14 @@
     
     _noLessonsLabel.hidden = true;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewDidAppear:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
     [self reload];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    if(!self.view.window) return;
     
     [[Variables get].account loadPage:@"22202" completion:^(NSObject *doc) {
         if(doc && [doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:[Variables get].user];

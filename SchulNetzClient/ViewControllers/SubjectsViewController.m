@@ -26,6 +26,7 @@
 @end
 
 @interface SubjectsViewController (){
+    NSMutableArray<Subject*> *current;
     int cellPerRow;
 }
 
@@ -36,6 +37,8 @@
 @implementation SubjectsViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    current = [Variables get].user.subjects;
     
     cellPerRow = 2;
     _collectionView.delegate = self;
@@ -61,6 +64,7 @@
 }
 
 -(void)reload{
+    current = [Variables get].user.subjects;
     [_collectionView reloadData];
 }
 
@@ -73,7 +77,7 @@
         double negative = 0;
         double positive = 0;
         
-        for(Subject* s in [Variables get].user.subjects){
+        for(Subject* s in current){
             if([s getAverage] < 1|| isnan([s getAverage])) continue;
             
             double rounded = round(2.0 * [s getAverage]) / 2.0 - 4;
@@ -91,7 +95,7 @@
         
         Subject* s = NULL;
         int index = -1;
-        for(Subject* subject in [Variables get].user.subjects) {
+        for(Subject* subject in current) {
             if(subject.name) index++;
             
             if(indexPath.row - 1 == index){
@@ -119,7 +123,7 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     int count = 0;
     
-    for(Subject* s in [Variables get].user.subjects) if(s.name) count++;
+    for(Subject* s in current) if(s.name) count++;
     
     return count + 1;
 }
@@ -136,7 +140,7 @@
     if([segue.identifier isEqualToString:@"subjectSegue"]){
         Subject* s = NULL;
         int index = -1;
-        for(Subject* subject in [Variables get].user.subjects) {
+        for(Subject* subject in current) {
             if(subject.name) index++;
             
             if([_collectionView indexPathForCell:sender].item - 1 == index){
