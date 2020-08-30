@@ -20,7 +20,7 @@
     [center setNotificationCategories:[NSSet setWithObjects:generalCategory, nil]];
     center.delegate = self;
     
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:15 * 60];
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     return YES;
 }
@@ -47,6 +47,11 @@
 }
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    __block UIBackgroundTaskIdentifier backgroundTask = [application beginBackgroundTaskWithExpirationHandler:^{
+        [application endBackgroundTask:backgroundTask];
+        backgroundTask = UIBackgroundTaskInvalid;
+    }];
+    
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"loggedIn"]){
         User* previous = [User load];
         User* user = [[User alloc] init];
@@ -55,6 +60,8 @@
         NSObject* res = [account signIn];
         if(![[res class] isSubclassOfClass:[NSNumber class]] || !((NSNumber*)res).boolValue){
             completionHandler(UIBackgroundFetchResultNoData);
+            [application endBackgroundTask:backgroundTask];
+            backgroundTask = UIBackgroundTaskInvalid;
             return;
         }
         
@@ -139,6 +146,8 @@
     }
     
     completionHandler(UIBackgroundFetchResultNewData);
+    [application endBackgroundTask:backgroundTask];
+    backgroundTask = UIBackgroundTaskInvalid;
 }
 
 -(void) sendNotificationWithTitle: (NSString*) title withContent: (NSString*) content{
