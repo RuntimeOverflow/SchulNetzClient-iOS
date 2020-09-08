@@ -222,7 +222,7 @@
 			NSDictionary* headers = [(NSHTTPURLResponse*) response allHeaderFields];
 			loginSrc = [[HTMLDocument alloc] initWithData:data contentTypeHeader:headers[@"Content-Type"]];
 			
-			self->currentCookies = [self getCookies: headers];
+			self->currentCookies = [self getCookies:headers];
 			
 			done = YES;
 		}];
@@ -271,7 +271,7 @@
 			
 			pageSrc = [[HTMLDocument alloc] initWithData:data contentTypeHeader:[(NSHTTPURLResponse*) response allHeaderFields][@"Content-Type"]];
 			
-			self->currentCookies = [self getCookies: [(NSHTTPURLResponse*)response allHeaderFields]];
+			self->currentCookies = [self getCookies:[(NSHTTPURLResponse*)response allHeaderFields]];
 			
 			done = YES;
 		}];
@@ -535,7 +535,7 @@
 			NSMutableDictionary* dict = self->scheduleQueue[0];
 			
 			NSObject* result = [self loadScheduleFrom:dict[@"from"] to:dict[@"to"] view:d[@"view"]];
-			[self->scheduleQueue removeObjectAtIndex:0];
+			if(self->scheduleQueue.count > 0) [self->scheduleQueue removeObjectAtIndex:0];
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
 				((void (^)(NSObject*))dict[@"completion"])(result);
@@ -626,7 +626,7 @@
 -(NSString*)getCookies:(NSDictionary*)headers{
 	NSMutableString* cookies = [[NSMutableString alloc]initWithString:@""];
 	
-	NSMutableString* setCookie = [[NSMutableString alloc] initWithString:[(NSString*) headers valueForKey:@"Set-Cookie"]];
+	NSMutableString* setCookie = [headers valueForKey:@"Set-Cookie"] ? [[NSMutableString alloc] initWithString:(NSString*)[headers valueForKey:@"Set-Cookie"]] : [[NSMutableString alloc] initWithString:@""];
 	if([setCookie rangeOfString:@", \\d" options:NSRegularExpressionSearch].location != NSNotFound) [setCookie replaceCharactersInRange:NSMakeRange([setCookie rangeOfString:@", \\d" options:NSRegularExpressionSearch].location, 1) withString:@""];
 	
 	for(NSString* value in [setCookie componentsSeparatedByString:@","]){
