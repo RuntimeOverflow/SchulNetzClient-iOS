@@ -299,7 +299,10 @@
 			return exception;
 		}
 		
-		if(currentId.length <= 0) return [NSNumber numberWithBool:false];
+		if(currentId.length <= 0) {
+			signingIn = false;
+			return [NSNumber numberWithBool:false];
+		}
 		
 		if(manager) [manager start];
 		signedIn = true;
