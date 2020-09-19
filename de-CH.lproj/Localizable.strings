@@ -29,6 +29,7 @@
 
 "defaultPage" = "Startseite";
 
+/* No comment provided by engineer. */
 "excusedAbsence" = "Absenz entschuldigt";
 
 /* No comment provided by engineer. */
@@ -61,14 +62,19 @@
 /* No comment provided by engineer. */
 "missedLessons" = "Verpasste Lektionen";
 
+/* No comment provided by engineer. */
 "modifiedGrade" = "Note bearbeitet";
 
+/* No comment provided by engineer. */
 "newAbsence" = "Neue Absenz";
 
+/* No comment provided by engineer. */
 "newExcusedAbsence" = "Neue entschuldigte Absenz";
 
+/* No comment provided by engineer. */
 "newGrade" = "Neue Note veröffentlicht";
 
+/* No comment provided by engineer. */
 "newTransaction" = "Saldo geändert";
 
 /* No comment provided by engineer. */
@@ -85,6 +91,7 @@
 
 "noGrades" = "Keine Noten";
 
+/* No comment provided by engineer. */
 "noLessons" = "Keine Lektionen";
 
 "noMail" = "Keine unterstützte Mail App installiert";
@@ -156,6 +163,9 @@
 
 /* No comment provided by engineer. */
 "the server property must not to be nil, should use 'keyChainStoreWithServer:protocolType:' initializer to instantiate keychain store" = "";
+
+/* No comment provided by engineer. */
+"timetableUnavailable" = "Stundenplan nicht verfügbar";
 
 /* No comment provided by engineer. */
 "Unexpected error has occurred." = "";

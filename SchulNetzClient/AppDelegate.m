@@ -114,60 +114,12 @@
         NSMutableArray<Change*>* changes = [Change getChanges:previous current:user];
         [user save];
         
-        if([[NSUserDefaults standardUserDefaults] boolForKey:@"notificationsEnabled"]) for(Change* change in changes){
-            Class c = NULL;
-            
-            if(change.previous) c = [change.previous class];
-            else if(change.current) c = [change.current class];
-            else continue;
-            
-            if(c == [Grade class]){
-                if((change.type == ADDED && ((Grade*)change.current).grade != 0) || (change.type == MODIFIED && [change.varName isEqualToString:@"grade"] && ((Grade*)change.previous).grade == 0)){
-                    [self sendNotificationWithTitle:NSLocalizedString(@"newGrade", @"") withContent:[NSString stringWithFormat:@"[%@] %@: %@", ((Grade*)change.current).subject.name, ((Grade*)change.current).content, [NSNumber numberWithDouble:((Grade*)change.current).grade].stringValue]];
-                } else if(change.type == MODIFIED && [change.varName isEqualToString:@"grade"] && ((Grade*)change.current).grade == 0){
-                    [self sendNotificationWithTitle:NSLocalizedString(@"modifiedGrade", @"") withContent:[NSString stringWithFormat:@"[%@] %@: %@ -> %@", ((Grade*)change.current).subject.name, ((Grade*)change.current).content, [NSNumber numberWithDouble:((Grade*)change.previous).grade].stringValue, [NSNumber numberWithDouble:((Grade*)change.current).grade].stringValue]];
-                }
-            } else if(c == [Absence class]){
-                if(change.type == ADDED){
-                    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-                    NSString* body = [NSString stringWithFormat:@"%@%@ (%@)", [formatter stringFromDate:((Absence*)change.current).startDate], (((Absence*)change.current).startDate.timeIntervalSince1970 != ((Absence*)change.current).endDate.timeIntervalSince1970 ? [NSString stringWithFormat:@" - %@", [formatter stringFromDate:((Absence*)change.current).endDate]] : @""), [NSString stringWithFormat:@"%@ %@", [NSNumber numberWithInt:((Absence*)change.current).lessonCount].stringValue, (((Absence*)change.current).lessonCount != 1 ? NSLocalizedString(@"lessons", @"") : NSLocalizedString(@"lesson", @""))]];
-                    [self sendNotificationWithTitle:(((Absence*)change.current).excused ? NSLocalizedString(@"newExcusedAbsence", @"") : NSLocalizedString(@"newAbsence", @"")) withContent:body];
-                } else if(change.type == MODIFIED && [change.varName isEqualToString:@"excused"] && ((Absence*)change.current).excused){
-                    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-                    NSString* body = [NSString stringWithFormat:@"%@%@ (%@)", [formatter stringFromDate:((Absence*)change.current).startDate], (((Absence*)change.current).startDate.timeIntervalSince1970 != ((Absence*)change.current).endDate.timeIntervalSince1970 ? [NSString stringWithFormat:@" - %@", [formatter stringFromDate:((Absence*)change.current).endDate]] : @""), [NSString stringWithFormat:@"%@ %@", [NSNumber numberWithInt:((Absence*)change.current).lessonCount].stringValue, (((Absence*)change.current).lessonCount != 1 ? NSLocalizedString(@"lessons", @"") : NSLocalizedString(@"lesson", @""))]];
-                    [self sendNotificationWithTitle:NSLocalizedString(@"excusedAbsence", @"") withContent:body];
-                }
-            } else if(c == [Transaction class]){
-                if(change.type == ADDED){
-                    [self sendNotificationWithTitle:NSLocalizedString(@"newTransaction", @"") withContent:[NSString stringWithFormat:@"%@ -> %.2f", ((Transaction*)change.current).reason, ((Transaction*)change.current).amount]];
-                }
-            }
-        }
+        [Change publishNotifications:changes];
     }
     
     completionHandler(UIBackgroundFetchResultNewData);
     [application endBackgroundTask:backgroundTask];
     backgroundTask = UIBackgroundTaskInvalid;
-}
-
--(void) sendNotificationWithTitle: (NSString*) title withContent: (NSString*) content{
-    if([Util notifcationsAllowed]){
-        UNMutableNotificationContent* notificationContent = [[UNMutableNotificationContent alloc] init];
-        notificationContent.title = title;
-        notificationContent.body = content;
-        notificationContent.categoryIdentifier = @"GENERAL";
-        if([Util soundsAllowed]) notificationContent.sound = [UNNotificationSound defaultSound];
-
-        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.001 repeats:NO];
-        
-        UNNotificationRequest* request = [UNNotificationRequest
-               requestWithIdentifier:[[NSProcessInfo processInfo] globallyUniqueString] content:notificationContent trigger:trigger];
-        
-        UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-        [center addNotificationRequest:request withCompletionHandler:^(NSError* error) {
-           
-        }];
-    }
 }
 
 @end

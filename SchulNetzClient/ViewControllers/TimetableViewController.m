@@ -74,7 +74,7 @@
     }
     
     timetableDate = [NSDate date];
-    lessons = [Variables get].user.lessons;
+    lessons = NULL;
     
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"d.M.yyyy";
@@ -127,9 +127,14 @@
 -(void)reload{
     NSMutableArray* layoutedLessons = [self calculateLayout:lessons];
     
-    if(layoutedLessons.count <= 0){
+    if(!lessons){
         _timetableView.hidden = true;
         _noLessonsLabel.hidden = false;
+        _noLessonsLabel.text = NSLocalizedString(@"timetableUnavailable", @"");
+    } else if(layoutedLessons.count <= 0){
+        _timetableView.hidden = true;
+        _noLessonsLabel.hidden = false;
+        _noLessonsLabel.text = NSLocalizedString(@"noLessons", @"");
     } else{
         _timetableView.hidden = false;
         _noLessonsLabel.hidden = true;
@@ -139,6 +144,8 @@
 }
 
 -(NSMutableArray<ScheduleLesson*>*)calculateLayout:(NSMutableArray<Lesson*>*)lessons{
+    if(!lessons) return [[NSMutableArray alloc] init];
+    
     NSMutableArray<ScheduleLesson*>* result = [[NSMutableArray alloc] init];
     NSMutableArray<Lesson*>* sorted = [Lesson orderByStartTime:lessons];
     

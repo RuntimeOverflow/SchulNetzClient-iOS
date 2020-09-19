@@ -16,4 +16,5 @@ typedef enum {
 -(instancetype)initWithPrevious:(NSObject*)previousObject current:(NSObject*)currentObject varName:(NSString*)variableName changeType:(ChangeType)changeType;
 
 +(NSMutableArray*)getChanges:(User*)previous current:(User*)current;
++(void)publishNotifications:(NSArray<Change*>*)changes;
 @end

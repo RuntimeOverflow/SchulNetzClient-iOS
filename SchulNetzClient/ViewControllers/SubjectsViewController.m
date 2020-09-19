@@ -4,6 +4,7 @@
 #import "../Util.h"
 #import "../Variables.h"
 #import "../Parser.h"
+#import "../Data/Change.h"
 #import "SubjectViewController.h"
 
 @interface SubjectCell : UICollectionViewCell
@@ -51,6 +52,8 @@
     [super viewDidAppear:animated];
     
     if([Util checkConnection]){
+        User* copy = [Variables.get.user copy];
+        
         [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:[Variables get].user];
         }];
@@ -59,6 +62,9 @@
             if([doc class] == [HTMLDocument class]) [Parser parseGrades:(HTMLDocument*)doc forUser:[Variables get].user];
             [[Variables get].user processConnections];
             [self reload];
+            
+            [Change publishNotifications:[Change getChanges:copy current:Variables.get.user]];
+            [Variables.get.user save];
         }];
     }
 }

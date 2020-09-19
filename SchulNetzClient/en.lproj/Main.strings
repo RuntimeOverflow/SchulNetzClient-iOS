@@ -91,9 +91,6 @@
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "ZqS-ow-gPk"; */
 "ZqS-ow-gPk.placeholder" = "Username";
 
-/* Class = "UILabel"; text = "No Lessons"; ObjectID = "d4g-Kq-ANv"; */
-"d4g-Kq-ANv.text" = "No Lessons";
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "fT0-lS-62p"; */
 "fT0-lS-62p.text" = "";
 

@@ -5,6 +5,7 @@
 #import "../Variables.h"
 #import "../Data/User.h"
 #import "../Data/Host.h"
+#import "../Data/Change.h"
 
 @interface SettingsViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
@@ -90,16 +91,19 @@ NSArray<NSString*>* startPages = NULL;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        if([Util checkConnection]){
-            [[Variables get].account loadPage:@"21411" completion:^(NSObject *doc) {
-                if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:[Variables get].user];
-                if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:[Variables get].user];
-                [[Variables get].user processConnections];
-                [self reload];
-            }];
-        }
-    //});
+    if([Util checkConnection]){
+        User* copy = [Variables.get.user copy];
+        
+        [[Variables get].account loadPage:@"21411" completion:^(NSObject *doc) {
+            if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:[Variables get].user];
+            if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:[Variables get].user];
+            [[Variables get].user processConnections];
+            [self reload];
+            
+            [Change publishNotifications:[Change getChanges:copy current:Variables.get.user]];
+            [Variables.get.user save];
+        }];
+    }
 }
 
 -(void)reload{

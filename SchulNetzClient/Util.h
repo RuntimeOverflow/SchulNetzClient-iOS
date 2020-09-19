@@ -12,7 +12,7 @@
 +(UIColor*) getDisabledTintColor;
 +(void) setTintColor: (UIColor*) tintColor;
 +(BOOL) checkConnection;
-+(BOOL) notifcationsAllowed;
++(BOOL) notificationsAllowed;
 +(BOOL) soundsAllowed;
 +(BOOL) badgesAllowed;
 +(UICKeyChainStore*)getKeyChain;

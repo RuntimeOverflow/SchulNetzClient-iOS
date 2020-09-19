@@ -58,6 +58,27 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+-(User*)copy{
+    NSMutableSet* classes = [[NSMutableSet alloc] init];
+    [classes addObject: [NSString class]];
+    [classes addObject: [NSMutableArray class]];
+    [classes addObject: [NSMutableDictionary class]];
+    [classes addObject: [NSDate class]];
+    [classes addObject: [UIColor class]];
+    [classes addObject: [User class]];
+    [classes addObject: [Teacher class]];
+    [classes addObject: [Student class]];
+    [classes addObject: [Lesson class]];
+    [classes addObject: [Subject class]];
+    [classes addObject: [Grade class]];
+    [classes addObject: [Absence class]];
+    [classes addObject: [Transaction class]];
+    
+    User* copy = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:[NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:true error:nil] error:nil];
+    [copy processConnections];
+    return copy;
+}
+
 -(void)processConnections{
     @try{
         for(Teacher* t in teachers) t.subjects = [[NSMutableArray alloc] init];

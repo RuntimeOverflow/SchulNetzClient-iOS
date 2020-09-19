@@ -29,6 +29,7 @@
 
 "defaultPage" = "Start Page";
 
+/* No comment provided by engineer. */
 "excusedAbsence" = "Absence excused";
 
 /* No comment provided by engineer. */
@@ -61,14 +62,19 @@
 /* No comment provided by engineer. */
 "missedLessons" = "Lessons missed";
 
+/* No comment provided by engineer. */
 "modifiedGrade" = "Grade modified";
 
+/* No comment provided by engineer. */
 "newAbsence" = "Absence added";
 
+/* No comment provided by engineer. */
 "newExcusedAbsence" = "Excused absence added";
 
+/* No comment provided by engineer. */
 "newGrade" = "New grade published";
 
+/* No comment provided by engineer. */
 "newTransaction" = "Account balance changed";
 
 /* No comment provided by engineer. */
@@ -85,6 +91,7 @@
 
 "noGrades" = "No Grades yet";
 
+/* No comment provided by engineer. */
 "noLessons" = "No Lessons";
 
 "noMail" = "No supported mail app installed";
@@ -156,6 +163,9 @@
 
 /* No comment provided by engineer. */
 "the server property must not to be nil, should use 'keyChainStoreWithServer:protocolType:' initializer to instantiate keychain store" = "";
+
+/* No comment provided by engineer. */
+"timetableUnavailable" = "Timetable Unavailable";
 
 /* No comment provided by engineer. */
 "Unexpected error has occurred." = "";

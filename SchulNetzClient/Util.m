@@ -63,7 +63,7 @@ static UIColor* tint;
     else return ((BOOL)(flags & kSCNetworkReachabilityFlagsReachable) && !(BOOL)(flags & kSCNetworkFlagsConnectionRequired));
 }
 
-+(BOOL) notifcationsAllowed{
++(BOOL) notificationsAllowed{
     __block BOOL allowed = false;
     __block BOOL loaded = false;
     

@@ -378,6 +378,8 @@
     NSMutableArray* list = [[NSMutableArray alloc] init];
     
     @try{
+        if([doc nodesMatchingSelector:@"event"].count <= 0) return NULL;
+        
         for(HTMLNode* event in [doc nodesMatchingSelector:@"event"]){
             Lesson* lesson = [[Lesson alloc] init];
             
@@ -411,7 +413,7 @@
             [list addObject:lesson];
         }
     } @catch(NSException *exception){
-        return [[NSMutableArray alloc] init];
+        return NULL;
     } @finally{}
     
     return list;

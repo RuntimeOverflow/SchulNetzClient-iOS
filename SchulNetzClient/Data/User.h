@@ -22,6 +22,7 @@
 
 +(User*)load;
 -(void)save;
+-(User*)copy;
 
 -(void)processConnections;
 -(Teacher*)teacherForShortName:(NSString*)shortName;
