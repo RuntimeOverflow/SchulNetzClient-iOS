@@ -1,4 +1,5 @@
 #import "LoginViewController.h"
+#import <UserNotifications/UserNotifications.h>
 #import "../Account.h"
 #import "../Util.h"
 #import "../Data/Host.h"
@@ -111,6 +112,8 @@ NSLayoutConstraint* heightUrlField;
             [user processConnections];
             [Variables get].user = user;
             [user save];
+            
+            [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge completionHandler:^(BOOL granted, NSError * _Nullable error){}];
             
             UIViewController* vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MainScene"];
             vc.modalPresentationStyle = UIModalPresentationFullScreen;

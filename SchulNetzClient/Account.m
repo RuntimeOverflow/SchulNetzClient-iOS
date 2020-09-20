@@ -70,6 +70,11 @@
 }
 
 -(NSObject*)signIn{
+	while(signingOut) {
+		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+		[[NSRunLoop currentRunLoop] runUntilDate:date];
+	}
+	
 	if(signingIn) return [NSNumber numberWithBool:false];
 	
 	@try{
@@ -460,6 +465,7 @@
 		NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 
 		[urlRequest setHTTPMethod:@"GET"];
+		urlRequest.timeoutInterval = 15;
 		[urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 		[urlRequest setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
 		[urlRequest setValue:self->currentCookies forHTTPHeaderField:@"Cookie"];

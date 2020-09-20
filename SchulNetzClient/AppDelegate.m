@@ -31,8 +31,9 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
-    if([Variables get].account && ![Variables get].account.signedIn){
+    if([Variables get].account){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [[Variables get].account signOut:true];
             [[Variables get].account signIn];
         });
     }

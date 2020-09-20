@@ -1,4 +1,5 @@
 #import "SettingsViewController.h"
+#import <UserNotifications/UserNotifications.h>
 #import "../Util.h"
 #import "../Account.h"
 #import "../Parser.h"
@@ -27,24 +28,26 @@ NSArray<NSString*>* startPages = NULL;
     
     _logoutButton.backgroundColor = [Util getTintColor];
     
+    UIColor* separatorColor = [UIColor colorWithRed:0.235 green:0.235 blue:0.263 alpha:1];
+    
     CALayer* transactionsTopBorder = [CALayer layer];
-    transactionsTopBorder.frame = CGRectMake(0.0f, 0.0f, _transactionsCell.frame.size.width, 1.0f);
-    transactionsTopBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    transactionsTopBorder.frame = CGRectMake(0.0f, 0.0f, _transactionsCell.frame.size.width, 0.5f);
+    transactionsTopBorder.backgroundColor = separatorColor.CGColor;
     [_transactionsCell.layer addSublayer:transactionsTopBorder];
     
     CALayer* transactionsBottomBorder = [CALayer layer];
-    transactionsBottomBorder.frame = CGRectMake(0.0f, _transactionsCell.frame.size.height - 1, _transactionsCell.frame.size.width, 1.0f);
-    transactionsBottomBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    transactionsBottomBorder.frame = CGRectMake(0.0f, _transactionsCell.frame.size.height - 1, _transactionsCell.frame.size.width, 0.5f);
+    transactionsBottomBorder.backgroundColor = separatorColor.CGColor;
     [_transactionsCell.layer addSublayer:transactionsBottomBorder];
     
     CALayer* startPageTopBorder = [CALayer layer];
-    startPageTopBorder.frame = CGRectMake(0.0f, 0.0f, _startPageCell.frame.size.width, 1.0f);
-    startPageTopBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    startPageTopBorder.frame = CGRectMake(0.0f, 0.0f, _startPageCell.frame.size.width, 0.5f);
+    startPageTopBorder.backgroundColor = separatorColor.CGColor;
     [_startPageCell.layer addSublayer:startPageTopBorder];
     
     CALayer* startPageBottomBorder = [CALayer layer];
-    startPageBottomBorder.frame = CGRectMake(0.0f, _startPageCell.frame.size.height - 1, _startPageCell.frame.size.width, 1.0f);
-    startPageBottomBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    startPageBottomBorder.frame = CGRectMake(0.0f, _startPageCell.frame.size.height - 1, _startPageCell.frame.size.width, 0.5f);
+    startPageBottomBorder.backgroundColor = separatorColor.CGColor;
     [_startPageCell.layer addSublayer:startPageBottomBorder];
     
     startPages = @[NSLocalizedString(@"grades", @""), NSLocalizedString(@"absences", @""), NSLocalizedString(@"timetable", @""), NSLocalizedString(@"people", @""), NSLocalizedString(@"settings", @"")];
@@ -60,29 +63,23 @@ NSArray<NSString*>* startPages = NULL;
     _startPagePickerField.text = startPages[index];
     
     CALayer* notificationsTopBorder = [CALayer layer];
-    notificationsTopBorder.frame = CGRectMake(0.0f, 0.0f, _notificationsCell.frame.size.width, 1.0f);
-    notificationsTopBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    notificationsTopBorder.frame = CGRectMake(0.0f, 0.0f, _notificationsCell.frame.size.width, 0.5f);
+    notificationsTopBorder.backgroundColor = separatorColor.CGColor;
     [_notificationsCell.layer addSublayer:notificationsTopBorder];
     
     CALayer* notificationsBottomBorder = [CALayer layer];
-    notificationsBottomBorder.frame = CGRectMake(0.0f, _notificationsCell.frame.size.height - 1, _notificationsCell.frame.size.width, 1.0f);
-    notificationsBottomBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    notificationsBottomBorder.frame = CGRectMake(0.0f, _notificationsCell.frame.size.height - 1, _notificationsCell.frame.size.width, 0.5f);
+    notificationsBottomBorder.backgroundColor = separatorColor.CGColor;
     [_notificationsCell.layer addSublayer:notificationsBottomBorder];
     
-    if([NSUserDefaults standardUserDefaults].dictionaryRepresentation[@"notificationsEnabled"]) {
-        _notificationsSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"notificationsEnabled"];
-    } else{
-        _notificationsSwitch.on = true;
-    }
-    
     CALayer* sourceCodeTopBorder = [CALayer layer];
-    sourceCodeTopBorder.frame = CGRectMake(0.0f, 0.0f, _sourceCodeCell.frame.size.width, 1.0f);
-    sourceCodeTopBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    sourceCodeTopBorder.frame = CGRectMake(0.0f, 0.0f, _sourceCodeCell.frame.size.width, 0.5f);
+    sourceCodeTopBorder.backgroundColor = separatorColor.CGColor;
     [_sourceCodeCell.layer addSublayer:sourceCodeTopBorder];
     
     CALayer* sourceCodeBottomBorder = [CALayer layer];
-    sourceCodeBottomBorder.frame = CGRectMake(0.0f, _sourceCodeCell.frame.size.height - 1, _sourceCodeCell.frame.size.width, 1.0f);
-    sourceCodeBottomBorder.backgroundColor = [UIColor systemGrayColor].CGColor;
+    sourceCodeBottomBorder.frame = CGRectMake(0.0f, _sourceCodeCell.frame.size.height - 1, _sourceCodeCell.frame.size.width, 0.5f);
+    sourceCodeBottomBorder.backgroundColor = separatorColor.CGColor;
     [_sourceCodeCell.layer addSublayer:sourceCodeBottomBorder];
     
     [self reload];
@@ -90,6 +87,12 @@ NSArray<NSString*>* startPages = NULL;
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
+    if([NSUserDefaults standardUserDefaults].dictionaryRepresentation[@"notificationsEnabled"]) {
+        _notificationsSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"notificationsEnabled"] && [Util notificationsAllowed];
+    } else{
+        _notificationsSwitch.on = [Util notificationsAllowed];
+    }
     
     if([Util checkConnection]){
         User* copy = [Variables.get.user copy];
@@ -135,8 +138,25 @@ NSArray<NSString*>* startPages = NULL;
 }
 
 - (IBAction)notificationsChanged:(id)sender{
-    [[NSUserDefaults standardUserDefaults] setBool:_notificationsSwitch.on forKey:@"notificationsEnabled"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if([Util notificationsAllowed]){
+        [[NSUserDefaults standardUserDefaults] setBool:_notificationsSwitch.on forKey:@"notificationsEnabled"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else{
+        [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge completionHandler:^(BOOL granted, NSError * _Nullable error){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(granted){
+                    [[NSUserDefaults standardUserDefaults] setBool:self->_notificationsSwitch.on forKey:@"notificationsEnabled"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                } else {
+                    self->_notificationsSwitch.on = false;
+                    
+                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"notificationsUnavailable", @"") message:NSLocalizedString(@"notificationsEnableInSettings", @"") preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"") style:UIAlertActionStyleCancel handler:NULL]];
+                    [self presentViewController:alert animated:true completion:NULL];
+                }
+            });
+        }];
+    }
 }
 
 - (IBAction)sourceCodePressed:(id)sender{

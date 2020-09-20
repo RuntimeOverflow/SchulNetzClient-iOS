@@ -55,16 +55,25 @@
         User* copy = [Variables.get.user copy];
         
         [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
-            if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:[Variables get].user];
-        }];
-        
-        [[Variables get].account loadPage:@"21311" completion:^(NSObject *doc) {
-            if([doc class] == [HTMLDocument class]) [Parser parseGrades:(HTMLDocument*)doc forUser:[Variables get].user];
-            [[Variables get].user processConnections];
-            [self reload];
-            
-            [Change publishNotifications:[Change getChanges:copy current:Variables.get.user]];
-            [Variables.get.user save];
+            if([doc class] == [HTMLDocument class]) {
+                NSMutableArray* previous = Variables.get.user.subjects;
+                
+                __block BOOL result = [Parser parseSubjects:(HTMLDocument*)doc forUser:[Variables get].user];
+                if(!result) Variables.get.user.subjects = previous;
+                
+                [Variables.get.user processConnections];
+                
+                if(result) [[Variables get].account loadPage:@"21311" completion:^(NSObject *doc) {
+                    if([doc class] == [HTMLDocument class]) result = [Parser parseGrades:(HTMLDocument*)doc forUser:[Variables get].user];
+                    if(!result) Variables.get.user.subjects = previous;
+                    
+                    [[Variables get].user processConnections];
+                    [self reload];
+                    
+                    [Change publishNotifications:[Change getChanges:copy current:Variables.get.user]];
+                    [Variables.get.user save];
+                }];
+            }
         }];
     }
 }
@@ -136,9 +145,9 @@
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    int width = collectionView.bounds.size.width / cellPerRow - cellPerRow * 5;
-    int height = collectionView.bounds.size.width / 3 / 3 * 2;
-    if(indexPath.row == 0) width = collectionView.bounds.size.width;
+    int width = (collectionView.bounds.size.width - 20) / cellPerRow - cellPerRow * 5;
+    int height = (collectionView.bounds.size.width - 20) / 9 * 2;
+    if(indexPath.row == 0) width = collectionView.bounds.size.width - 20;
     return CGSizeMake(width, height);
 }
 

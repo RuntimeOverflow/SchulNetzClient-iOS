@@ -101,7 +101,7 @@
                     self->_loadingIndicator.hidden = true;
                     [self->_loadingIndicator stopAnimating];
                     self->_timetableView.hidden = false;
-                    [self resetToTodayAndReload];
+                    [self reload];
                     
                     return;
                 } else{
@@ -114,7 +114,8 @@
                 self->_loadingIndicator.hidden = true;
                 [self->_loadingIndicator stopAnimating];
                 self->_timetableView.hidden = false;
-                [self resetToTodayAndReload];
+                self->lessons = NULL;
+                [self reload];
                 
                 return;
             }

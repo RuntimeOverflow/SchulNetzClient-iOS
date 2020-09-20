@@ -145,6 +145,9 @@
 /* No comment provided by engineer. */
 "timetable" = "Timetable";
 
+/* No comment provided by engineer. */
+"timetableUnavailable" = "Timetable Unavailable";
+
 "transactions" = "Transactions";
 
 "username" = "Username";
@@ -159,13 +162,19 @@
 "failed to convert string to data" = "";
 
 /* No comment provided by engineer. */
+"notificationsEnableInSettings" = "Please enable notifications in the settings app";
+
+/* No comment provided by engineer. */
+"notificationsUnavailable" = "Notifications unavailable";
+
+/* No comment provided by engineer. */
+"ok" = "Ok";
+
+/* No comment provided by engineer. */
 "the key must not to be nil" = "";
 
 /* No comment provided by engineer. */
 "the server property must not to be nil, should use 'keyChainStoreWithServer:protocolType:' initializer to instantiate keychain store" = "";
-
-/* No comment provided by engineer. */
-"timetableUnavailable" = "Timetable Unavailable";
 
 /* No comment provided by engineer. */
 "Unexpected error has occurred." = "";

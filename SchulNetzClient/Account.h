@@ -3,7 +3,7 @@
 #import "Data/User.h"
 #import "SessionManager.h"
 
-@interface Account : NSObject{
+@interface Account : NSObject {
     NSString* currentId;
     NSString* currentTransId;
     NSMutableArray* cookiesList;

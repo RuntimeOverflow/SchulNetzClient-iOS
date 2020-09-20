@@ -23,6 +23,7 @@
 
 +(NSMutableArray*)getChanges:(User*)previous current:(User*)current{
     NSMutableArray* changes = [[NSMutableArray alloc] init];
+    if(!previous || !current) return changes;
     
     if(previous.balanceConfirmed != current.balanceConfirmed) [changes addObject:[[Change alloc] initWithPrevious:previous current:current varName:@"balanceConfirmed" changeType:MODIFIED]];
     
