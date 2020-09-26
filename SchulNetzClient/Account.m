@@ -429,7 +429,7 @@
 }
 
 -(NSObject*)loadScheduleFrom:(NSDate*)from to:(NSDate*)to view:(NSString*)view{
-	if((!signedIn && !signingIn) || signingOut) return NULL;
+	if((!signedIn && !signingIn) || signingOut || !currentId) return NULL;
 	
 	while(signingIn || pageQueue.count > 0) {
 		NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.5];

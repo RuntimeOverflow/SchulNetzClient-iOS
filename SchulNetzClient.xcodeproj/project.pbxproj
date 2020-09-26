@@ -689,7 +689,7 @@
 				CODE_SIGN_ENTITLEMENTS = SchulNetzClient/SchulNetzClient.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Gian Marco Beltrame (QSV8JWVZY6)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 5K8A28T85J;
 				INFOPLIST_FILE = SchulNetzClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -697,7 +697,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.0.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuntimeOverflow.SchulNetzClient;
 				PRODUCT_NAME = SchulNetz;
 				PROVISIONING_PROFILE_SPECIFIER = "SchulNetz Client Development";
@@ -712,7 +712,7 @@
 				CODE_SIGN_ENTITLEMENTS = SchulNetzClient/SchulNetzClient.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Gian Marco Beltrame (QSV8JWVZY6)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 5K8A28T85J;
 				INFOPLIST_FILE = SchulNetzClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -720,7 +720,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.0.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuntimeOverflow.SchulNetzClient;
 				PRODUCT_NAME = SchulNetz;
 				PROVISIONING_PROFILE_SPECIFIER = "SchulNetz Client Development";
