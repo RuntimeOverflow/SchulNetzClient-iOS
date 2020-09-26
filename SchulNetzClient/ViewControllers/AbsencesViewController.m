@@ -39,9 +39,9 @@ NSMutableArray<NSNumber*>* secondaryExpanded;
     [super viewDidAppear:animated];
     
     if([Util checkConnection]){
-        User* copy = [Variables.get.user copy];
-        
         [[Variables get].account loadPage:@"21111" completion:^(NSObject *doc) {
+            User* copy = [Variables.get.user copy];
+            
             if([doc class] == [HTMLDocument class]) [Parser parseAbsences:(HTMLDocument*)doc forUser:[Variables get].user];
             [[Variables get].user processConnections];
             [self reload];

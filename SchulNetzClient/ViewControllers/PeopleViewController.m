@@ -44,9 +44,11 @@ BOOL showTeachers = false;
     [super viewDidAppear:animated];
     
     if([Util checkConnection]){
-        User* copy = [Variables.get.user copy];
+        __block User* copy = [Variables.get.user copy];
         
         [[Variables get].account loadPage:@"22352" completion:^(NSObject *doc) {
+            copy = [Variables.get.user copy];
+            
             if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:[Variables get].user];
         }];
         

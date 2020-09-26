@@ -52,10 +52,11 @@
     [super viewDidAppear:animated];
     
     if([Util checkConnection]){
-        User* copy = [Variables.get.user copy];
-        
         [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) {
+                User* copy = [Variables.get.user copy];
+                copy.subjects = self->current;
+                
                 NSMutableArray* previous = Variables.get.user.subjects;
                 
                 __block BOOL result = [Parser parseSubjects:(HTMLDocument*)doc forUser:[Variables get].user];
@@ -64,6 +65,7 @@
                 [Variables.get.user processConnections];
                 
                 if(result) [[Variables get].account loadPage:@"21311" completion:^(NSObject *doc) {
+                    result = false;
                     if([doc class] == [HTMLDocument class]) result = [Parser parseGrades:(HTMLDocument*)doc forUser:[Variables get].user];
                     if(!result) Variables.get.user.subjects = previous;
                     

@@ -73,7 +73,12 @@ static UIColor* tint;
         loaded = true;
     }];
     
-    while(!loaded);
+    NSDate* timeout = [NSDate dateWithTimeIntervalSinceNow:0.5];
+    while (!loaded || [timeout compare:NSDate.date] == NSOrderedAscending) {
+        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+        [[NSRunLoop currentRunLoop] runUntilDate:date];
+    }
+    
     return allowed;
 }
 
@@ -87,7 +92,12 @@ static UIColor* tint;
         loaded = true;
     }];
     
-    while(!loaded);
+    NSDate* timeout = [NSDate dateWithTimeIntervalSinceNow:0.5];
+    while (!loaded || [timeout compare:NSDate.date] == NSOrderedAscending) {
+        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+        [[NSRunLoop currentRunLoop] runUntilDate:date];
+    }
+    
     return allowed;
 }
 
@@ -101,7 +111,12 @@ static UIColor* tint;
         loaded = true;
     }];
     
-    while(!loaded);
+    NSDate* timeout = [NSDate dateWithTimeIntervalSinceNow:0.5];
+    while (!loaded || [timeout compare:NSDate.date] == NSOrderedAscending) {
+        NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+        [[NSRunLoop currentRunLoop] runUntilDate:date];
+    }
+    
     return allowed;
 }
 

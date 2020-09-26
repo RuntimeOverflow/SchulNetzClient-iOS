@@ -91,13 +91,16 @@ NSArray<NSString*>* startPages = NULL;
     if([NSUserDefaults standardUserDefaults].dictionaryRepresentation[@"notificationsEnabled"]) {
         _notificationsSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"notificationsEnabled"] && [Util notificationsAllowed];
     } else{
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"notificationsEnabled"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         _notificationsSwitch.on = [Util notificationsAllowed];
     }
     
     if([Util checkConnection]){
-        User* copy = [Variables.get.user copy];
-        
         [[Variables get].account loadPage:@"21411" completion:^(NSObject *doc) {
+            User* copy = [Variables.get.user copy];
+            
             if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:[Variables get].user];
             if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:[Variables get].user];
             [[Variables get].user processConnections];
