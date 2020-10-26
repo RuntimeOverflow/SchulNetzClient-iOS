@@ -19,6 +19,7 @@
 @property NSMutableArray<Transaction*>* transactions;
 @property NSMutableArray<Absence*>* absences;
 @property NSMutableArray<Lesson*>* lessons;
+@property NSMutableArray<SubjectGroup*>* subjectGroups;
 
 +(User*)load;
 -(void)save;

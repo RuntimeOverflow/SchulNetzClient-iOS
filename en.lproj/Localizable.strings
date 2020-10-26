@@ -1,7 +1,7 @@
 /* No comment provided by engineer. */
 "absences" = "Absences";
 
-"accountBalance" = "Account balance";
+"accountBalance" = "Account Balance";
 
 /* No comment provided by engineer. */
 "age" = "Years old";
@@ -106,6 +106,15 @@
 "notifications" = "Notifications";
 
 /* No comment provided by engineer. */
+"notificationsEnableInSettings" = "Please enable notifications in the settings app";
+
+/* No comment provided by engineer. */
+"notificationsUnavailable" = "Notifications unavailable";
+
+/* No comment provided by engineer. */
+"ok" = "Ok";
+
+/* No comment provided by engineer. */
 "other" = "Other...";
 
 "password" = "Password";
@@ -156,19 +165,16 @@
 "yes" = "Yes";
 
 /* No comment provided by engineer. */
+"done" = "Done";
+
+/* No comment provided by engineer. */
 "failed to convert data to string" = "";
 
 /* No comment provided by engineer. */
 "failed to convert string to data" = "";
 
 /* No comment provided by engineer. */
-"notificationsEnableInSettings" = "Please enable notifications in the settings app";
-
-/* No comment provided by engineer. */
-"notificationsUnavailable" = "Notifications unavailable";
-
-/* No comment provided by engineer. */
-"ok" = "Ok";
+"newGroup" = "New Group";
 
 /* No comment provided by engineer. */
 "the key must not to be nil" = "";

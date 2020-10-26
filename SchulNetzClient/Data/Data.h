@@ -6,3 +6,4 @@
 #import "Grade.h"
 #import "Absence.h"
 #import "Transaction.h"
+#import "SubjectGroup.h"

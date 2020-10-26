@@ -26,7 +26,20 @@
     
     float heightPerMinute = (rect.size.height - topOffset - bottomOffset) / (maxHour - minHour) / 60.f;
     
+    NSDateComponents* todayComponents = [NSCalendar.currentCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:NSDate.date];
+    
+    NSDateComponents* timetableDate = [[NSCalendar currentCalendar] components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute fromDate:[[NSDate alloc] initWithTimeIntervalSince1970:(_lessons.count > 0 ? _lessons[0].start.timeIntervalSince1970 : 0)]];
+    
+    if(todayComponents.year == timetableDate.year && todayComponents.day == timetableDate.day && todayComponents.hour >= minHour && (todayComponents.hour < maxHour || (todayComponents.hour == maxHour && todayComponents.minute == 0))){
+        UIBezierPath* line = [UIBezierPath bezierPath];
+        [line moveToPoint:CGPointMake(0, ((todayComponents.hour - minHour) * 60 + todayComponents.minute) * heightPerMinute + timeBounds.height / 2)];
+        [line addLineToPoint:CGPointMake(self.bounds.size.width, ((todayComponents.hour - minHour) * 60 + todayComponents.minute) * heightPerMinute + timeBounds.height / 2)];
+        [UIColor.redColor setStroke];
+        [line stroke];
+    }
+    
     NSDictionary* sideTimeAttributes = @{NSFontAttributeName:font, NSForegroundColorAttributeName:UIColor.lightGrayColor};
+    [UIColor.lightGrayColor setStroke];
     for(int i = minHour;i <= maxHour; i++){
         NSAttributedString* str = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%02d:00", i] attributes:sideTimeAttributes];
         [str drawAtPoint:CGPointMake(0, (i - minHour) * 60 * heightPerMinute)];

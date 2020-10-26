@@ -15,6 +15,7 @@
 @synthesize transactions;
 @synthesize absences;
 @synthesize lessons;
+@synthesize subjectGroups;
 
 -(instancetype)init{
     lessonTypeDict = [[NSMutableDictionary alloc] init];
@@ -26,6 +27,7 @@
     transactions = [[NSMutableArray alloc] init];
     absences = [[NSMutableArray alloc] init];
     lessons = [[NSMutableArray alloc] init];
+    subjectGroups = [[NSMutableArray alloc] init];
     
     return self;
 }
@@ -47,9 +49,19 @@
     [classes addObject: [Grade class]];
     [classes addObject: [Absence class]];
     [classes addObject: [Transaction class]];
+    [classes addObject: [SubjectGroup class]];
     
     User* user = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:[[NSUserDefaults standardUserDefaults] objectForKey:@"user"] error:nil];
     [user processConnections];
+    
+    if(!user.teachers) user.teachers = [[NSMutableArray alloc] init];
+    if(!user.students) user.students = [[NSMutableArray alloc] init];
+    if(!user.subjects) user.subjects = [[NSMutableArray alloc] init];
+    if(!user.transactions) user.transactions = [[NSMutableArray alloc] init];
+    if(!user.absences) user.absences = [[NSMutableArray alloc] init];
+    if(!user.lessons) user.lessons = [[NSMutableArray alloc] init];
+    if(!user.subjectGroups) user.subjectGroups = [[NSMutableArray alloc] init];
+    
     return user;
 }
 
@@ -73,6 +85,7 @@
     [classes addObject: [Grade class]];
     [classes addObject: [Absence class]];
     [classes addObject: [Transaction class]];
+    [classes addObject: [SubjectGroup class]];
     
     User* copy = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:[NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:true error:nil] error:nil];
     [copy processConnections];
@@ -84,6 +97,8 @@
         for(Teacher* t in teachers) t.subjects = [[NSMutableArray alloc] init];
         
         for(Subject* s in subjects){
+            s.group = NULL;
+            
             if(s.identifier != NULL && [s.identifier componentsSeparatedByString:@"-"].count >= 3){
                 Teacher* t = [self teacherForShortName:[s.identifier componentsSeparatedByString:@"-"][2]];
                 
@@ -133,6 +148,19 @@
             }
             
             if(roomDict[[NSString stringWithFormat:@"%d", l.roomNumber]] != NULL) l.room = roomDict[[NSString stringWithFormat:@"%d", l.roomNumber]];
+        }
+        
+        for(SubjectGroup* g in subjectGroups){
+            [g.subjects removeAllObjects];
+            
+            for(NSString* identifier in g.subjectIdentifiers){
+                Subject* s = [self subjectForIdentifier:identifier];
+                
+                if(s){
+                    [g.subjects addObject:s];
+                    s.group = g;
+                }
+            }
         }
     } @catch(NSException *exception){}
     @finally{}
@@ -187,6 +215,7 @@
     [coder encodeObject:transactions forKey:@"transactions"];
     [coder encodeObject:absences forKey:@"absences"];
     [coder encodeObject:lessons forKey:@"lessons"];
+    [coder encodeObject:subjectGroups forKey:@"subjectGroups"];
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder{
@@ -201,6 +230,7 @@
     transactions = [coder decodeObjectForKey:@"transactions"];
     absences = [coder decodeObjectForKey:@"absences"];
     lessons = [coder decodeObjectForKey:@"lessons"];
+    subjectGroups = [coder decodeObjectForKey:@"subjectGroups"];
     
     return self;
 }

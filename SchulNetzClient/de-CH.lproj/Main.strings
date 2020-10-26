@@ -14,7 +14,7 @@
 "Bka-Ma-NIZ.title" = "Personen";
 
 /* Class = "UILabel"; text = "1 Lesson"; ObjectID = "cmt-AV-FoN"; */
-"cmt-AV-FoN.text" = "1 Lesson";
+"cmt-AV-FoN.text" = "1 Lektion";
 
 /* Class = "UITextField"; placeholder = "Host"; ObjectID = "e2Z-Ix-AKj"; */
 "e2Z-Ix-AKj.placeholder" = "Mandant";
@@ -55,7 +55,7 @@
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "piy-zX-Hd8"; */
 "piy-zX-Hd8.placeholder" = "Passwort";
 
-/* Class = "UIButton"; normalTitle = "Account balance"; ObjectID = "pjh-0z-yBG"; */
+/* Class = "UIButton"; normalTitle = "Account Balance"; ObjectID = "pjh-0z-yBG"; */
 "pjh-0z-yBG.normalTitle" = "Kontoauszug";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "PSf-S1-jTk"; */
@@ -91,8 +91,71 @@
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "ZqS-ow-gPk"; */
 "ZqS-ow-gPk.placeholder" = "Benutzername";
 
+/* Class = "UINavigationItem"; title = "Not Counting Grades"; ObjectID = "03N-RJ-qo5"; */
+"03N-RJ-qo5.title" = "Nicht zählende Fächer";
+
+/* Class = "UINavigationItem"; title = "Subject Groups"; ObjectID = "5nC-8E-oAQ"; */
+"5nC-8E-oAQ.title" = "Fächergruppen";
+
+/* Class = "UILabel"; text = "Double Negative Points"; ObjectID = "69Z-jP-Y5a"; */
+"69Z-jP-Y5a.text" = "Doppelte Minuspunkte";
+
+/* Class = "UILabel"; text = "Selected subjects won't count as plus/minus points. (Only subjects not included in a group can be selected)"; ObjectID = "C6Q-1E-wH4"; */
+"C6Q-1E-wH4.text" = "Ausgewählte Fächer zählen nicht als Plus-/Minuspunkte. (Nur Fächer, welche nicht Teil einer Fächergruppe sind, können ausgewählt werden)";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "c6V-uU-534"; */
+"c6V-uU-534.text" = "";
+
+/* Class = "UINavigationItem"; title = "Grade Settings"; ObjectID = "CBh-Ke-rpa"; */
+"CBh-Ke-rpa.title" = "Noteneinstellungen";
+
+/* Class = "UIButton"; normalTitle = "Delete Group"; ObjectID = "EWk-li-6EJ"; */
+"EWk-li-6EJ.normalTitle" = "Gruppe löschen";
+
+/* Class = "UIButton"; normalTitle = "Not Counting Subjects"; ObjectID = "Fs2-Mk-S5y"; */
+"Fs2-Mk-S5y.normalTitle" = "Nicht zählende Fächer";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "fT0-lS-62p"; */
 "fT0-lS-62p.text" = "";
 
+/* Class = "UIButton"; normalTitle = "Grade Settings"; ObjectID = "FT2-WO-nC0"; */
+"FT2-WO-nC0.normalTitle" = "Noteneinstellungen";
+
+/* Class = "UISegmentedControl"; INF-Jx-ZTd.segmentTitles[0] = "Don't count"; ObjectID = "INF-Jx-ZTd"; */
+"INF-Jx-ZTd.segmentTitles[0]" = "Nicht zählen";
+
+/* Class = "UISegmentedControl"; INF-Jx-ZTd.segmentTitles[1] = "Average"; ObjectID = "INF-Jx-ZTd"; */
+"INF-Jx-ZTd.segmentTitles[1]" = "Durchschnitt";
+
+/* Class = "UISegmentedControl"; INF-Jx-ZTd.segmentTitles[2] = "Rounded Average"; ObjectID = "INF-Jx-ZTd"; */
+"INF-Jx-ZTd.segmentTitles[2]" = "Gerundeter Durchschnitt";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "MzF-uO-IaG"; */
+"MzF-uO-IaG.text" = "";
+
+/* Class = "UILabel"; text = "Created groups will combine grades of multiple subjects and count them as a single subject. (For example: If Music and Art together count as one grade together, even though they're 2 separate subjects)"; ObjectID = "Pbs-iE-ytp"; */
+"Pbs-iE-ytp.text" = "Gruppen werden die Noten mehrerer Fächer als eine Note zählen. (Zum Beispiel: Wenn Musik und Gestalten als eine Note zählen, aber separate Fächer sind)";
+
+/* Class = "UILabel"; text = "Grade Calculation"; ObjectID = "qDr-Zz-Sth"; */
+"qDr-Zz-Sth.text" = "Notenberechnung";
+
+/* Class = "UINavigationItem"; title = "Edit Subject Group"; ObjectID = "rQS-tK-9Pa"; */
+"rQS-tK-9Pa.title" = "Fächergruppe bearbeiten";
+
+/* Class = "UIButton"; normalTitle = "Add"; ObjectID = "sk5-wG-maI"; */
+"sk5-wG-maI.normalTitle" = "Hinzufügen";
+
+/* Class = "UIButton"; normalTitle = "Subject Groups"; ObjectID = "T0I-b4-iqo"; */
+"T0I-b4-iqo.normalTitle" = "Fächergruppen";
+
+/* Class = "UILabel"; text = "Group Name"; ObjectID = "tLk-2A-faz"; */
+"tLk-2A-faz.text" = "Gruppenname";
+
+/* Class = "UIButton"; normalTitle = "Remove"; ObjectID = "VTm-mD-JQ3"; */
+"VTm-mD-JQ3.normalTitle" = "Entfernen";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "wG2-kk-Gkc"; */
 "wG2-kk-Gkc.text" = "";
+
+/* Class = "UIButton"; normalTitle = "Create Subject Group"; ObjectID = "Z7t-lK-7wI"; */
+"Z7t-lK-7wI.normalTitle" = "Fächergruppe hinzufügen";

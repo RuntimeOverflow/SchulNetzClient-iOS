@@ -29,6 +29,11 @@
 		BD10AF3F23D4740C00EFDD84 /* HTMLOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF2E23D4740C00EFDD84 /* HTMLOrderedDictionary.m */; };
 		BD10AF4023D4740C00EFDD84 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF2F23D4740C00EFDD84 /* HTMLNode.m */; };
 		BD10AF4A23D4CE6100EFDD84 /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = BD10AF4923D4CE6100EFDD84 /* Parser.m */; };
+		BD171B592545BF2C00D0095A /* SubjectGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BD171B582545BF2C00D0095A /* SubjectGroup.m */; };
+		BD171B5C2545D86A00D0095A /* GradeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD171B5B2545D86A00D0095A /* GradeSettingsViewController.m */; };
+		BD171B5F2545E55400D0095A /* UnvaluedGradesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD171B5E2545E55400D0095A /* UnvaluedGradesViewController.m */; };
+		BD171B622546053600D0095A /* SubjectGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD171B612546053600D0095A /* SubjectGroupsViewController.m */; };
+		BD171B6525460E7000D0095A /* EditSubjectGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD171B6425460E7000D0095A /* EditSubjectGroupViewController.m */; };
 		BD2E4DA924560D6900CF7ECA /* Absence.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2E4DA824560D6900CF7ECA /* Absence.m */; };
 		BD3A8FA723D376930043C868 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD6D98AA23D27DDE00A37649 /* LoginViewController.m */; };
 		BD3A8FAB23D381B20043C868 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3A8FAA23D381B20043C868 /* MainViewController.m */; };
@@ -116,6 +121,16 @@
 		BD10AF4123D4A18B00EFDD84 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		BD10AF4823D4CE6100EFDD84 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		BD10AF4923D4CE6100EFDD84 /* Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
+		BD171B572545BF2C00D0095A /* SubjectGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubjectGroup.h; sourceTree = "<group>"; };
+		BD171B582545BF2C00D0095A /* SubjectGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubjectGroup.m; sourceTree = "<group>"; };
+		BD171B5A2545D86A00D0095A /* GradeSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GradeSettingsViewController.h; sourceTree = "<group>"; };
+		BD171B5B2545D86A00D0095A /* GradeSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GradeSettingsViewController.m; sourceTree = "<group>"; };
+		BD171B5D2545E55400D0095A /* UnvaluedGradesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnvaluedGradesViewController.h; sourceTree = "<group>"; };
+		BD171B5E2545E55400D0095A /* UnvaluedGradesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnvaluedGradesViewController.m; sourceTree = "<group>"; };
+		BD171B602546053600D0095A /* SubjectGroupsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubjectGroupsViewController.h; sourceTree = "<group>"; };
+		BD171B612546053600D0095A /* SubjectGroupsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubjectGroupsViewController.m; sourceTree = "<group>"; };
+		BD171B6325460E7000D0095A /* EditSubjectGroupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditSubjectGroupViewController.h; sourceTree = "<group>"; };
+		BD171B6425460E7000D0095A /* EditSubjectGroupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditSubjectGroupViewController.m; sourceTree = "<group>"; };
 		BD2E4DA724560D6900CF7ECA /* Absence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Absence.h; sourceTree = "<group>"; };
 		BD2E4DA824560D6900CF7ECA /* Absence.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Absence.m; sourceTree = "<group>"; };
 		BD3A8FA823D37E740043C868 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
@@ -345,6 +360,8 @@
 				BDFC35FA24CF05410049AE83 /* Transaction.m */,
 				BDFC35FC24CF062C0049AE83 /* Change.h */,
 				BDFC35FD24CF062C0049AE83 /* Change.m */,
+				BD171B572545BF2C00D0095A /* SubjectGroup.h */,
+				BD171B582545BF2C00D0095A /* SubjectGroup.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -376,6 +393,14 @@
 				BD8E53BA24D6E070002B276E /* TransactionsViewController.m */,
 				BDB1E57D24D7F7310035DFE1 /* TimetableViewController.h */,
 				BDB1E57E24D7F7310035DFE1 /* TimetableViewController.m */,
+				BD171B5A2545D86A00D0095A /* GradeSettingsViewController.h */,
+				BD171B5B2545D86A00D0095A /* GradeSettingsViewController.m */,
+				BD171B5D2545E55400D0095A /* UnvaluedGradesViewController.h */,
+				BD171B5E2545E55400D0095A /* UnvaluedGradesViewController.m */,
+				BD171B602546053600D0095A /* SubjectGroupsViewController.h */,
+				BD171B612546053600D0095A /* SubjectGroupsViewController.m */,
+				BD171B6325460E7000D0095A /* EditSubjectGroupViewController.h */,
+				BD171B6425460E7000D0095A /* EditSubjectGroupViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -485,6 +510,7 @@
 				BD6D98B623D27DDF00A37649 /* main.m in Sources */,
 				BDFC35FE24CF062C0049AE83 /* Change.m in Sources */,
 				BDBD598C23F0936F00A13B68 /* Lesson.m in Sources */,
+				BD171B6525460E7000D0095A /* EditSubjectGroupViewController.m in Sources */,
 				BD10AF3423D4740C00EFDD84 /* HTMLComment.m in Sources */,
 				BD10AF3923D4740C00EFDD84 /* NSString+HTMLEntities.m in Sources */,
 				BD10AF3623D4740C00EFDD84 /* HTMLDocumentType.m in Sources */,
@@ -492,9 +518,11 @@
 				BD822B7024D6FD4C00100E95 /* TBXML.m in Sources */,
 				BD10AF4A23D4CE6100EFDD84 /* Parser.m in Sources */,
 				BDE4B11024D578B7007514B3 /* UIPickerTextField.m in Sources */,
+				BD171B592545BF2C00D0095A /* SubjectGroup.m in Sources */,
 				BD10AF3A23D4740C00EFDD84 /* HTMLEncoding.m in Sources */,
 				BD10AF3723D4740C00EFDD84 /* HTMLDocument.m in Sources */,
 				BD7954F424214DBF004C6F20 /* StudentViewController.m in Sources */,
+				BD171B5C2545D86A00D0095A /* GradeSettingsViewController.m in Sources */,
 				BDBF017323DF53A5009E0E0B /* Student.m in Sources */,
 				BD6E82592423EED6008DFFB9 /* SubjectViewController.m in Sources */,
 				BDBF016E23DF4B48009E0E0B /* User.m in Sources */,
@@ -502,6 +530,7 @@
 				BDFC35FB24CF05410049AE83 /* Transaction.m in Sources */,
 				BD10AF3323D4740C00EFDD84 /* HTMLTokenizer.m in Sources */,
 				BD10AF4023D4740C00EFDD84 /* HTMLNode.m in Sources */,
+				BD171B622546053600D0095A /* SubjectGroupsViewController.m in Sources */,
 				BD025A5A241E4CC3009E3F60 /* Subject.m in Sources */,
 				BD10AF3B23D4740C00EFDD84 /* HTMLElement.m in Sources */,
 				BD822B7424D6FD6600100E95 /* UICKeyChainStore.m in Sources */,
@@ -511,6 +540,7 @@
 				BD8035D323D32212007FDB54 /* Account.m in Sources */,
 				BDBF016B23DF497C009E0E0B /* Teacher.m in Sources */,
 				BDFC360424CF38340049AE83 /* SessionManager.m in Sources */,
+				BD171B5F2545E55400D0095A /* UnvaluedGradesViewController.m in Sources */,
 				BD10AF3D23D4740C00EFDD84 /* HTMLSelector.m in Sources */,
 				BD04FE612420323D0025BED0 /* NavigationViewController.m in Sources */,
 				BD7954EE2421353C004C6F20 /* SettingsViewController.m in Sources */,
@@ -689,7 +719,7 @@
 				CODE_SIGN_ENTITLEMENTS = SchulNetzClient/SchulNetzClient.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Gian Marco Beltrame (QSV8JWVZY6)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 5K8A28T85J;
 				INFOPLIST_FILE = SchulNetzClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -697,7 +727,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuntimeOverflow.SchulNetzClient;
 				PRODUCT_NAME = SchulNetz;
 				PROVISIONING_PROFILE_SPECIFIER = "SchulNetz Client Development";
@@ -712,7 +742,7 @@
 				CODE_SIGN_ENTITLEMENTS = SchulNetzClient/SchulNetzClient.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Gian Marco Beltrame (QSV8JWVZY6)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 5K8A28T85J;
 				INFOPLIST_FILE = SchulNetzClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -720,7 +750,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuntimeOverflow.SchulNetzClient;
 				PRODUCT_NAME = SchulNetz;
 				PROVISIONING_PROFILE_SPECIFIER = "SchulNetz Client Development";

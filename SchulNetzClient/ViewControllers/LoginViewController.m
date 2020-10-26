@@ -30,6 +30,8 @@ NSLayoutConstraint* heightUrlField;
     
     [Util setTintColor:[Host colorForHost:@""]];
     
+    UIColor* separatorColor = [UIColor colorWithRed:0.235 green:0.235 blue:0.263 alpha:0.25];
+    
     yUrlField = [_urlField.topAnchor constraintEqualToAnchor:_urlPickerField.bottomAnchor constant:0];
     yUrlField.active = true;
     heightUrlField = [_urlField.heightAnchor constraintEqualToConstant:0];
@@ -51,9 +53,54 @@ NSLayoutConstraint* heightUrlField;
     _loadingIcon.hidden = true;
     
     UIPickerView* picker = [[UIPickerView alloc] init];
+    picker.backgroundColor = UIColor.groupTableViewBackgroundColor;
     picker.delegate = self;
     picker.dataSource = self;
-    _urlPickerField.inputView = picker;
+    
+    UIButton* button = [[UIButton alloc] init];
+    button.backgroundColor = UIColor.clearColor;
+    [button setTitle:NSLocalizedString(@"done", @"") forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:0.5] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(pickerClosed) forControlEvents:UIControlEventPrimaryActionTriggered];
+    
+    UIView* inputView = [[UIView alloc] init];
+    inputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    inputView.backgroundColor = UIColor.whiteColor;
+    [inputView addSubview:button];
+    [inputView addSubview:picker];
+    
+    UIView* border = [[UIView alloc] init];
+    border.backgroundColor = separatorColor;
+    [inputView addSubview:border];
+    border.translatesAutoresizingMaskIntoConstraints = false;
+    [border.topAnchor constraintEqualToAnchor:inputView.topAnchor].active = true;
+    [border.rightAnchor constraintEqualToAnchor:inputView.rightAnchor].active = true;
+    [border.leftAnchor constraintEqualToAnchor:inputView.leftAnchor].active = true;
+    [border.heightAnchor constraintEqualToConstant:0.5].active = true;
+    
+    border = [[UIView alloc] init];
+    border.backgroundColor = separatorColor;
+    [inputView addSubview:border];
+    border.translatesAutoresizingMaskIntoConstraints = false;
+    [border.topAnchor constraintEqualToAnchor:picker.topAnchor].active = true;
+    [border.rightAnchor constraintEqualToAnchor:inputView.rightAnchor].active = true;
+    [border.leftAnchor constraintEqualToAnchor:inputView.leftAnchor].active = true;
+    [border.heightAnchor constraintEqualToConstant:0.5].active = true;
+    
+    button.translatesAutoresizingMaskIntoConstraints = false;
+    [button.topAnchor constraintEqualToAnchor:inputView.topAnchor].active = true;
+    [button.rightAnchor constraintEqualToAnchor:inputView.rightAnchor].active = true;
+    [button.heightAnchor constraintEqualToConstant:button.intrinsicContentSize.height + 16].active = true;
+    [button.widthAnchor constraintEqualToConstant:button.intrinsicContentSize.width + 16].active = true;
+    
+    picker.translatesAutoresizingMaskIntoConstraints = false;
+    [picker.topAnchor constraintEqualToAnchor:button.bottomAnchor].active = true;
+    [picker.rightAnchor constraintEqualToAnchor:inputView.rightAnchor].active = true;
+    [picker.bottomAnchor constraintEqualToAnchor:inputView.bottomAnchor].active = true;
+    [picker.leftAnchor constraintEqualToAnchor:inputView.leftAnchor].active = true;
+    
+    _urlPickerField.inputView = inputView;
 }
 
 - (IBAction)loginButtonPressed:(id)sender {
@@ -184,7 +231,6 @@ NSLayoutConstraint* heightUrlField;
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     
-    [_urlPickerField resignFirstResponder];
     if(row == [Host getHosts].count && !otherHost){
         _urlField.hidden = false;
         _urlField.enabled = true;
@@ -213,13 +259,15 @@ NSLayoutConstraint* heightUrlField;
         
         otherHost = false;
         _urlPickerField.text = [[Host getHosts] objectAtIndex:row];
-        
-        [_usernameField becomeFirstResponder];
     }
     
     [self inputChanged:_urlPickerField];
-    
+}
+
+-(void)pickerClosed{
+    [_urlPickerField resignFirstResponder];
     if(otherHost) [_urlField becomeFirstResponder];
+    else [_usernameField becomeFirstResponder];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField*)textField

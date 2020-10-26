@@ -101,6 +101,11 @@
         return false;
     } @finally{}
     
+    for(Subject* prev in previous){
+        Subject* s = [user subjectForIdentifier:prev.identifier];
+        if(s) s.unvalued = prev.unvalued;
+    }
+    
     return true;
 }
 

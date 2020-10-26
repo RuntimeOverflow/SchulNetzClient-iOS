@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIView *notificationsCell;
 @property (weak, nonatomic) IBOutlet UISwitch *notificationsSwitch;
 @property (weak, nonatomic) IBOutlet UIView *sourceCodeCell;
+@property (weak, nonatomic) IBOutlet UIView *gradeSettingsCell;
 @end
 
 @implementation SettingsViewController
@@ -81,6 +82,16 @@ NSArray<NSString*>* startPages = NULL;
     sourceCodeBottomBorder.frame = CGRectMake(0.0f, _sourceCodeCell.frame.size.height - 1, _sourceCodeCell.frame.size.width, 0.5f);
     sourceCodeBottomBorder.backgroundColor = separatorColor.CGColor;
     [_sourceCodeCell.layer addSublayer:sourceCodeBottomBorder];
+    
+    CALayer* gradeSettingsTopBorder = [CALayer layer];
+    gradeSettingsTopBorder.frame = CGRectMake(0.0f, 0.0f, _gradeSettingsCell.frame.size.width, 0.5f);
+    gradeSettingsTopBorder.backgroundColor = separatorColor.CGColor;
+    [_gradeSettingsCell.layer addSublayer:gradeSettingsTopBorder];
+    
+    CALayer* gradeSettingsBottomBorder = [CALayer layer];
+    gradeSettingsBottomBorder.frame = CGRectMake(0.0f, _gradeSettingsCell.frame.size.height - 1, _gradeSettingsCell.frame.size.width, 0.5f);
+    gradeSettingsBottomBorder.backgroundColor = separatorColor.CGColor;
+    [_gradeSettingsCell.layer addSublayer:gradeSettingsBottomBorder];
     
     [self reload];
 }

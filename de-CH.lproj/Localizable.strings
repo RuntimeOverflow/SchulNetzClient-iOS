@@ -106,6 +106,15 @@
 "notifications" = "Mitteilungen";
 
 /* No comment provided by engineer. */
+"notificationsEnableInSettings" = "Bitte aktiviere Benachrichtigungen in den Einstellungen";
+
+/* No comment provided by engineer. */
+"notificationsUnavailable" = "Benachrichtigungen nicht verfügbar";
+
+/* No comment provided by engineer. */
+"ok" = "Ok";
+
+/* No comment provided by engineer. */
 "other" = "Anderer Mandant...";
 
 "password" = "Passwort";
@@ -156,19 +165,16 @@
 "yes" = "Ja";
 
 /* No comment provided by engineer. */
+"done" = "Fertig";
+
+/* No comment provided by engineer. */
 "failed to convert data to string" = "";
 
 /* No comment provided by engineer. */
 "failed to convert string to data" = "";
 
 /* No comment provided by engineer. */
-"notificationsEnableInSettings" = "Bitte aktiviere Benachrichtigungen in den Einstellungen";
-
-/* No comment provided by engineer. */
-"notificationsUnavailable" = "Benachrichtigungen nicht verfügbar";
-
-/* No comment provided by engineer. */
-"ok" = "Ok";
+"newGroup" = "Neue Gruppe";
 
 /* No comment provided by engineer. */
 "the key must not to be nil" = "";

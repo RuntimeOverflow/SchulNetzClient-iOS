@@ -5,6 +5,7 @@
 @implementation Subject
 @synthesize teacher;
 @synthesize lessons;
+@synthesize group;
 
 @synthesize grades;
 @synthesize identifier;
@@ -12,6 +13,7 @@
 @synthesize shortName;
 @synthesize confirmed;
 @synthesize hiddenGrades;
+@synthesize unvalued;
 
 -(instancetype)init{
     lessons = [[NSMutableArray alloc] init];
@@ -40,6 +42,7 @@
     [coder encodeObject:shortName forKey:@"shortName"];
     [coder encodeBool:confirmed forKey:@"confirmed"];
     [coder encodeBool:hiddenGrades forKey:@"hiddenGrades"];
+    [coder encodeBool:unvalued forKey:@"unvalued"];
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder{
@@ -51,6 +54,7 @@
     shortName = [coder decodeObjectForKey:@"shortName"];
     confirmed = [coder decodeBoolForKey:@"confirmed"];
     hiddenGrades = [coder decodeBoolForKey:@"hiddenGrades"];
+    unvalued = [coder decodeBoolForKey:@"unvalued"];
     
     return self;
 }

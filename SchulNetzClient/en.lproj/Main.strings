@@ -55,7 +55,7 @@
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "piy-zX-Hd8"; */
 "piy-zX-Hd8.placeholder" = "Password";
 
-/* Class = "UIButton"; normalTitle = "Account balance"; ObjectID = "pjh-0z-yBG"; */
+/* Class = "UIButton"; normalTitle = "Account Balance"; ObjectID = "pjh-0z-yBG"; */
 "pjh-0z-yBG.normalTitle" = "Account balance";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "PSf-S1-jTk"; */
@@ -91,8 +91,71 @@
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "ZqS-ow-gPk"; */
 "ZqS-ow-gPk.placeholder" = "Username";
 
+/* Class = "UINavigationItem"; title = "Not Counting Grades"; ObjectID = "03N-RJ-qo5"; */
+"03N-RJ-qo5.title" = "Not Counting Subjects";
+
+/* Class = "UINavigationItem"; title = "Subject Groups"; ObjectID = "5nC-8E-oAQ"; */
+"5nC-8E-oAQ.title" = "Subject Groups";
+
+/* Class = "UILabel"; text = "Double Negative Points"; ObjectID = "69Z-jP-Y5a"; */
+"69Z-jP-Y5a.text" = "Double Negative Points";
+
+/* Class = "UILabel"; text = "Selected subjects won't count as plus/minus points. (Only subjects not included in a group can be selected)"; ObjectID = "C6Q-1E-wH4"; */
+"C6Q-1E-wH4.text" = "Selected subjects won't count as plus/minus points. (Only subjects not included in a group can be selected)";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "c6V-uU-534"; */
+"c6V-uU-534.text" = "";
+
+/* Class = "UINavigationItem"; title = "Grade Settings"; ObjectID = "CBh-Ke-rpa"; */
+"CBh-Ke-rpa.title" = "Grade Settings";
+
+/* Class = "UIButton"; normalTitle = "Delete Group"; ObjectID = "EWk-li-6EJ"; */
+"EWk-li-6EJ.normalTitle" = "Delete Group";
+
+/* Class = "UIButton"; normalTitle = "Not Counting Subjects"; ObjectID = "Fs2-Mk-S5y"; */
+"Fs2-Mk-S5y.normalTitle" = "Not Counting Subjects";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "fT0-lS-62p"; */
 "fT0-lS-62p.text" = "";
 
+/* Class = "UIButton"; normalTitle = "Grade Settings"; ObjectID = "FT2-WO-nC0"; */
+"FT2-WO-nC0.normalTitle" = "Grade Settings";
+
+/* Class = "UISegmentedControl"; INF-Jx-ZTd.segmentTitles[0] = "Don't count"; ObjectID = "INF-Jx-ZTd"; */
+"INF-Jx-ZTd.segmentTitles[0]" = "Don't count";
+
+/* Class = "UISegmentedControl"; INF-Jx-ZTd.segmentTitles[1] = "Average"; ObjectID = "INF-Jx-ZTd"; */
+"INF-Jx-ZTd.segmentTitles[1]" = "Average";
+
+/* Class = "UISegmentedControl"; INF-Jx-ZTd.segmentTitles[2] = "Rounded Average"; ObjectID = "INF-Jx-ZTd"; */
+"INF-Jx-ZTd.segmentTitles[2]" = "Rounded Average";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "MzF-uO-IaG"; */
+"MzF-uO-IaG.text" = "";
+
+/* Class = "UILabel"; text = "Created groups will combine grades of multiple subjects and count them as a single subject. (For example: If Music and Art together count as one grade together, even though they're 2 separate subjects)"; ObjectID = "Pbs-iE-ytp"; */
+"Pbs-iE-ytp.text" = "Created groups will combine grades of multiple subjects and count them as a single subject. (For example: If Music and Art together count as one grade together, even though they're 2 separate subjects)";
+
+/* Class = "UILabel"; text = "Grade Calculation"; ObjectID = "qDr-Zz-Sth"; */
+"qDr-Zz-Sth.text" = "Grade Calculation";
+
+/* Class = "UINavigationItem"; title = "Edit Subject Group"; ObjectID = "rQS-tK-9Pa"; */
+"rQS-tK-9Pa.title" = "Edit Subject Group";
+
+/* Class = "UIButton"; normalTitle = "Add"; ObjectID = "sk5-wG-maI"; */
+"sk5-wG-maI.normalTitle" = "Add";
+
+/* Class = "UIButton"; normalTitle = "Subject Groups"; ObjectID = "T0I-b4-iqo"; */
+"T0I-b4-iqo.normalTitle" = "Subject Groups";
+
+/* Class = "UILabel"; text = "Group Name"; ObjectID = "tLk-2A-faz"; */
+"tLk-2A-faz.text" = "Group Name";
+
+/* Class = "UIButton"; normalTitle = "Remove"; ObjectID = "VTm-mD-JQ3"; */
+"VTm-mD-JQ3.normalTitle" = "Remove";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "wG2-kk-Gkc"; */
 "wG2-kk-Gkc.text" = "";
+
+/* Class = "UIButton"; normalTitle = "Create Subject Group"; ObjectID = "Z7t-lK-7wI"; */
+"Z7t-lK-7wI.normalTitle" = "Create Subject Group";

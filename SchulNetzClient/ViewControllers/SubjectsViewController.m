@@ -51,6 +51,8 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    [_collectionView reloadData];
+    
     if([Util checkConnection]){
         [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) {
@@ -95,15 +97,25 @@
         double positive = 0;
         
         for(Subject* s in current){
-            if([s getAverage] < 1|| isnan([s getAverage])) continue;
+            if([s getAverage] < 1|| isnan([s getAverage]) || s.unvalued || s.group) continue;
             
             double rounded = round(2.0 * [s getAverage]) / 2.0 - 4;
             if(rounded > 0) positive += rounded;
-            else negative += 2 * -rounded;
+            else negative += rounded;
         }
         
-        averageCell.averageLabel.text = [NSNumber numberWithDouble:positive - negative].stringValue;
-        averageCell.negativeLabel.text = [NSString stringWithFormat:@"-%@", [NSNumber numberWithDouble:negative].stringValue];
+        for(SubjectGroup* g in Variables.get.user.subjectGroups){
+            double grade = [g getGrade];
+            
+            if(!isnan(grade) && grade >= 1){
+                double rounded = round(2.0 * grade) / 2.0 - 4;
+                if(rounded > 0) positive += rounded;
+                else negative += rounded;
+            }
+        }
+        
+        averageCell.averageLabel.text = [NSNumber numberWithDouble:positive + (([NSUserDefaults.standardUserDefaults.dictionaryRepresentation objectForKey:@"doubleNegativePointsEnabled"] ? [NSUserDefaults.standardUserDefaults boolForKey:@"doubleNegativePointsEnabled"] : true) ? 2 : 1) * negative].stringValue;
+        averageCell.negativeLabel.text = [NSString stringWithFormat:@"-%@", [NSNumber numberWithDouble:fabs((([NSUserDefaults.standardUserDefaults.dictionaryRepresentation objectForKey:@"doubleNegativePointsEnabled"] ? [NSUserDefaults.standardUserDefaults boolForKey:@"doubleNegativePointsEnabled"] : true) ? 2 : 1) * negative)].stringValue];
         averageCell.positiveLabel.text = [NSString stringWithFormat:@"+%@", [NSNumber numberWithDouble:positive].stringValue];
         
         cell = averageCell;
