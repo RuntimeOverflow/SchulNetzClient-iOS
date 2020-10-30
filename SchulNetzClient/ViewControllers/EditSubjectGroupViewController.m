@@ -36,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *addedSubjectsHeight;
 @property (weak, nonatomic) IBOutlet UITableView *freeSubjectsTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *freeSubjectsHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *freeSubjectsTop;
 @end
 
 @implementation EditSubjectGroupViewController
@@ -106,12 +107,8 @@
     [_freeSubjectsTableView layoutIfNeeded];
     _freeSubjectsHeight.constant = _freeSubjectsTableView.contentSize.height;
     
-    for(NSLayoutConstraint* c in _freeSubjectsTableView.constraints){
-        if(c.firstAnchor == _freeSubjectsTableView.topAnchor){
-            if(group.subjects.count <= 0) c.constant = 0;
-            else c.constant = 48;
-        }
-    }
+    if(group.subjects.count <= 0) _freeSubjectsTop.constant = 0;
+    else _freeSubjectsTop.constant = 48;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {

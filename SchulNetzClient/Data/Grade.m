@@ -73,7 +73,7 @@
     } else if([self class] != [other class]){
         return NO;
     } else {
-        return [content isEqualToString:((Grade*)other).content];
+        return [content isEqualToString:((Grade*)other).content] && date.timeIntervalSince1970 == ((Grade*)other).date.timeIntervalSince1970;
     }
 }
 

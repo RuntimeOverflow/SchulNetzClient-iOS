@@ -108,9 +108,9 @@
                 
                 if(previousGrade && [previousGrade isEqual:currentGrade]) {
                     if((previousGrade.date == NULL ^ currentGrade.date == NULL) || (previousGrade.date && previousGrade.date.timeIntervalSince1970 != currentGrade.date.timeIntervalSince1970)) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"date" changeType:MODIFIED]];
-                    if(previousGrade.grade != currentGrade.grade) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"grade" changeType:MODIFIED]];
-                    if((previousGrade.details == NULL ^ currentGrade.details == NULL) || (previousGrade.details && ![previousGrade.details isEqual:currentGrade.details])) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"details" changeType:MODIFIED]];
-                    if(previousGrade.weight != currentGrade.weight) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"weight" changeType:MODIFIED]];
+                    else if(previousGrade.grade != currentGrade.grade) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"grade" changeType:MODIFIED]];
+                    else if((previousGrade.details == NULL ^ currentGrade.details == NULL) || (previousGrade.details && ![previousGrade.details isEqual:currentGrade.details])) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"details" changeType:MODIFIED]];
+                    else if(previousGrade.weight != currentGrade.weight) [changes addObject:[[Change alloc] initWithPrevious:previousGrade current:currentGrade varName:@"weight" changeType:MODIFIED]];
                     
                     previousSubIndex++;
                     currentSubIndex++;
