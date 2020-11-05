@@ -325,7 +325,7 @@
 			NSMutableDictionary* dict = self->pageQueue[0];
 			
 			NSObject* result = [self loadPage:dict[@"pageId"]];
-			[self->pageQueue removeObjectAtIndex:0];
+			if(self->pageQueue.count > 0) [self->pageQueue removeObjectAtIndex:0];
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
 				((void (^)(NSObject*))dict[@"completion"])(result);
@@ -509,7 +509,7 @@
 }
 
 -(NSString*)getCookies:(NSDictionary*)headers{
-	NSMutableString* cookies = [[NSMutableString alloc]initWithString:@""];
+	NSMutableString* cookies = [[NSMutableString alloc] init];
 	
 	NSMutableString* setCookie = [headers valueForKey:@"Set-Cookie"] ? [[NSMutableString alloc] initWithString:(NSString*)[headers valueForKey:@"Set-Cookie"]] : [[NSMutableString alloc] initWithString:@""];
 	if([setCookie rangeOfString:@", \\d" options:NSRegularExpressionSearch].location != NSNotFound) [setCookie replaceCharactersInRange:NSMakeRange([setCookie rangeOfString:@", \\d" options:NSRegularExpressionSearch].location, 1) withString:@""];
@@ -518,7 +518,7 @@
 		BOOL existing = false;
 		
 		for(NSString* old in cookiesList){
-			if([[value substringToIndex:[value rangeOfString:@"="].location] isEqualToString:[old substringToIndex:[value rangeOfString:@"="].location]]) {
+			if([[value substringToIndex:[value rangeOfString:@"="].location] isEqualToString:[old substringToIndex:[old rangeOfString:@"="].location]]) {
 				[cookiesList setObject:value atIndexedSubscript:[cookiesList indexOfObject:old]];
 				existing = true;
 				break;
