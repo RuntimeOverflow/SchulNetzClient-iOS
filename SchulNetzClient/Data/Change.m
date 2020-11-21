@@ -48,6 +48,9 @@
             [changes addObject:[[Change alloc] initWithPrevious:NULL current:currentTeacher varName:@"" changeType:ADDED]];
             
             currentIndex++;
+        } else{
+            previousIndex++;
+            currentIndex++;
         }
     }
     
@@ -81,6 +84,9 @@
         } else if(currentStudent && ![previous.students containsObject:currentStudent]) {
             [changes addObject:[[Change alloc] initWithPrevious:NULL current:currentStudent varName:@"" changeType:ADDED]];
             
+            currentIndex++;
+        } else{
+            previousIndex++;
             currentIndex++;
         }
     }
@@ -122,6 +128,9 @@
                     [changes addObject:[[Change alloc] initWithPrevious:NULL current:currentGrade varName:@"" changeType:ADDED]];
                     
                     currentSubIndex++;
+                } else{
+                    previousSubIndex++;
+                    currentSubIndex++;
                 }
             }
         } else if(previousSubject && ![current.subjects containsObject:previousSubject]) {
@@ -131,6 +140,9 @@
         } else if(currentSubject && ![previous.subjects containsObject:currentSubject]) {
             [changes addObject:[[Change alloc] initWithPrevious:NULL current:currentSubject varName:@"" changeType:ADDED]];
             
+            currentIndex++;
+        } else{
+            previousIndex++;
             currentIndex++;
         }
     }
@@ -154,6 +166,9 @@
         } else if(currentTransaction && ![previous.transactions containsObject:currentTransaction]) {
             [changes addObject:[[Change alloc] initWithPrevious:NULL current:currentTransaction varName:@"" changeType:ADDED]];
             
+            currentIndex++;
+        } else{
+            previousIndex++;
             currentIndex++;
         }
     }
@@ -180,6 +195,9 @@
         } else if(currentAbsence && ![previous.absences containsObject:currentAbsence]) {
             [changes addObject:[[Change alloc] initWithPrevious:NULL current:currentAbsence varName:@"" changeType:ADDED]];
             
+            currentIndex++;
+        } else{
+            previousIndex++;
             currentIndex++;
         }
     }

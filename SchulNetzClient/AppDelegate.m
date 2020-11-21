@@ -55,7 +55,7 @@
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"loggedIn"]){
         User* previous = [User load];
-        User* user = [[User alloc] init];
+        User* user = [previous copy];
         Account* account = [[Account alloc] initFromCredentials:false];
         
         NSObject* res = [account signIn];
@@ -68,41 +68,23 @@
         
         [account loadPage:@"22352" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:user];
-            else user.teachers = previous.teachers;
         }];
         [account loadPage:@"22326" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:user];
-            else user.subjects = previous.subjects;
             if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:user];
-            else user.students = previous.students;
         }];
         [account loadPage:@"21311" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseGrades:(HTMLDocument*)doc forUser:user];
-            else user.subjects = previous.subjects;
         }];
         [account loadPage:@"21411" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSelf:(HTMLDocument*)doc forUser:user];
-            else{
-                for(Student* s in user.students){
-                    if([s.firstName.lowercaseString isEqualToString:previous.me.firstName.lowercaseString] && [s.lastName.lowercaseString isEqualToString:previous.me.lastName.lowercaseString]){
-                        s.me = true;
-                        break;
-                    }
-                }
-            }
             if([doc class] == [HTMLDocument class]) [Parser parseTransactions:(HTMLDocument*)doc forUser:user];
-            else user.transactions = previous.transactions;
         }];
         [account loadPage:@"21111" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseAbsences:(HTMLDocument*)doc forUser:user];
-            else user.absences = previous.absences;
         }];
         [account loadPage:@"22202" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSchedulePage:(HTMLDocument*)doc forUser:user];
-            else{
-                user.lessonTypeDict = previous.lessonTypeDict;
-                user.roomDict = previous.roomDict;
-            }
         }];
         
         [account loadScheduleFrom:[NSDate date] to:[NSDate date] completion:^(NSObject *doc) {
