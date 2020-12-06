@@ -54,7 +54,7 @@
     [_collectionView reloadData];
     
     if([Util checkConnection]){
-        [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
+        [[Variables get].account loadPage:@"22348" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) {
                 User* copy = [Variables.get.user copy];
                 copy.subjects = self->current;

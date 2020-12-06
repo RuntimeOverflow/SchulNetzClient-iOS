@@ -69,7 +69,7 @@
         [account loadPage:@"22352" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:user];
         }];
-        [account loadPage:@"22326" completion:^(NSObject *doc) {
+        [account loadPage:@"22348" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseSubjects:(HTMLDocument*)doc forUser:user];
             if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:user];
         }];

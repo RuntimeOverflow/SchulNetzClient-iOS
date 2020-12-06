@@ -52,7 +52,7 @@ BOOL showTeachers = false;
             if([doc class] == [HTMLDocument class]) [Parser parseTeachers:(HTMLDocument*)doc forUser:[Variables get].user];
         }];
         
-        [[Variables get].account loadPage:@"22326" completion:^(NSObject *doc) {
+        [[Variables get].account loadPage:@"22348" completion:^(NSObject *doc) {
             if([doc class] == [HTMLDocument class]) [Parser parseStudents:(HTMLDocument*)doc forUser:[Variables get].user];
             [[Variables get].user processConnections];
             [self reload];
